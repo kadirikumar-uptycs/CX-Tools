@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Users</title>
+    <style>
+        body {
+            background-color: #010101;
+            color: #F3F3F3;
+        }
+
+        .card {
+            width: 380px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: #171717;
+            -webkit-backdrop-filter: blur(100px);
+            backdrop-filter: blur(100px);
+            box-shadow: 0 0 30px #111,
+                0 0 20px #111,
+                0 0 10px #111;
+            border-radius: 30px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            opacity: 1;
+        }
+
+        .img {
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 50%;
+            background-position: 30%;
+        }
+
+        .img img {
+            border-radius: 50%;
+            width: 200px;
+            aspect-ratio: 1/1;
+            border: 1px solid #555;
+            transition: 0.5s ease-in-out;
+            object-fit: cover;
+        }
+
+        .info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 30px 10px 10px 10px;
+            color: #F3F3F3;
+        }
+
+        .info span:nth-child(1) {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .info span:nth-child(2) {
+            font-size: 11px;
+        }
+
+        .info span:nth-child(3) {
+            margin: 30px 10px 10px 30px;
+        }
+
+        .img img:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <span class="lead fw-bold">Users</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="img">
+            <img src="/public/images/LDC.jpeg" alt="Leonardo DiCaprio">
+        </div>
+        <div class="info">
+            <span style="color: #F3F3F3;">Leonardo DiCaprio</span>
+            <span>Hollywood Actor</span>
+            <span>Acted in movies like Titanic, Inception, Wolf of wall street, Django the unchained, Once upon a time
+                in hollywood etc...</span>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
