@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+# run this application at PORT 1729
+EXPOSE 1729
 
 CMD ["npm", "start"]
+
