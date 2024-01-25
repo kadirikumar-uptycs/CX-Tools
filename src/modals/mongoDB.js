@@ -1,8 +1,13 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 // const MONGODB_PASSWORD = "AkU9Zp0fhoAwZAZJ";
 // const uri = `mongodb+srv://kadirikumar:${MONGODB_PASSWORD}@cluster0.ihfhwsd.mongodb.net/?retryWrites=true&w=majority`;
-const uri = 'mongodb://localhost:27017';
+// const uri = 'mongodb://localhost:27017';
 const dbName = "Uptycs";
+
+const userName = process.env.MONGO_USERNAME;
+const password = process.env.MONGO_PASSWORD;
+
+const uri = `mongodb+srv://${userName}:${password}@cluster0.ihfhwsd.mongodb.net/?retryWrites=true&w=majority`
 
 
 async function connect() {
