@@ -16,10 +16,15 @@ const usersPage = (_, res) => {
     res.render('../views/users');
 }
 
+const compareFlagProfiles = (_, res) => {
+    res.render('../views/compareFlagProfiles');
+}
+
 
 module.exports = {
     homePage,
     loginPage,
     migrateFlagProfiles,
     usersPage,
+    compareFlagProfiles,
 };
