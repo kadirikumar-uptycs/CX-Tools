@@ -11,5 +11,5 @@ COPY . .
 # run this application at PORT 1729
 EXPOSE 1729
 
-CMD ["npm", "start"]
+CMD ["node", "src/server.js"]
 
