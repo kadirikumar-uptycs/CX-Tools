@@ -12,5 +12,5 @@ EXPOSE 1729
 
 RUN pwd
 
-CMD ["node", "/src/server.js"]
+CMD ["node", "src/server.js"]
 
