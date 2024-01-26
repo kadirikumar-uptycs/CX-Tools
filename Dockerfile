@@ -10,5 +10,7 @@ COPY . .
 
 EXPOSE 1729
 
-CMD ["npm", "src/server.js"]
+RUN pwd
+
+CMD ["node", "/src/server.js"]
 
