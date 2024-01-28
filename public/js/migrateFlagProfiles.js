@@ -252,7 +252,7 @@ function findByKey(arr, key, value) {
 }
 
 
-AddToList = (event) => {
+function AddToList(event) {
     let ele = event.currentTarget;
     let flagId = ele.id;
     if (ele.checked) {
