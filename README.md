@@ -4,4 +4,4 @@
 
 * [X] Download required modules (npm install)
 * [X] Run the server (npm start)
-* [X] Navigate to [http://localhost:3000](http://localhost:3000 "Local Host Server")
+* [X] Navigate to [http://localhost:1729](http://localhost:1729 "Local Host Server")
