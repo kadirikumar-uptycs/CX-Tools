@@ -11,21 +11,6 @@ const wait = ms => new Promise(res => setTimeout(res, ms));
 let migratingFlagProfiles = new Set();
 
 
-function showModal(title, body, size) {
-
-    if (size == "large") {
-        document.querySelector('.modal-dialog-centered').style.width = "591px";
-    }
-    else {
-        document.querySelector('.modal-dialog-centered').style.width = "400px";
-    }
-
-    document.getElementById('modal-title').innerText = title;
-    document.getElementById('modal-body').innerHTML = body;
-    let modal = new bootstrap.Modal(document.getElementById('modal'));
-    modal.show();
-}
-
 function getCheckBoxEle(id) {
     let ele = `<div class="checkbox-wrapper-12 " style="margin: 0 11px;">
         <div class="cbx">
@@ -160,7 +145,7 @@ async function getTargetFlagProfiles(credentials) {
         document.getElementById('file-name-target').innerHTML = "No file chosen";
         localStorage.removeItem("target-credentials");
         localStorage.removeItem("target-flag-profiles");
-        showModal("Error", data.message.detail);
+        showSnakBar(data.message.detail);
     }
 }
 
@@ -218,7 +203,7 @@ document.getElementById('source-file').addEventListener('input', async (event) =
         document.getElementById('file-name-source').innerHTML = "No file chosen";
         localStorage.removeItem("source-credentials");
         localStorage.removeItem("source-flag-profiles");
-        showModal("Error", data.message.detail);
+        showSnakBar(data.message.detail);
     }
     handleMigrateButton();
 })
@@ -240,7 +225,7 @@ document.getElementById("target-file").addEventListener('change', async (event) 
     if (!isValid) {
         localStorage.setItem("target-credentials", tempCredentials);
         handleMigrateButton();
-        showModal("Restricted", "Source and Target should be different");
+        showSnakBar("Source and Target should be different");
         return
     }
     document.getElementById("file-name-target").innerHTML = fileName;
@@ -290,14 +275,14 @@ AddToList = (event) => {
         let isNameExists = Boolean(findByKey(targetFlagProfiles, "name", currentFlagProfile.name));
 
         if (isNameExists) {
-            showModal("Not Allowed", "Flag Profile with this Name already present in the target tenant");
+            showSnakBar("Flag Profile with this Name already present in the target tenant");
             ele.checked = false;
             return
         }
         let isPriorityExists = Boolean(findByKey(targetFlagProfiles, "priority", currentFlagProfile.priority));
 
         if (isPriorityExists) {
-            showModal("Not Allowed", "Same Priority Flag Profile already Exists in the target tenant");
+            showSnakBar("Same Priority Flag Profile already Exists in the target tenant");
             ele.checked = false;
             return
         }
@@ -376,23 +361,17 @@ document.getElementById("migrate-button").addEventListener("click", async () => 
     else {
         toggleMigrateButton('done', "Error");
         await wait(3000);
-        let modalBody = `<div>
-        <div class="d-flex" style="margin-bottom : 7px;">
-            <span class="fw-bold lead">Flag Profile</span>
-            <span class="fw-bold lead" style="margin-left : 267px;">Error</span>
-        </div>`;
-
-        data.errorDetails.forEach(item => {
-            modalBody += `
-            <div class="d-flex" style="justify-content : space-between">
-                <span class="lead">${item.name}</span>
-                <span class="lead">${item.error}</span>
-            </div>`;
-        });
-        modalBody += '</div>'
-
-        showModal("Error", modalBody, "large");
+        showSnakBar("Error while migrating some of the flag profiles");
     }
 
     toggleMigrateButton('migration', null);
-})
+});
+
+
+
+function showSnakBar(message) {
+    var ele = document.getElementById("snackbar");
+    ele.innerHTML = `<i class="bi bi-x-circle-fill" style="font-size: 21px;"></i> ${message}`;
+    ele.className = "show";
+    setTimeout(function(){ ele.className = ele.className.replace("show", ""); }, 4800);
+  }

@@ -92,7 +92,8 @@
         transition: 0.5s all;
         box-shadow: 0 0 17px #3498db;
     }
-    .btn-custom:disabled{
+
+    .btn-custom:disabled {
         box-shadow: none;
     }
 
@@ -246,6 +247,82 @@
             box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
         }
     }
+
+    /* SnackBar */
+    #snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: 11px;
+        background-color: #d32f2f;
+        color: #e3e3e3;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1001;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%);
+        font-size: 17px;
+    }
+
+    #snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+        animation: fadein 0.5s, fadeout 0.5s 4.5s;
+    }
+
+    @-webkit-keyframes fadein {
+        from {
+            bottom: 0;
+            opacity: 0;
+        }
+
+        to {
+            bottom: 30px;
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadein {
+        from {
+            bottom: 0;
+            opacity: 0;
+        }
+
+        to {
+            bottom: 30px;
+            opacity: 1;
+        }
+    }
+
+    @-webkit-keyframes fadeout {
+        from {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        to {
+            bottom: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes fadeout {
+        from {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        to {
+            bottom: 0;
+            opacity: 0;
+        }
+    }
+
+    #transfer-button{
+        cursor: not-allowed;
+    }
 </style>
 
 <body>
@@ -264,8 +341,8 @@
         </div>
 
         <div id="transfer-button" class="position-fixed d-flex flex-column" style="margin-top: 49vh;">
-            <button type="button" class="btn btn-outline-info btn-custom p-3 mb-5" id="migrate-button" disabled>Migrate <i
-                    class="bi bi-send-arrow-up"></i></button>
+            <button type="button" class="btn btn-outline-info btn-custom p-3" id="migrate-button" disabled>Migrate
+                <i class="bi bi-send-arrow-up"></i></button>
         </div>
 
         <div id="target">
@@ -282,23 +359,8 @@
 
     </section>
 
-    <!-- modal popup -->
-    <div class="modal" tabindex="-1" id="modal">
-        <div class="modal-dialog modal-dialog-centered" style="width: 400px; max-width: none;">
-            <div class="modal-content">
-                <div class="modal-header bg-secondary">
-                    <h5 class="modal-title fw-bolder" id="modal-title" style="color: #d30a0a; font-size: 31px;">Modal
-                        Title</h5>
-                </div>
-                <div class="modal-body d-flex flex-column align-items-center"
-                    style="background-color: #666666; color: #F3F3F3;">
-                    <p id="modal-body" class="fw-lighter lead" style="width: 100%;">Modal body text goes here.</p>
-                    <button type="button" style="width: 117px;" class="btn btn-outline-light"
-                        data-bs-dismiss="modal">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    <div id="snackbar"></div>
 
 
     <!-- script -->
