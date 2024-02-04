@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <title>Compare Flag Profiles</title>
+</head>
+<style>
+    body {
+        background-color: #010101;
+        color: #F3F3F3;
+    }
+
+    .upload-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .custom-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .custom-button:hover {
+        background-color: #2980b9;
+    }
+
+    .file-name {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+    }
+
+    #container {
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: space-evenly;
+        margin-bottom: 100px
+    }
+
+    #source,
+    #target {
+        width: 40%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px 30px;
+    }
+
+    #source {
+        margin-right: 100px;
+    }
+
+    #target {
+        margin-left: 100px;
+    }
+
+    .Tenant-Heading {
+        font-size: 31px;
+        width: 100%;
+        text-align: center;
+        font-weight: bolder;
+        margin-bottom: 17px;
+        padding: 10px 0;
+    }
+
+    .accordion-button {
+        background-color: #b6b7b7 !important;
+        /* Set the background color to a neutral color */
+    }
+
+    .btn-custom {
+        color: #3498db;
+        transition: 0.5s all;
+        box-shadow: 0 0 17px #3498db;
+    }
+    .btn-custom:disabled{
+        box-shadow: none;
+    }
+
+    .btn-custom:hover {
+        color: #F3F3F3;
+        background-color: #3498db;
+    }
+
+    .btn-custom:active {
+        background-color: #43f298;
+    }
+
+    .custom-spinner {
+        width: 100px;
+        height: 100px;
+        border-width: 0.3em;
+    }
+
+    /* CheckBox Style */
+    .checkbox-wrapper-12 {
+        position: relative;
+    }
+
+    .checkbox-wrapper-12>svg {
+        position: absolute;
+        top: -130%;
+        left: -170%;
+        width: 110px;
+        pointer-events: none;
+    }
+
+    .checkbox-wrapper-12 * {
+        box-sizing: border-box;
+    }
+
+    .checkbox-wrapper-12 input[type="checkbox"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .checkbox-wrapper-12 input[type="checkbox"]:focus {
+        outline: 0;
+    }
+
+    .checkbox-wrapper-12 .cbx {
+        width: 24px;
+        height: 24px;
+        top: calc(50vh - 12px);
+        left: calc(50vw - 12px);
+    }
+
+    .checkbox-wrapper-12 .cbx input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #bfbfc0;
+        border-radius: 50%;
+    }
+
+    .checkbox-wrapper-12 .cbx label {
+        width: 24px;
+        height: 24px;
+        background: none;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-filter: url("#goo-12");
+        filter: url("#goo-12");
+        transform: trasnlate3d(0, 0, 0);
+        pointer-events: none;
+    }
+
+    .checkbox-wrapper-12 .cbx svg {
+        position: absolute;
+        top: 5px;
+        left: 4px;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .checkbox-wrapper-12 .cbx svg path {
+        stroke: #fff;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 19;
+        stroke-dashoffset: 19;
+        transition: stroke-dashoffset 0.3s ease;
+        transition-delay: 0.2s;
+    }
+
+    .checkbox-wrapper-12 .cbx input:checked+label {
+        animation: splash-12 0.6s ease forwards;
+    }
+
+    .checkbox-wrapper-12 .cbx input:checked+label+svg path {
+        stroke-dashoffset: 0;
+    }
+
+    @-moz-keyframes splash-12 {
+        40% {
+            background: #866efb;
+            box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+        }
+
+        100% {
+            background: #866efb;
+            box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+        }
+    }
+
+    @-webkit-keyframes splash-12 {
+        40% {
+            background: #866efb;
+            box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+        }
+
+        100% {
+            background: #866efb;
+            box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+        }
+    }
+
+    @-o-keyframes splash-12 {
+        40% {
+            background: #866efb;
+            box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+        }
+
+        100% {
+            background: #866efb;
+            box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+        }
+    }
+
+    @keyframes splash-12 {
+        40% {
+            background: #866efb;
+            box-shadow: 0 -18px 0 -8px #866efb, 16px -8px 0 -8px #866efb, 16px 8px 0 -8px #866efb, 0 18px 0 -8px #866efb, -16px 8px 0 -8px #866efb, -16px -8px 0 -8px #866efb;
+        }
+
+        100% {
+            background: #866efb;
+            box-shadow: 0 -36px 0 -10px transparent, 32px -16px 0 -10px transparent, 32px 16px 0 -10px transparent, 0 36px 0 -10px transparent, -32px 16px 0 -10px transparent, -32px -16px 0 -10px transparent;
+        }
+    }
+    #transfer-button{
+        cursor: not-allowed;
+    }
+</style>
+
+<body>
+    <!-- HTML -->
+    <section id="container">
+        <div id="source">
+            <span class="Tenant-Heading">Source Tenant</span>
+            <div class="file-upload-area d-flex align-items-center justify-content-center">
+                <div class="upload-container mt-3">
+                    <label for="source-file" class="custom-button">Upload Source API Keys</label>
+                    <input type="file" id="source-file" class="file-input" accept=".json">
+                    <div class="file-name" id="file-name-source" style="color: #AAAAAA;">No file chosen</div>
+                </div>
+            </div>
+            <div class="accordion mt-5" id="flag-profiles-source" style="width: 100%;"></div>
+        </div>
+
+        <div id="transfer-button" class="position-fixed d-flex flex-column" style="margin-top: 49vh;">
+            <button type="button" class="btn btn-outline-info btn-custom p-3" id="compare-button" disabled>Compare <i
+                class="bi bi-arrow-left-right"></i></button>
+        </div>
+
+        <div id="target">
+            <span class="Tenant-Heading">Target Tenant</span>
+            <div class="file-upload-area">
+                <div class="upload-container mt-3">
+                    <label for="target-file" class="custom-button">Upload Target API Keys</label>
+                    <input type="file" id="target-file" class="file-input target-file" accept=".json">
+                    <div class="file-name" id="file-name-target" style="color: #AAAAAA;">No file chosen</div>
+                </div>
+            </div>
+            <div class="accordion mt-5" id="flag-profiles-target" style="width: 100%;"></div>
+        </div>
+
+    </section>
+
+    <!-- modal popup -->
+    <div class="modal" tabindex="-1" id="modal">
+        <div class="modal-dialog modal-dialog-centered" style="width: 400px; max-width: none;">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                    <h5 class="modal-title fw-bolder" id="modal-title" style="color: #d30a0a; font-size: 31px;">Modal
+                        Title</h5>
+                </div>
+                <div class="modal-body d-flex flex-column align-items-center"
+                    style="background-color: #666666; color: #F3F3F3;">
+                    <p id="modal-body" class="fw-lighter lead" style="width: 100%;">Modal body text goes here.</p>
+                    <button type="button" style="width: 117px;" class="btn btn-outline-light"
+                        data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- script -->
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+</body>
+
+</html>
