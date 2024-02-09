@@ -1,0 +1,223 @@
+.homepage--wrapper {
+  margin: 0;
+  background-color: #010101;
+  color: #f8f9fa;
+  width: 100vw;
+  height: max(100vh, 100%);
+  padding: 24px 0;
+}
+.header--wrapper{
+  position: relative;
+  z-index: 225;
+  background-image: url('../../../public/images/uptycs-logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 30px;
+}
+.nav-link{
+  font-size: 23px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 700;
+  opacity: 0.8;
+}
+.nav-link:hover{
+  border-bottom: 2px double #f8f9fa;
+  opacity: 1;
+}
+.page-section {
+  height: auto;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.profile-section img {
+  width: 43px;
+  height: 43px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.video--wrapper {
+  width: 100%;
+  height: 100vh;
+  min-height: 700px;
+  padding-left: 47px;
+  padding-right: 47px;
+  /* display: block;
+  position: absolute;
+  top: 0;
+  left : 0; */
+  z-index: -1001;
+}
+.intro--video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-position: 50%;
+  background-size: 100%;
+  /* margin: auto; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* left: -100%;
+  right: -100%; */
+  background-image: url("../../../public/images/backgroundImage.jpg");
+}
+
+#home {
+  background: transparent;
+  width: 100vw;
+}
+.intro-text--wrapper {
+  z-index: 1001;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  top: 50%;
+  bottom: auto;
+  left: 0%;
+  right: 0%;
+  transform: translateY(-50%);
+}
+.intro-text-div {
+  width: 800px;
+  margin-bottom: 95px;
+  position: relative;
+}
+.intro-heading {
+  margin-bottom: 26px;
+  font-size: 85px;
+  line-height: 80px;
+  font-family: karmina,sans-serif;
+}
+.intro-description{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Open Sans,sans-serif;
+  font-size: 28px;
+  opacity: 0.8;
+}
+
+
+#migrate {
+  width: 100vw;
+  height: auto;
+  min-height: 100vh;
+  background-color: #4d4855;
+  background-image: linear-gradient(to bottom, #000000 0%, #111 95%);
+  
+}
+.card-1 {
+  opacity: 0;
+  transform: translateX(-200px);
+  transition: opacity 3s, transform 2s;
+  margin-left: 10px;
+}
+
+.card-1.visible {
+  opacity: 0.7;
+  transform: translateX(0);
+}
+
+.card-2 {
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 3s, transform 2s;
+}
+
+.card-2.visible {
+  opacity: 0.7;
+  transform: scale(1);
+}
+
+.card-3 {
+  opacity: 0;
+  transform: translateX(200px);
+  transition: opacity 3s, transform 2s;
+  margin-right: 30px;
+}
+
+.card-3.visible {
+  opacity: 0.7;
+  transform: translateX(0);
+}
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #ffffff;
+  border-radius: 5px;
+  backdrop-filter: blur(1120px);
+  background: transparent;
+  border: 1px solid #9a9a9b;
+  padding: 20px 10px;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  opacity: 0.7;
+}
+.card:hover {
+  box-shadow: 0 0 7px #909091;
+  transform: scale(1.02);
+  opacity: 1;
+}
+.card-left {
+  width: 30%;
+}
+.card--image {
+  max-width: 100%;
+}
+.card--name {
+  font-size: 29px;
+  font-weight: 700;
+  font-family: "Times New Roman", Times, serif;
+  line-height: 7px;
+  letter-spacing: 1px;
+}
+.card--description {
+  opacity: 0.8;
+  margin-top: 11px;
+  letter-spacing: 0;
+}
+
+/* CSS for Card Button*/
+.card--button {
+  --b: 3px; /* border thickness */
+  --s: 0.45em; /* size of the corner */
+  --color: #fdfdfe;
+
+  padding: calc(0.5em + var(--s)) calc(0.9em + var(--s));
+  color: var(--color);
+  --_p: var(--s);
+  background: conic-gradient(
+      from 90deg at var(--b) var(--b),
+      #0000 90deg,
+      var(--color) 0
+    )
+    var(--_p) var(--_p) / calc(100% - var(--b) - 2 * var(--_p))
+    calc(100% - var(--b) - 2 * var(--_p));
+  transition: 0.3s linear, color 0s, background-color 0s;
+  outline: var(--b) solid #0000;
+  outline-offset: 0.6em;
+  font-size: 16px;
+
+  border: 0;
+
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  font-size: 17px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.card--button:hover,
+.card--button:focus-visible {
+  --_p: 0px;
+  outline-color: var(--color);
+  outline-offset: 0.05em;
+}
+
+.card--button:active {
+  background: var(--color);
+  color: #010c01;
+}

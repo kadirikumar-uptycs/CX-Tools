@@ -1,0 +1,54 @@
+.modal-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    position: absolute;
+    width: 90%;
+    height: 80%;
+}
+.modal--title{
+    font-size: 31px;
+    font-family:cursive;
+    font-weight: 900;
+    color : #ff0000;
+}
+.modal--close-btn{
+    font-size: 29px;
+    color: #0d6efd;
+    font-weight: bolder;
+    opacity: 1;
+    cursor: pointer;
+    float: right;
+}
+.modal--close-btn:hover{
+    opacity: 0.5;
+}
+.modal--body{
+    font-size: medium;
+    font-family: 'Times New Roman', Times, serif;
+    letter-spacing: 1px;
+}
+.modal--closeButton{
+    width: 101px;
+    height: 41px;
+    border-radius: 3.5px;
+}
+
+#or::before,
+#or::after {
+  content: "";
+  display: inline-block;
+  width: 83px;
+  height: 1px;
+  background-color: black;
+  vertical-align: middle;
+  margin: 0 10px;
+}
+
+.LoginApp {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }

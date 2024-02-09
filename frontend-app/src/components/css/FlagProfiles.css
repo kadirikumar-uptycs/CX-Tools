@@ -1,0 +1,68 @@
+#container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 100px
+}
+
+#source,
+#target {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 30px;
+}
+
+#source {
+    margin-right: 100px;
+}
+
+#target {
+    margin-left: 100px;
+}
+.Tenant-Heading {
+    font-size: 31px;
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+    margin-bottom: 17px;
+    padding: 10px 0;
+}
+.file-upload{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.file-name {
+    margin-top: 10px;
+    margin-bottom: 50px;
+    font-size: 14px;
+    color: #555;
+}
+
+#migrate-button {
+    width: 110px;
+    height: 58px;
+    color: #3498db;
+    transition: 0.5s all;
+    box-shadow: 0 0 17px #3498db;
+}
+
+#migrate-button:disabled {
+    box-shadow: none;
+}
+
+#migrate-button:hover {
+    color: #F3F3F3;
+    background-color: #3498db;
+}
+
+#migrate-button:active {
+    background-color: #43f298;
+}
+#transfer-button{
+    cursor: not-allowed;
+}
