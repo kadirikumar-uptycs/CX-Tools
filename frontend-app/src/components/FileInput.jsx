@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import SnackBar from "./SnackBar";
+
+
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -42,8 +45,13 @@ function handleInput(event) {
 }
 
 
-export default function FileInput({ fileInputHandler, setSnackBar }) {
-    let [fileName, setFileName] = useState('No file chosen');
+export default function FileInput({ fileName, fileInputHandler }) {
+
+    let setSnackBar;
+
+    function setChildState(childStateSetter){
+        setSnackBar = childStateSetter;
+    }
 
     return (
         <div className="file-upload">
@@ -53,13 +61,13 @@ export default function FileInput({ fileInputHandler, setSnackBar }) {
                     try {
                         let response = await handleInput(event);
                         let { data, fileName } = response;
-                        setFileName(fileName);
-                        fileInputHandler(data);
+                        fileInputHandler(data, fileName);
                     } catch (err) {
                         setSnackBar({
                             open: true,
                             message: err,
-                            severity: 'error'
+                            severity: 'error',
+                            duration: 4000,
                         });
                     } finally {
                         event.target.value = null;
@@ -67,6 +75,9 @@ export default function FileInput({ fileInputHandler, setSnackBar }) {
                 }} />
             </Button>
             <div className="file-name" id="file-name-source" style={{ color: "#AAAAAA" }}>{fileName}</div>
+
+            {/* SnackBar */}
+            <SnackBar getChildState={setChildState} />
         </div>
     )
 }

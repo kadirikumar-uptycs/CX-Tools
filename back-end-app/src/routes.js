@@ -8,6 +8,7 @@ let {
     validateLoginUser, 
     Authenticated,
     getFlagProfiles,
+    migrateFlagProfiles,
     userInfo, 
     logout
 } = require('./controllers');
@@ -17,6 +18,7 @@ router.post('/validateLoginUser', validateLoginUser);
 router.post('/isAuthenticated', isAuthenticated, Authenticated);
 router.get('/userInfo', userInfo);
 router.post('/flagProfiles', isAuthenticated, getFlagProfiles);
+router.post('/migrateFlagProfiles', isAuthenticated, migrateFlagProfiles)
 router.post('/destroySession', logout);
 
 module.exports = router;

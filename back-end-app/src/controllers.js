@@ -1,5 +1,5 @@
 let { addRequestedUsersEmail, isUserExists } = require('./models');
-let {getAllFlagProfiles} = require('./helperFunctions');
+let {getAllFlagProfiles, postFlagProfiles} = require('./helperFunctions');
 
 let storeUserRequest = async (req, res) => {
     let email = req.body.email;
@@ -47,6 +47,29 @@ const getFlagProfiles = async (req, res) => {
 }
 
 
+
+const migrateFlagProfiles = async (req, res) => {
+    let flagProfiles = req.body.resources;
+    let credentials = req.body.credentials;
+
+    let errorDetails = [];
+    let resStatus = 200;
+
+    for (const profile of flagProfiles) {
+            const { status, data } = await postFlagProfiles(credentials, profile);
+
+            if (status !== 200) {
+                errorDetails.push({ "name": profile.name, "error": data.message.detail });
+                resStatus = status;
+            }
+    }
+
+    res.status(resStatus).send({"errorDetails" : errorDetails});
+}
+
+
+
+
 let logout = (req, res) => {
     if (req.session){
         req.session.destroy();
@@ -60,5 +83,6 @@ module.exports = {
     Authenticated,
     userInfo,
     getFlagProfiles,
+    migrateFlagProfiles,
     logout,
 }

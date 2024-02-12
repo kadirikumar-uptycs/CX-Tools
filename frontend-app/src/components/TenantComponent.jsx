@@ -1,67 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import FileInput from "./FileInput";
-import Snackbar from '@mui/material/Snackbar';
-import Slide from '@mui/material/Slide';
-import { Alert } from "@mui/material";
+import SnackBar from "./SnackBar";
 import TenantResources from "./TenantResources";
+import { ContextProvider } from "./MigrateFlagProfiles";
 
-export default function TenantComponent({type}) {
-    let [credentials, setCredentials] = useState({})
-    const [snackBar, setSnackBar] = React.useState({
-        open: false,
-        message: '',
-        severity: ''
-    });
 
-    let closeSnackBar = () => {
-        setSnackBar({
-            message: '',
-            open: false,
-            severity: ''
-        })
+
+export default function TenantComponent({ type }) {
+
+    let { allCredentials, setAllCredentials } = useContext(ContextProvider);
+
+    let [fileData, setFileData] = useState({ credentials: {}, fileName: 'No File Choosen' });
+
+    let setSnackBar;
+
+    function setChildState(childStateSetter) {
+        setSnackBar = childStateSetter;
     }
 
-    function fileInputHandler(credentials) {
+
+    function captilize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function fileInputHandler(credentials, fileName) {
         let requiredKeys = ["id", "customerId", "key", "secret", "domain", "domainSuffix"];
         let isValidCredentails = requiredKeys.every(key => key in credentials);
         if (isValidCredentails) {
-            setCredentials(credentials || {});
-            setSnackBar({
-                open : true,
-                message : 'File uploaded successfully',
-                severity : 'success'
-            })
+
+            let complementType = type === 'source' ? 'target' : 'source';
+            let type1Credentials = credentials;
+            let type2Credentials = allCredentials[complementType];
+
+            if (type2Credentials.id && type1Credentials.customerId === type2Credentials.customerId) {
+                setSnackBar({
+                    open: true,
+                    message: `${type} should be different from ${complementType}`,
+                    severity: 'error',
+                    duration: 3000,
+                });
+            } else {
+                setFileData({ credentials: credentials || {}, fileName: fileName });
+                setAllCredentials(prev => ({
+                    ...prev,
+                    [type] : credentials
+                }));
+                setSnackBar({
+                    open: true,
+                    message: 'File uploaded successfully',
+                    severity: 'success',
+                    duration: 2000,
+                })
+            }
         } else {
             setSnackBar({
-                open : true,
-                message : 'File does not contain required keys',
-                severity : 'error'
+                open: true,
+                message: 'File does not contain required keys',
+                severity: 'error',
+                duration: 3000,
             })
         }
     }
 
     return (
         <div id={type}>
-            <span className="Tenant-Heading">{Object.keys(credentials).length === 0 ? `${type.charAt(0).toUpperCase() + type.slice(1)} Tenant` : credentials.domain}</span>
-            <FileInput fileInputHandler={fileInputHandler} setSnackBar={setSnackBar}/>
-            <TenantResources type={type} credentials={credentials} setSnackBar={setSnackBar}/>
+            <span className="Tenant-Heading">{Object.keys(fileData.credentials).length === 0 ? `${captilize(type)} Tenant` : captilize(fileData.credentials.domain)}</span>
+            <FileInput fileName={fileData.fileName} fileInputHandler={fileInputHandler} />
+            <TenantResources type={type} credentials={fileData.credentials} />
 
             {/* SnackBar */}
-            <Snackbar
-                open={snackBar.open}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                TransitionComponent={Slide}
-                autoHideDuration={4500}
-                onClose={closeSnackBar}
-            >
-                <Alert
-                    severity={snackBar.severity}
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    {snackBar.message}
-                </Alert>
-            </Snackbar>
+            <SnackBar getChildState={setChildState} />
+
         </div>
     )
 }

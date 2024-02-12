@@ -1,13 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AccordionComponent from './Accordion';
-import CodeHighlighter from './CodeHighlighter';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
+import SnackBar from './SnackBar';
+import { ContextProvider } from "./MigrateFlagProfiles";
 
-export default function TenantResources({ type, credentials, setSnackBar }) {
+
+
+export default function TenantResources({ type, credentials }) {
+
+    let { setResourceData } = useContext(ContextProvider);
 
     let navigate = useNavigate();
+
+    let setSnackBar;
+
+    function setChildState(childStateSetter){
+        setSnackBar = childStateSetter;
+    }
 
     const [fetchData, setFetchData] = useState({
         isFetching: false,
@@ -19,7 +30,7 @@ export default function TenantResources({ type, credentials, setSnackBar }) {
             key={item.id}
             type={type}
             summary={item.name}
-            details={<CodeHighlighter data={item} />}
+            details={item}
         />
     ));
 
@@ -37,6 +48,10 @@ export default function TenantResources({ type, credentials, setSnackBar }) {
                         data: response.data,
                         isFetching: false,
                     });
+                    setResourceData(prev => ({
+                        ...prev,
+                        [type] : response.data
+                    }));
                 } catch (err) {
                     console.log(err);
                     setFetchData(prev => ({
@@ -45,19 +60,21 @@ export default function TenantResources({ type, credentials, setSnackBar }) {
                     }));
                     if (err.response && err.response.status === 401) {
                         if (err.response.data.Authorized === false) {
-                            navigate('/login');
+                            throw navigate('/login');
                         } else {
                             setSnackBar({
                                 open: true,
                                 message: err.response.data.message.details || 'API Key Unauthorized',
-                                severity: 'error'
+                                severity: 'error',
+                                duration: 4500,
                             })
                         }
                     }else{
                         setSnackBar({
                             open: true,
                             message: 'Server Error : Server is unavailable',
-                            severity: 'error'
+                            severity: 'error',
+                            duration: 4500,
                         })
                     }
                 }
@@ -68,10 +85,15 @@ export default function TenantResources({ type, credentials, setSnackBar }) {
     }, [credentials]);
 
     return (
-        fetchData.isFetching ? <CircularProgress /> : (
+        <>
+        {fetchData.isFetching ? <CircularProgress /> : (
             <div className="accordion" id="flag-profiles-source" style={{ width: "100%" }}>
                 {accordionElements}
             </div>
-        )
+        )}
+
+        {/* SnackBar */}
+        <SnackBar getChildState={setChildState}/>
+        </>
     );
 }
