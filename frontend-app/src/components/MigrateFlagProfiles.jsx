@@ -12,13 +12,13 @@ export const ContextProvider = createContext(null);
 export default function MigrateFlagProfiles() {
 
     let [migrationList, setMigrationList] = useState([]);
-    let [resourceData, setResourceData] = useState({'source' : [], 'target': []});
+    let [resourceData, setResourceData] = useState({ 'source': [], 'target': [] });
     let [allCredentials, setAllCredentials] = useState({ 'source': {}, 'target': {} })
     let canMigrate = migrationList.length > 0;
 
     let setSnackBar, setDrawer;
 
-    function setDrawerState(childStateSetter){
+    function setDrawerState(childStateSetter) {
         setDrawer = childStateSetter;
     }
 
@@ -39,7 +39,7 @@ export default function MigrateFlagProfiles() {
             else {
                 ele.innerHTML = `Success<i class="bi bi-patch-check-fill ms-3 text-success"></i>`
             }
-    
+
         }
         else {
             ele.innerHTML = `Migrate <i
@@ -54,7 +54,7 @@ export default function MigrateFlagProfiles() {
 
         let resources = resourceData.source.filter(resource => migrationList.includes(resource.id))
         let url = 'http://localhost:17291/migrateFlagProfiles';
-        
+
         // empty migration list, this causes diabling migration button while migration is in progess
         setMigrationList([]);
 
@@ -102,11 +102,11 @@ export default function MigrateFlagProfiles() {
             <section id="container">
                 <TenantComponent type='source' />
                 <div id="transfer-button" className="position-fixed d-flex flex-column" style={{ marginTop: "49vh" }}>
-                    <button type="button" 
-                    className="btn btn-outline-info p-3" 
-                    id="migrate-button" 
-                    disabled={!canMigrate}
-                    onClick={migrateResources}
+                    <button type="button"
+                        className="btn btn-outline-info p-3"
+                        id="migrate-button"
+                        disabled={!canMigrate}
+                        onClick={migrateResources}
                     >Migrate
                         {' '}<i className="bi bi-send-arrow-up"></i></button>
                 </div>
