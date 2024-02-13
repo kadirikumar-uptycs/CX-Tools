@@ -38,7 +38,7 @@ const router = createBrowserRouter(
 				loader={authValidater}
 			/>
 			<Route
-				path="migrate-flag-profiles"
+				path="migrateResources"
 				element={<MigrateFlagProfiles />}
 				loader={authValidater}
 			/>

@@ -14,7 +14,7 @@ export default function Card({ index, name, description, imageURL }) {
                     <div className="card-right">
                         <span className="card--name">{name}</span>
                         <p className="lead card--description">{description}</p>
-                        <a href="migrate-flag-profiles">
+                        <a href="migrateResources">
                             <button className="card--button">Try this</button>
                         </a>
                     </div>

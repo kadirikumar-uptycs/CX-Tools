@@ -1,4 +1,5 @@
 import React, { useState, createContext } from "react";
+import { useSearchParams } from 'react-router-dom';
 import TenantComponent from "./TenantComponent";
 import './css/FlagProfiles.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -27,6 +28,15 @@ export default function MigrateFlagProfiles() {
     function setChildState(childStateSetter) {
         setSnackBar = childStateSetter;
     }
+
+    // Get Resource Name from the search parameters of URL
+    // let [searchParams, setSearchParams] = useSearchParams();
+    // console.log(searchParams.get('resource'));
+    // let resourceFromURL = searchParams.get('resource');
+    // if(!resourceFromURL || resourceFromURL === '' || !['flagProfiles', 'alerts', 'exceptions'].includes(resourceFromURL)){
+    //     setSearchParams({'resource': 'flagProfiles'});
+    // }
+
 
     function toggleMigrateButton(ele, type, isError) {
         ele.innerHTML = '';

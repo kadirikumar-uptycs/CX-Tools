@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import AccordionComponent from './Accordion';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -11,6 +12,7 @@ import { ContextProvider } from "./MigrateFlagProfiles";
 export default function TenantResources({ type, credentials }) {
 
     let { setResourceData } = useContext(ContextProvider);
+    
 
     let navigate = useNavigate();
 
@@ -34,6 +36,9 @@ export default function TenantResources({ type, credentials }) {
         />
     ));
 
+    let [searchParams, setSearchParams] = useSearchParams();
+    let resourceFromURL = searchParams.get('resource');
+
     useEffect(() => {
         const fetchData = async () => {
             if (Object.keys(credentials).length > 0) {
@@ -41,7 +46,7 @@ export default function TenantResources({ type, credentials }) {
                     ...prev,
                     isFetching: true,
                 }));
-                const url = 'http://localhost:17291/flagProfiles';
+                const url = `http://localhost:17291/${resourceFromURL}`;
                 try {
                     const response = await axios.post(url, { 'credentials': credentials });
                     setFetchData({
@@ -82,7 +87,7 @@ export default function TenantResources({ type, credentials }) {
         };
 
         fetchData();
-    }, [credentials]);
+    }, [credentials, resourceFromURL]);
 
     return (
         <>

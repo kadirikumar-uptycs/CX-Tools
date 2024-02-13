@@ -1,14 +1,14 @@
 let { addRequestedUsersEmail, isUserExists } = require('./models');
-let {getAllFlagProfiles, postFlagProfiles} = require('./helperFunctions');
+let {postFlagProfiles, getResources} = require('./helperFunctions');
 
 let storeUserRequest = async (req, res) => {
     let email = req.body.email;
     let done = await addRequestedUsersEmail(email);
     if (done) {
-        res.status(200).send({ "message": "Request sent to Admin." });
+        return res.status(200).send({ "message": "Request sent to Admin." });
     }
     else {
-        res.status(200).send({ "message": "Requesting access cannot be done at this moment." });
+        return res.status(200).send({ "message": "Requesting access cannot be done at this moment." });
     }
 }
 
@@ -36,14 +36,13 @@ let userInfo = (req, res) => {
 }
 
 
-const getFlagProfiles = async (req, res) => {
-
+const getTenantResources = async (req, res, endpoint) => {
 
     let credentials = req.body.credentials;
 
-    let {status, data} = await getAllFlagProfiles(credentials);
+    let {status, data} = await getResources(credentials, endpoint);
 
-    res.status(status).send(data);
+    return res.status(status).send(data);
 }
 
 
@@ -64,9 +63,8 @@ const migrateFlagProfiles = async (req, res) => {
             }
     }
 
-    res.status(resStatus).send({"errorDetails" : errorDetails});
+    return res.status(resStatus).send({"errorDetails" : errorDetails});
 }
-
 
 
 
@@ -82,7 +80,7 @@ module.exports = {
     validateLoginUser,
     Authenticated,
     userInfo,
-    getFlagProfiles,
+    getTenantResources,
     migrateFlagProfiles,
     logout,
 }

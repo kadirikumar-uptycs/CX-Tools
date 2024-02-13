@@ -2,7 +2,6 @@ let axios = require('axios');
 let jwt = require('jsonwebtoken');
 let moment = require('moment');
 
-
 let getHeaders = (credentials) => {
 	let expiry = moment().add(1, 'hour');
 	let expiryFormatted = expiry.format('YYYY-MM-DD HH:mm');
@@ -21,27 +20,28 @@ let getHeaders = (credentials) => {
 }
 
 
-let getAllFlagProfiles = async (credentials) => {
+let getResources = async (credentials, endpoint) => {
 
 	let domain = credentials["domain"] + credentials["domainSuffix"];
 	let { customerId } = credentials;
 	let creds = getHeaders(credentials);
 
-	const url = `https://${domain}/public/api/customers/${customerId}/flagProfiles`;
+	const url = `https://${domain}/public/api/customers/${customerId}/${endpoint}`;
 
 	try {
 		const response = await axios.get(url, { headers: creds });
 
 		if (response.status === 200) {
-			let allProfiles = response.data.items;
-			let customProfiles = allProfiles.filter(profile => profile.custom)
-			return { status: response.status, data: customProfiles };
+			let allResources = response.data.items;
+			let customResources = (endpoint === 'exceptions')?allResources:allResources.filter(resource => resource.custom);
+			return { status: response.status, data: customResources };
 		} else {
 			return { status: response.status, data: response.data };
 		}
 	} catch (error) {
+		console.log(error.response);
 		if (error.response) {
-			return { status: error.response.status, data: error.response.data.error};
+			return { status: error.response.status, data: error.response.data.error };
 		} else {
 			return { status: 500, data: { "message": { 'detail': 'Request setup error' } } };
 		}
@@ -64,8 +64,8 @@ let postFlagProfiles = async (credentials, payload) => {
 		if(response.status === 200) {
 			return { status: response.status, data: 'Success' };
 		}
-	}catch(error){
-		if (error.response.status) {
+	} catch (error) {
+		if (error.response) {
 			return { status: error.response.status, data: error.response.data.error };
 		} else {
 			return { status: 500, data: { "message": { 'detail': 'Request setup error' } } };
@@ -74,9 +74,7 @@ let postFlagProfiles = async (credentials, payload) => {
 }
 
 
-
-
-module.exports = { 
-	getAllFlagProfiles,
+module.exports = {
+	getResources,
 	postFlagProfiles,
- }
+}
