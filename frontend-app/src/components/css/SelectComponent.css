@@ -1,0 +1,24 @@
+#select-element{
+    position: absolute;
+    z-index: 13;
+    left: 50%;
+    top: 30px;
+    transform: translateX(-50%);
+    outline: none;
+    color: #F3F3F3;
+    background: #121212;
+    text-align: center;
+    padding: 10px 3px;
+    border-radius: 7px;
+    border: none;
+    font-family: serif;
+    font-size: 31px;
+    cursor: pointer;
+    border-bottom: 1px solid #2aa5ff;
+    appearance: none;
+}
+
+#select-element option{
+    font-size: 17px;
+    padding: 3px 0;
+}

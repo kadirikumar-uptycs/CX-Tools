@@ -42,7 +42,7 @@ export default function DrawerComponent({getChildState}) {
             <img width="100" height="100" src="https://img.icons8.com/nolan/64/multiply.png" alt='Click here to close ❌' onClick={closeDrawer} style={{
                 cursor: 'pointer',
                 position: 'relative',
-                top: '10px',
+                top: '-50px',
             }}/>
             </Tooltip>
             <TableComponent rows={drawer.content || []} />

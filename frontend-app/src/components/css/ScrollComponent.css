@@ -1,0 +1,25 @@
+.scoll-button {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background-color: #2aa5ff;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50%;
+    transition: opacity 0.3s;
+  }
+  
+  .scoll-button.show {
+    display: block;
+  }
+  
+  .scoll-button:hover {
+    background-color: #0056b3;
+  }
+  

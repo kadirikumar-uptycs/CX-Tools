@@ -11,7 +11,7 @@ export default function CheckBox({handleCheckboxClick, id}) {
         if(migrationList.length === 0){
             setTimeout(() => {
                 inputRef.current.checked = false;
-            }, 2000);
+            }, 700);
         }
     }, [migrationList]);
 

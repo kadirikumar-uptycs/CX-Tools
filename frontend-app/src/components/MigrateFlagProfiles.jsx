@@ -5,6 +5,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
 import SnackBar from './SnackBar';
 import DrawerComponent from "./Drawer";
+import SelectComponent from './SelectComponent';
+import ScrollToTopButton from "./ScrollComponent";
 
 
 export const ContextProvider = createContext(null);
@@ -95,6 +97,7 @@ export default function MigrateFlagProfiles() {
 
     return (
         <ContextProvider.Provider value={{ migrationList, setMigrationList, resourceData, setResourceData, allCredentials, setAllCredentials }}>
+            <SelectComponent />
             <section id="container">
                 <TenantComponent type='source' />
                 <div id="transfer-button" className="position-fixed d-flex flex-column" style={{ marginTop: "49vh" }}>
@@ -114,6 +117,9 @@ export default function MigrateFlagProfiles() {
 
             {/* Drawer */}
             <DrawerComponent getChildState={setDrawerState} />
+
+            {/* Scroll To Top */}
+            <ScrollToTopButton />
         </ContextProvider.Provider>
     )
 }

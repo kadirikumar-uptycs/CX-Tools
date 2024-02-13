@@ -1,10 +1,5 @@
 import React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
+import './css/SelectComponent.css';
 
 export default function SelectComponent() {
 
@@ -15,20 +10,10 @@ export default function SelectComponent() {
     };
 
     return (
-        <FormControl sx={{ m: 1, minWidth: 120, marginTop: '20px' }}>
-            <InputLabel id="helperLabel">Resource</InputLabel>
-            <Select
-                labelId="helperLabel"
-                id="select-helper"
-                value={resource}
-                label="Resource"
-                onChange={handleChange}
-            >
-                <MenuItem value='FlagProfiles'>Flag Profiles</MenuItem>
-                <MenuItem value='Alerts'>Alerts</MenuItem>
-                <MenuItem value='Exceptions'>Exceptions</MenuItem>
-            </Select>
-            <FormHelperText>Type of migrating resource</FormHelperText>
-        </FormControl>
+        <select name="Resource Type" onChange={handleChange} value={resource} id="select-element">
+            <option value="Flag Profiles">Flag Profiles</option>
+            <option value="Exceptions">Exceptions</option>
+            <option value="Alerts">Alerts</option>
+        </select>
     )
 }
