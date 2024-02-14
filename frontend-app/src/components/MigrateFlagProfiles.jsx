@@ -1,5 +1,4 @@
 import React, { useState, createContext } from "react";
-import { useSearchParams } from 'react-router-dom';
 import TenantComponent from "./TenantComponent";
 import './css/FlagProfiles.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
