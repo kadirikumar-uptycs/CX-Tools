@@ -9,12 +9,14 @@ import { ContextProvider } from "./MigrateFlagProfiles";
 
 
 
-export default function TenantResources({ type, credentials }) {
+export default function TenantResources({ type }) {
 
-    let { setResourceData } = useContext(ContextProvider);
+    let { state, setState } = useContext(ContextProvider);
     
 
     let navigate = useNavigate();
+
+    const sleep = time => new Promise(res => setTimeout(res, time));
 
     let setSnackBar;
 
@@ -22,12 +24,11 @@ export default function TenantResources({ type, credentials }) {
         setSnackBar = childStateSetter;
     }
 
-    const [fetchData, setFetchData] = useState({
-        isFetching: false,
-        data: []
-    })
+    let [isLoading, setIsLoading] = useState(false);
 
-    let accordionElements = fetchData.data.map(item => (
+    let data = type === 'source'?(state.sourceResources):(state.targetResources);
+
+    let accordionElements = data.map(item => (
         <AccordionComponent
             key={item.id}
             type={type}
@@ -36,35 +37,36 @@ export default function TenantResources({ type, credentials }) {
         />
     ));
 
-    let [searchParams, setSearchParams] = useSearchParams();
-    let resourceFromURL = searchParams.get('resource');
+    let [searchParams, ] = useSearchParams();
+    let resourceFromURL = searchParams.get('resource') || 'flagProfiles';
+
+    let credentials = type === 'source'?(state.sourceCredentials):(state.targetCredentials);
 
     useEffect(() => {
         const fetchData = async () => {
             if (Object.keys(credentials).length > 0) {
-                setFetchData(prev => ({
-                    ...prev,
-                    isFetching: true,
-                }));
+                setIsLoading(true);
                 const url = `http://localhost:17291/${resourceFromURL}`;
                 try {
                     const response = await axios.post(url, { 'credentials': credentials });
-                    setFetchData({
-                        data: response.data,
-                        isFetching: false,
-                    });
-                    setResourceData(prev => ({
+                    setIsLoading(false);
+                    setState(prev => ({
                         ...prev,
-                        [type] : response.data
+                        sourceResources: (type === 'source')?response.data:prev.sourceResources,
+                        targetResources: (type === 'target')?response.data:prev.targetResources,
                     }));
                 } catch (err) {
                     console.log(err);
-                    setFetchData(prev => ({
-                        ...prev,
-                        isFetching: false,
-                    }));
+                    setIsLoading(false);
                     if (err.response && err.response.status === 401) {
                         if (err.response.data.Authorized === false) {
+                            setSnackBar({
+                                open: true,
+                                message: 'Session Expired',
+                                severity: 'error',
+                                duration: 4500,
+                            });
+                            await sleep(2000);
                             throw navigate('/login');
                         } else {
                             setSnackBar({
@@ -91,7 +93,7 @@ export default function TenantResources({ type, credentials }) {
 
     return (
         <>
-        {fetchData.isFetching ? <CircularProgress /> : (
+        {isLoading ? <CircularProgress /> : (
             <div className="accordion" id="flag-profiles-source" style={{ width: "100%" }}>
                 {accordionElements}
             </div>

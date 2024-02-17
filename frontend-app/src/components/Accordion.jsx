@@ -11,7 +11,7 @@ import CheckBox from './CheckBox';
 
 export default function AccordionComponent({ type, summary, details }) {
 
-    let { setMigrationList, resourceData } = useContext(ContextProvider);
+    let { state, setState } = useContext(ContextProvider);
 
     let setSnackBar;
 
@@ -23,10 +23,13 @@ export default function AccordionComponent({ type, summary, details }) {
         event.stopPropagation();
         let ele = event.target;
         let flagId = ele.id;
-        let targetData = resourceData.target;
+        let targetData = state.targetResources;
 
         if(!ele.checked){
-            setMigrationList(prev => prev.filter(id => id !== flagId));
+            setState(prev => ({
+                ...prev,
+                migrationList : prev.migrationList.filter(id => id !== flagId),
+            }));
         }else{
             if(targetData.length === 0){
                 setTimeout(() => {
@@ -35,8 +38,10 @@ export default function AccordionComponent({ type, summary, details }) {
             }else{
                 if (!targetData.some(flagProfile => flagProfile.priority === details.priority)) {
                     if (!targetData.some(flagProfile => flagProfile.name === summary)) {
-                        ele.checked = true;
-                        setMigrationList(prev => [...prev, flagId]);
+                        setState(prev => ({
+                            ...prev,
+                            migrationList : [...prev.migrationList, flagId],
+                        }));
                     } else {
                         ele.checked = false;
                         setSnackBar({

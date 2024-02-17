@@ -1,24 +1,26 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import { ContextProvider } from "./MigrateFlagProfiles";
 import './css/CheckBox.css';
 
 export default function CheckBox({handleCheckboxClick, id}) {
 
-    let { migrationList } = useContext(ContextProvider);
+    let { state } = useContext(ContextProvider);
     const inputRef = useRef(null);
 
     useEffect(() => {
-        if(migrationList.length === 0){
+        if(state.migrationList.length === 0){
             setTimeout(() => {
-                inputRef.current.checked = false;
+                if(inputRef.current){
+                    inputRef.current.checked = false;
+                }
             }, 700);
         }
-    }, [migrationList]);
+    }, [state.migrationList]);
 
     return (
         <div className="checkbox-wrapper" style={{ margin: '0 11px' }}>
             <div className="cbx">
-                <input ref={inputRef} id={id} type="checkbox" onClick={(event) => handleCheckboxClick(event)} className="flag-checkbox" />
+                <input id={id} ref={inputRef} type="checkbox" onClick={(event) => handleCheckboxClick(event)} className="flag-checkbox" />
                 <label htmlFor={id}></label>
                 <svg width="15" height="14" viewBox="0 0 15 14" fill="none">
                     <path d="M2 8.36364L6.23077 12L13 2"></path>

@@ -1,4 +1,5 @@
 import React, { useState, createContext } from "react";
+// import { useSearchParams } from 'react-router-dom';
 import TenantComponent from "./TenantComponent";
 import './css/FlagProfiles.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -13,10 +14,23 @@ export const ContextProvider = createContext(null);
 
 export default function MigrateFlagProfiles() {
 
-    let [migrationList, setMigrationList] = useState([]);
-    let [resourceData, setResourceData] = useState({ 'source': [], 'target': [] });
-    let [allCredentials, setAllCredentials] = useState({ 'source': {}, 'target': {} })
-    let canMigrate = migrationList.length > 0;
+    // let [migrationList, setMigrationList] = useState([]);
+    // let [resourceData, setResourceData] = useState({ 'source': [], 'target': [] });
+    // let [allCredentials, setAllCredentials] = useState({ 'source': {}, 'target': {} })
+
+    let [state, setState] = useState({
+        'sourceFileName': 'No File Choosen',
+        'targetFileName': 'No File Choosen',
+        'sourceCredentials': {},
+        'targetCredentials': {},
+        'sourceResources': [],
+        'targetResources': [],
+        'migrationList': []
+    });
+
+    const sleep = time => new Promise(res => setTimeout(res, time));
+
+    let canMigrate = state.migrationList.length > 0;
 
     let setSnackBar, setDrawer;
 
@@ -37,13 +51,13 @@ export default function MigrateFlagProfiles() {
     // }
 
 
-    function toggleMigrateButton(ele, type, isError) {
+    function toggleMigrateButton(ele, actionState, isError) {
         ele.innerHTML = '';
 
-        if (type === "loading") {
+        if (actionState === "loading") {
             ele.innerHTML = `<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
             <span role="status">Migrating...</span>`;
-        } else if (type === "done") {
+        } else if (actionState === "done") {
             if (isError) {
                 ele.innerHTML = `Error<i class="bi bi-exclamation-octagon-fill ms-3 text-danger"></i>`
             }
@@ -63,18 +77,20 @@ export default function MigrateFlagProfiles() {
         // loading animation on the button
         toggleMigrateButton(event.target, 'loading', false);
 
-        let resources = resourceData.source.filter(resource => migrationList.includes(resource.id))
+        let resources = state.sourceResources.filter(resource => state.migrationList.includes(resource.id))
         let url = 'http://localhost:17291/migrateFlagProfiles';
 
         // empty migration list, this causes diabling migration button while migration is in progess
-        setMigrationList([]);
+        setState(prev => ({
+            ...prev,
+            migrationList: [],
+        }));
 
         try {
-            await axios.post(url, { resources, credentials: allCredentials['target'] });
+            await axios.post(url, { resources, credentials: state.targetCredentials });
             toggleMigrateButton(event.target, 'done', false);
-            setTimeout(() => {
-                toggleMigrateButton(event.target, 'reset', false);
-            }, 2000);
+            await sleep(2000);
+            toggleMigrateButton(event.target, 'reset', false);
             setSnackBar({
                 open: true,
                 message: 'Resources Migrated Successfully',
@@ -84,17 +100,16 @@ export default function MigrateFlagProfiles() {
         } catch (err) {
             console.log(err);
             toggleMigrateButton(event.target, 'done', true);
-            setTimeout(() => {
-                toggleMigrateButton(event.target, 'reset', false);
-            }, 2000);
+            await sleep(2000);
+            toggleMigrateButton(event.target, 'reset', false);
             setSnackBar({
                 open: true,
                 message: 'Error Occured while migrating some of the resources',
                 severity: 'error',
-                duration: 2000,
+                duration: 4000,
             });
+            await sleep(2000);
             setTimeout(() => {
-
                 setDrawer({
                     open: true,
                     content: err.response.data.errorDetails,
@@ -105,7 +120,7 @@ export default function MigrateFlagProfiles() {
     }
 
     return (
-        <ContextProvider.Provider value={{ migrationList, setMigrationList, resourceData, setResourceData, allCredentials, setAllCredentials }}>
+        <ContextProvider.Provider value={{ state, setState }}>
             <SelectComponent />
             <section id="container">
                 <TenantComponent type='source' />
