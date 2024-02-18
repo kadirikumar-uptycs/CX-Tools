@@ -1,5 +1,5 @@
 import React, { useState, createContext } from "react";
-// import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import TenantComponent from "./TenantComponent";
 import './css/FlagProfiles.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -14,18 +14,14 @@ export const ContextProvider = createContext(null);
 
 export default function MigrateFlagProfiles() {
 
-    // let [migrationList, setMigrationList] = useState([]);
-    // let [resourceData, setResourceData] = useState({ 'source': [], 'target': [] });
-    // let [allCredentials, setAllCredentials] = useState({ 'source': {}, 'target': {} })
-
     let [state, setState] = useState({
-        'sourceFileName': 'No File Choosen',
-        'targetFileName': 'No File Choosen',
-        'sourceCredentials': {},
-        'targetCredentials': {},
-        'sourceResources': [],
-        'targetResources': [],
-        'migrationList': []
+        ourceFileName: 'No File Choosen',
+        targetFileName: 'No File Choosen',
+        sourceCredentials: {},
+        targetCredentials: {},
+        sourceResources: [],
+        targetResources: [],
+        migrationList: []
     });
 
     const sleep = time => new Promise(res => setTimeout(res, time));
@@ -42,13 +38,8 @@ export default function MigrateFlagProfiles() {
         setSnackBar = childStateSetter;
     }
 
-    // Get Resource Name from the search parameters of URL
-    // let [searchParams, setSearchParams] = useSearchParams();
-    // console.log(searchParams.get('resource'));
-    // let resourceFromURL = searchParams.get('resource');
-    // if(!resourceFromURL || resourceFromURL === '' || !['flagProfiles', 'alerts', 'exceptions'].includes(resourceFromURL)){
-    //     setSearchParams({'resource': 'flagProfiles'});
-    // }
+    let [searchParams, ] = useSearchParams();
+    let resourceFromURL = searchParams.get('resource') || 'flagProfiles';
 
 
     function toggleMigrateButton(ele, actionState, isError) {
@@ -78,7 +69,7 @@ export default function MigrateFlagProfiles() {
         toggleMigrateButton(event.target, 'loading', false);
 
         let resources = state.sourceResources.filter(resource => state.migrationList.includes(resource.id))
-        let url = 'http://localhost:17291/migrateFlagProfiles';
+        let url = `http://localhost:17291/migrate/${resourceFromURL}`;
 
         // empty migration list, this causes diabling migration button while migration is in progess
         setState(prev => ({

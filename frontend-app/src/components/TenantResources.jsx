@@ -46,7 +46,7 @@ export default function TenantResources({ type }) {
         const fetchData = async () => {
             if (Object.keys(credentials).length > 0) {
                 setIsLoading(true);
-                const url = `http://localhost:17291/${resourceFromURL}`;
+                const url = `http://localhost:17291/get/${resourceFromURL}`;
                 try {
                     const response = await axios.post(url, { 'credentials': credentials });
                     setIsLoading(false);
@@ -71,7 +71,7 @@ export default function TenantResources({ type }) {
                         } else {
                             setSnackBar({
                                 open: true,
-                                message: err.response.data.message.details || 'API Key Unauthorized',
+                                message: type + ': ' + err.response.data.message.details || 'API Key Unauthorized',
                                 severity: 'error',
                                 duration: 4500,
                             })
@@ -79,7 +79,7 @@ export default function TenantResources({ type }) {
                     }else{
                         setSnackBar({
                             open: true,
-                            message: 'Server Error : Server is unavailable',
+                            message: type.toUpperCase() + ': Server is unavailable',
                             severity: 'error',
                             duration: 4500,
                         })

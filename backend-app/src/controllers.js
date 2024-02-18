@@ -1,5 +1,5 @@
 let { addRequestedUsersEmail, isUserExists } = require('./models');
-let {postFlagProfiles, getResources} = require('./helperFunctions');
+let { getResources, postResources } = require('./helperFunctions');
 
 let storeUserRequest = async (req, res) => {
     let email = req.body.email;
@@ -36,7 +36,9 @@ let userInfo = (req, res) => {
 }
 
 
-const getTenantResources = async (req, res, endpoint) => {
+const getTenantResources = async (req, res) => {
+
+    let endpoint = req.params.endpoint;
 
     let credentials = req.body.credentials;
 
@@ -46,19 +48,20 @@ const getTenantResources = async (req, res, endpoint) => {
 }
 
 
-
-const migrateFlagProfiles = async (req, res) => {
-    let flagProfiles = req.body.resources;
+const migrateTenantResources = async (req, res) => {
+    
+    let endpoint = req.params.endpoint;
+    let resources = req.body.resources;
     let credentials = req.body.credentials;
 
     let errorDetails = [];
     let resStatus = 200;
 
-    for (const profile of flagProfiles) {
-            const { status, data } = await postFlagProfiles(credentials, profile);
+    for (const resource of resources) {
+            const { status, data } = await postResources(credentials, resource, endpoint);
 
             if (status !== 200) {
-                errorDetails.push({ "name": profile.name, "error": data.message.detail });
+                errorDetails.push({ "name": resource.name, "error": data.message.detail });
                 resStatus = status;
             }
     }
@@ -81,6 +84,6 @@ module.exports = {
     Authenticated,
     userInfo,
     getTenantResources,
-    migrateFlagProfiles,
+    migrateTenantResources,
     logout,
 }

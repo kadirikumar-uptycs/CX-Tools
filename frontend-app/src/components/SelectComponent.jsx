@@ -1,18 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { ContextProvider } from './MigrateFlagProfiles';
 import './css/SelectComponent.css';
+
 
 export default function SelectComponent() {
 
+    let { setState } = useContext(ContextProvider);
     let [searchParams, setSearchParams] = useSearchParams();
     let resourceValue = searchParams.get('resource');
 
-    if(!(['flagProfiles', 'exceptions', 'alertRules'].includes(resourceValue))){
+    if (!(['flagProfiles', 'exceptions', 'alertRules'].includes(resourceValue))) {
         resourceValue = 'flagProfiles';
     }
 
     const handleChange = (event) => {
-        setSearchParams({resource : event.target.value});
+        setState(prev => ({
+            ...prev,
+            sourceResources: [],
+            targetResources: [],
+            migrationList: [],
+        }))
+        setSearchParams({ resource: event.target.value });
     };
 
     return (

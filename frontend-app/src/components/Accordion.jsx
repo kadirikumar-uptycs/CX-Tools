@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -12,6 +13,8 @@ import CheckBox from './CheckBox';
 export default function AccordionComponent({ type, summary, details }) {
 
     let { state, setState } = useContext(ContextProvider);
+    let [searchParams,] = useSearchParams();
+    let resourceFromURL = searchParams.get('resource') || 'flagProfiles';
 
     let setSnackBar;
 
@@ -19,49 +22,104 @@ export default function AccordionComponent({ type, summary, details }) {
         setSnackBar = childStateSetter;
     }
 
-    function handleCheckboxClick(event){
-        event.stopPropagation();
-        let ele = event.target;
-        let flagId = ele.id;
-        let targetData = state.targetResources;
+    function validateFlagProfiles({ resourceId, targetData, ele }) {
+        if (!targetData.some(flagProfile => flagProfile.priority === details.priority)) {
+            if (!targetData.some(flagProfile => flagProfile.name === summary)) {
+                setState(prev => ({
+                    ...prev,
+                    migrationList: [...prev.migrationList, resourceId],
+                }));
+            } else {
+                ele.checked = false;
+                setSnackBar({
+                    open: true,
+                    message: 'Resource with same NAME already exists on target',
+                    severity: 'error',
+                    duration: 3000,
+                })
+            }
+        } else {
+            ele.checked = false;
+            setSnackBar({
+                open: true,
+                message: 'Resource with same PRIORITY already exists on target',
+                severity: 'error',
+                duration: 3000,
+            })
+        }
+    }
 
-        if(!ele.checked){
+
+    function validateAlertRules({ resourceId, targetData, ele }) {
+        if (!targetData.some(alertRule => alertRule.code === details.code)) {
+            if (!targetData.some(alertRule => alertRule.name === summary)) {
+                setState(prev => ({
+                    ...prev,
+                    migrationList: [...prev.migrationList, resourceId],
+                }));
+            } else {
+                ele.checked = false;
+                setSnackBar({
+                    open: true,
+                    message: 'Resource with same NAME already exists on target',
+                    severity: 'error',
+                    duration: 3000,
+                });
+            }
+        } else {
+            ele.checked = false;
+            setSnackBar({
+                open: true,
+                message: 'Resource with same CODE already exists on target',
+                severity: 'error',
+                duration: 3000,
+            });
+        }
+    }
+
+
+    function validateExceptions({ resourceId, targetData, ele }) {
+        if (!targetData.some(exception => exception.name === summary)) {
             setState(prev => ({
                 ...prev,
-                migrationList : prev.migrationList.filter(id => id !== flagId),
+                migrationList: [...prev.migrationList, resourceId],
             }));
-        }else{
-            if(targetData.length === 0){
+        } else {
+            ele.checked = false;
+            setSnackBar({
+                open: true,
+                message: 'Resource with same NAME already exists on target',
+                severity: 'error',
+                duration: 3000,
+            });
+        }
+    }
+
+    function handleCheckboxClick(event) {
+        event.stopPropagation();
+        let ele = event.target;
+        let resourceId = ele.id;
+        let targetData = state.targetResources;
+
+        if (!ele.checked) {
+            setState(prev => ({
+                ...prev,
+                migrationList: prev.migrationList.filter(id => id !== resourceId),
+            }));
+        } else {
+            if (targetData.length === 0) {
                 setTimeout(() => {
                     ele.checked = false;
                 }, 500);
-            }else{
-                if (!targetData.some(flagProfile => flagProfile.priority === details.priority)) {
-                    if (!targetData.some(flagProfile => flagProfile.name === summary)) {
-                        setState(prev => ({
-                            ...prev,
-                            migrationList : [...prev.migrationList, flagId],
-                        }));
-                    } else {
-                        ele.checked = false;
-                        setSnackBar({
-                            open: true,
-                            message: 'Resource with same NAME already exists on target',
-                            severity: 'error',
-                            duration: 3000,
-                        })
-                    }
+            } else {
+                if (resourceFromURL === 'flagProfiles') {
+                    validateFlagProfiles({ resourceId, targetData, ele });
+                } else if (resourceFromURL === 'alertRules') {
+                    validateAlertRules({ resourceId, targetData, ele })
                 } else {
-                    ele.checked = false;
-                    setSnackBar({
-                        open: true,
-                        message: 'Resource with same PRIORITY already exists on target',
-                        severity: 'error',
-                        duration: 3000,
-                    })
+                    validateExceptions({ resourceId, targetData, ele })
                 }
             }
-
         }
     }
 

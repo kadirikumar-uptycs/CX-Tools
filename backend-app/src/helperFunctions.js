@@ -39,7 +39,6 @@ let getResources = async (credentials, endpoint) => {
 			return { status: response.status, data: response.data };
 		}
 	} catch (error) {
-		console.log(error.response);
 		if (error.response) {
 			return { status: error.response.status, data: error.response.data.error };
 		} else {
@@ -51,12 +50,13 @@ let getResources = async (credentials, endpoint) => {
 
 
 
-let postFlagProfiles = async (credentials, payload) => {
+let postResources = async (credentials, payload, endpoint) => {
+
 	let domain = credentials["domain"] + credentials["domainSuffix"];
 	let { customerId } = credentials;
 	let creds = getHeaders(credentials);
 
-	const url = `https://${domain}/public/api/customers/${customerId}/flagProfiles`;
+	const url = `https://${domain}/public/api/customers/${customerId}/${endpoint}`;
 
 	try{
 		const response = await axios.post(url, payload, { headers: creds });
@@ -76,5 +76,5 @@ let postFlagProfiles = async (credentials, payload) => {
 
 module.exports = {
 	getResources,
-	postFlagProfiles,
+	postResources,
 }
