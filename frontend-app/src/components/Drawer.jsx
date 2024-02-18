@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Drawer from '@mui/material/Drawer';
 import Tooltip from '@mui/material/Tooltip';
-import TableComponent from "./TableComponent";
-
+import './css/Drawer.css';
 
 export default function DrawerComponent({getChildState}) {
 
@@ -28,24 +27,24 @@ export default function DrawerComponent({getChildState}) {
             open={drawer.open}
             onClose={closeDrawer}
           >
-            <span style={{
-              fontFamily: 'Protest Revolution',
-              color : '#d32f2f',
-             position: 'relative',
-             left: '50%',
-             transform: 'translateX(-330px)',
-             fontSize: '31px',
-             textDecoration: '1px double underline #AAA',
-            }}>Error Occurred while transfering some resources</span>
+            <span className='drawer-heading'>Error Occurred while transfering some resources</span>
 
             <Tooltip title='Close'>
-            <img width="100" height="100" src="https://img.icons8.com/nolan/64/multiply.png" alt='Click here to close ❌' onClick={closeDrawer} style={{
-                cursor: 'pointer',
-                position: 'relative',
-                top: '-50px',
-            }}/>
+            <img className='close-btn' src="images/close-icon.png" alt='Click here to close ❌' onClick={closeDrawer}/>
             </Tooltip>
-            <TableComponent rows={drawer.content || []} />
+            {/* <TableComponent rows={drawer.content || []} /> */}
+            <div className='table'>
+              <div className="row row-heading">
+                <div className="col">Resource Name</div>
+                <div className="col">Error</div>
+              </div>
+              {drawer.content.map(row => (
+                <div className="row">
+                  <div className="col">{row.name}</div>
+                  <div className="col col-2">{row.error}</div>
+                </div>
+              ))}
+            </div>
           </Drawer>
         </React.Fragment>
     </div>

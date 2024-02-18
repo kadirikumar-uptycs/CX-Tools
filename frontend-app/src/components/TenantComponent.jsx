@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import FileInput from "./FileInput";
 import TenantResources from "./TenantResources";
-import { ContextProvider } from "./MigrateFlagProfiles";
+import { ContextProvider } from "./MigrateResources";
 
 
 

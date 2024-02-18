@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ContextProvider } from './MigrateFlagProfiles';
+import { ContextProvider } from './MigrateResources';
 import './css/SelectComponent.css';
 
 

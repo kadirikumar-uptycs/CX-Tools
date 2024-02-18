@@ -66,3 +66,23 @@
 #transfer-button{
     cursor: not-allowed;
 }
+.home-link{
+        text-decoration: none;
+        font-size: 23px;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        border-bottom: 1px solid #555;
+        border-right: 1px solid #555;
+        padding-right: 7px;
+        border-bottom-right-radius : 7px;
+        border-top-right-radius: 2px;
+        border-bottom-left-radius: 3px;
+        color: #0e59ca;
+}
+.home-link:hover {
+    border-color: #8a8686;
+    color: #0066ff;
+    text-shadow: 0 0 1px #F3F3F3,
+                 0 0 1px #F3F3F3;
+}

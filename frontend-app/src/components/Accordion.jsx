@@ -6,7 +6,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CodeHighlighter from './CodeHighlighter';
-import { ContextProvider } from "./MigrateFlagProfiles";
+import { ContextProvider } from "./MigrateResources";
 import SnackBar from "./SnackBar";
 import CheckBox from './CheckBox';
 

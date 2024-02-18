@@ -5,7 +5,7 @@ import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import SnackBar from './SnackBar';
-import { ContextProvider } from "./MigrateFlagProfiles";
+import { ContextProvider } from "./MigrateResources";
 
 
 
@@ -40,11 +40,15 @@ export default function TenantResources({ type }) {
     let [searchParams, ] = useSearchParams();
     let resourceFromURL = searchParams.get('resource') || 'flagProfiles';
 
+    let doReload = (type === 'target')?state.targetReload:false;
+
     let credentials = type === 'source'?(state.sourceCredentials):(state.targetCredentials);
+
+    console.log("target");
 
     useEffect(() => {
         const fetchData = async () => {
-            if (Object.keys(credentials).length > 0) {
+            if (Object.keys(credentials).length > 0 || (type === 'target' && doReload)) {
                 setIsLoading(true);
                 const url = `http://localhost:17291/get/${resourceFromURL}`;
                 try {
@@ -85,11 +89,15 @@ export default function TenantResources({ type }) {
                         })
                     }
                 }
+                setState(prev => ({
+                    ...prev,
+                    targetReload: false,
+                }))
             }
         };
 
         fetchData();
-    }, [credentials, resourceFromURL]);
+    }, [credentials, resourceFromURL, doReload]);
 
     return (
         <>

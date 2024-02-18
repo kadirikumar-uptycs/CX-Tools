@@ -8,6 +8,7 @@ import Logout from '@mui/icons-material/Logout';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import axios from 'axios';
+import Backdrop from '@mui/material/Backdrop';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
@@ -75,9 +76,23 @@ export default function AccountMenu({ anchorElement, handleClose, userInfo }) {
                             color: '#ccc'
                         }} />
                     </ListItemIcon>
-                    {!isLoading ? 'Logout' : <CircularProgress />}
+                    Logout
                 </MenuItem>
             </Menu>
+            <Backdrop
+                sx={{ color: '#3498db', zIndex: 11111, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+                open={isLoading}
+            >
+                <CircularProgress color="inherit" sx={{
+                    display: 'block',
+                    marginLeft: '50px'
+                }}/>
+                <div style={{
+                    fontFamily: 'sans-serif',
+                    fontSize: '73px',
+                    marginLeft: '50px',
+                }}>Logging out</div>
+            </Backdrop>
         </React.Fragment>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useContext } from "react";
-import { ContextProvider } from "./MigrateFlagProfiles";
+import { ContextProvider } from "./MigrateResources";
 import './css/CheckBox.css';
 
 export default function CheckBox({handleCheckboxClick, id}) {

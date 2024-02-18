@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import SnackBar from "./SnackBar";
-import { ContextProvider } from "./MigrateFlagProfiles";
+import { ContextProvider } from "./MigrateResources";
 
 
 const VisuallyHiddenInput = styled('input')({

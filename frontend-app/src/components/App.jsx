@@ -10,8 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
 import authValidater from "./authValidater";
-import AccountMenu from "./AccountMenu";
-import MigrateFlagProfiles from "./MigrateFlagProfiles";
+import MigrateFlagProfiles from "./MigrateResources";
 import Users from "./Users";
 
 const darkTheme = createTheme({
@@ -30,11 +29,6 @@ const router = createBrowserRouter(
 			<Route
 				index
 				element={<HomePage />}
-				loader={authValidater}
-			/>
-			<Route
-				path="menu"
-				element={<AccountMenu />}
 				loader={authValidater}
 			/>
 			<Route

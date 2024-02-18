@@ -1,14 +1,14 @@
 import React, { useState, createContext } from "react";
 import { useSearchParams } from 'react-router-dom';
 import TenantComponent from "./TenantComponent";
-import './css/FlagProfiles.css';
+import './css/MigrateResources.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
 import SnackBar from './SnackBar';
 import DrawerComponent from "./Drawer";
 import SelectComponent from './SelectComponent';
 import ScrollToTopButton from "./ScrollComponent";
-
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 
 export const ContextProvider = createContext(null);
 
@@ -21,7 +21,8 @@ export default function MigrateFlagProfiles() {
         targetCredentials: {},
         sourceResources: [],
         targetResources: [],
-        migrationList: []
+        migrationList: [],
+        targetReload: false,
     });
 
     const sleep = time => new Promise(res => setTimeout(res, time));
@@ -65,8 +66,10 @@ export default function MigrateFlagProfiles() {
 
     async function migrateResources(event) {
 
+        let ele = event.currentTarget;
+
         // loading animation on the button
-        toggleMigrateButton(event.target, 'loading', false);
+        toggleMigrateButton(ele, 'loading', false);
 
         let resources = state.sourceResources.filter(resource => state.migrationList.includes(resource.id))
         let url = `http://localhost:17291/migrate/${resourceFromURL}`;
@@ -79,9 +82,13 @@ export default function MigrateFlagProfiles() {
 
         try {
             await axios.post(url, { resources, credentials: state.targetCredentials });
-            toggleMigrateButton(event.target, 'done', false);
+            toggleMigrateButton(ele, 'done', false);
             await sleep(2000);
-            toggleMigrateButton(event.target, 'reset', false);
+            toggleMigrateButton(ele, 'reset', false);
+            setState(prev => ({
+                ...prev,
+                targetReload: true,
+            }));
             setSnackBar({
                 open: true,
                 message: 'Resources Migrated Successfully',
@@ -90,9 +97,9 @@ export default function MigrateFlagProfiles() {
             });
         } catch (err) {
             console.log(err);
-            toggleMigrateButton(event.target, 'done', true);
+            toggleMigrateButton(ele, 'done', true);
             await sleep(2000);
-            toggleMigrateButton(event.target, 'reset', false);
+            toggleMigrateButton(ele, 'reset', false);
             setSnackBar({
                 open: true,
                 message: 'Error Occured while migrating some of the resources',
@@ -112,6 +119,9 @@ export default function MigrateFlagProfiles() {
 
     return (
         <ContextProvider.Provider value={{ state, setState }}>
+            <a href="/" className="home-link">
+            <ReplyAllIcon/> Home
+            </a>
             <SelectComponent />
             <section id="container">
                 <TenantComponent type='source' />
