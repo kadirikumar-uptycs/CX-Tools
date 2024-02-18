@@ -15,7 +15,7 @@ export const ContextProvider = createContext(null);
 export default function MigrateFlagProfiles() {
 
     let [state, setState] = useState({
-        ourceFileName: 'No File Choosen',
+        sourceFileName: 'No File Choosen',
         targetFileName: 'No File Choosen',
         sourceCredentials: {},
         targetCredentials: {},

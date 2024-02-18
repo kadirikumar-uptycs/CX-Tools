@@ -12,7 +12,7 @@ import { ContextProvider } from "./MigrateResources";
 export default function TenantResources({ type }) {
 
     let { state, setState } = useContext(ContextProvider);
-    
+
 
     let navigate = useNavigate();
 
@@ -20,13 +20,13 @@ export default function TenantResources({ type }) {
 
     let setSnackBar;
 
-    function setChildState(childStateSetter){
+    function setChildState(childStateSetter) {
         setSnackBar = childStateSetter;
     }
 
     let [isLoading, setIsLoading] = useState(false);
 
-    let data = type === 'source'?(state.sourceResources):(state.targetResources);
+    let data = type === 'source' ? (state.sourceResources) : (state.targetResources);
 
     let accordionElements = data.map(item => (
         <AccordionComponent
@@ -37,14 +37,12 @@ export default function TenantResources({ type }) {
         />
     ));
 
-    let [searchParams, ] = useSearchParams();
+    let [searchParams,] = useSearchParams();
     let resourceFromURL = searchParams.get('resource') || 'flagProfiles';
 
-    let doReload = (type === 'target')?state.targetReload:false;
+    let doReload = (type === 'target') ? state.targetReload : false;
 
-    let credentials = type === 'source'?(state.sourceCredentials):(state.targetCredentials);
-
-    console.log("target");
+    let credentials = type === 'source' ? (state.sourceCredentials) : (state.targetCredentials);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,12 +54,19 @@ export default function TenantResources({ type }) {
                     setIsLoading(false);
                     setState(prev => ({
                         ...prev,
-                        sourceResources: (type === 'source')?response.data:prev.sourceResources,
-                        targetResources: (type === 'target')?response.data:prev.targetResources,
+                        [type + 'Resources']: response.data,
+                        targetReload: false,
                     }));
                 } catch (err) {
                     console.log(err);
                     setIsLoading(false);
+                    setState(prev => ({
+                        ...prev,
+                        [type + 'FileName']: 'No File Choosen',
+                        [type + 'Resources']: [],
+                        [type + 'Credentials']: {},
+                        targetReload: false,
+                    }));
                     if (err.response && err.response.status === 401) {
                         if (err.response.data.Authorized === false) {
                             setSnackBar({
@@ -80,7 +85,7 @@ export default function TenantResources({ type }) {
                                 duration: 4500,
                             })
                         }
-                    }else{
+                    } else {
                         setSnackBar({
                             open: true,
                             message: type.toUpperCase() + ': Server is unavailable',
@@ -89,10 +94,6 @@ export default function TenantResources({ type }) {
                         })
                     }
                 }
-                setState(prev => ({
-                    ...prev,
-                    targetReload: false,
-                }))
             }
         };
 
@@ -101,14 +102,14 @@ export default function TenantResources({ type }) {
 
     return (
         <>
-        {isLoading ? <CircularProgress /> : (
-            <div className="accordion" id="flag-profiles-source" style={{ width: "100%" }}>
-                {accordionElements}
-            </div>
-        )}
+            {isLoading ? <CircularProgress /> : (
+                <div className="accordion" id="flag-profiles-source" style={{ width: "100%" }}>
+                    {accordionElements}
+                </div>
+            )}
 
-        {/* SnackBar */}
-        <SnackBar getChildState={setChildState}/>
+            {/* SnackBar */}
+            <SnackBar getChildState={setChildState} />
         </>
     );
 }
