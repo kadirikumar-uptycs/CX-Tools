@@ -7,27 +7,32 @@ let toolsData = [
     {
         'name': 'Migrate Flag Profiles',
         'description': 'Migrates flag profiles from one tenant to other.',
-        'imageURL': 'images/output-onlinegiftools.gif',
+        'imageURL': 'images/flag.gif',
+        'resourceName': 'flagProfiles',
+    },
+    {
+        'name': 'Migrate Alert Rules',
+        'description': 'Migrates Alert Rules from one tenant to other.',
+        'imageURL': 'images/Alert.gif',
+        'resourceName': 'alertRules',
+    },
+    {
+        'name': 'Migrate Exceptions',
+        'description': 'Migrates Exceptions from one tenant to other.',
+        'imageURL': 'images/exception.gif',
+        'resourceName': 'exceptions',
     },
     {
         'name': 'Migrate Flag Profiles',
         'description': 'Migrates flag profiles from one tenant to other.',
-        'imageURL': 'images/output-onlinegiftools.gif',
+        'imageURL': 'images/transfer.gif',
+        'resourceName': '',
     },
     {
         'name': 'Migrate Flag Profiles',
         'description': 'Migrates flag profiles from one tenant to other.',
-        'imageURL': 'images/output-onlinegiftools.gif',
-    },
-    {
-        'name': 'Migrate Flag Profiles',
-        'description': 'Migrates flag profiles from one tenant to other.',
-        'imageURL': 'images/output-onlinegiftools.gif',
-    },
-    {
-        'name': 'Migrate Flag Profiles',
-        'description': 'Migrates flag profiles from one tenant to other.',
-        'imageURL': 'images/output-onlinegiftools.gif',
+        'imageURL': 'images/transfer.gif',
+        'resourceName': '',
     }
 ]
 
@@ -45,6 +50,7 @@ export default function ToolCards() {
                                     name={tool.name}
                                     description={tool.description}
                                     imageURL={tool.imageURL}
+                                    resourceName={tool.resourceName}
                                     key={index}
                                 />
                             </Grid>
