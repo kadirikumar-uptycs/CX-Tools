@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import AccordionComponent from './Accordion';
 import axios from 'axios';
@@ -13,6 +13,22 @@ import { ContextProvider } from "./MigrateResources";
 export default function TenantResources({ type }) {
 
     let { state, setState } = useContext(ContextProvider);
+
+  
+    /* 
+
+    reloadControllerValue :-
+
+    When targetReload is set to true, useEffect runs and inside that useEffect after reloading
+    resources by calling API, targetReload is set to false which will again render the component and as 
+    the targetReload is indirectly set as a dependency for useEffect, useEffect will also run for the 2nd time as 
+    Object.keys(credentials).length > 0 is true. To avoid this we are using useRef hook to track the multiple reloads
+
+    Thus setting this useRef's current value to true will signal to stop running the useEffect code. 
+    Once the useEffect is run, useRef's current value is set to false.
+
+    */
+    let reloadControllerValue = useRef(false); 
 
 
     let navigate = useNavigate();
@@ -47,7 +63,7 @@ export default function TenantResources({ type }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (Object.keys(credentials).length > 0 || (type === 'target' && doReload)) {
+            if (Object.keys(credentials).length > 0 && (!reloadControllerValue.current)) {
                 setIsLoading(true);
                 const url = `${config.SERVER_BASE_ADDRESS}/get/${resourceFromURL}`;
                 try {
@@ -99,6 +115,7 @@ export default function TenantResources({ type }) {
         };
 
         fetchData();
+        reloadControllerValue.current = doReload;
     }, [credentials, resourceFromURL, doReload]);
 
     return (
