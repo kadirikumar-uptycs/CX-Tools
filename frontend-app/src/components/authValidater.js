@@ -1,13 +1,13 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
-
+import config from "../config";
 
 
 axios.defaults.withCredentials = true;
 
 export default async function authValidater(){
     
-    let url = "http://localhost:17291/isAuthenticated";
+    let url = `${config.SERVER_BASE_ADDRESS}/isAuthenticated`;
     try{
         let respose = await axios.post(url);
         if(respose?.data?.Authorized){

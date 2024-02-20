@@ -11,6 +11,7 @@ import axios from 'axios';
 import Backdrop from '@mui/material/Backdrop';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
+import config from '../config';
 
 export default function AccountMenu({ anchorElement, handleClose, userInfo }) {
 
@@ -20,7 +21,7 @@ export default function AccountMenu({ anchorElement, handleClose, userInfo }) {
 
     async function handleLogOut() {
         setIsLoading(true);
-        let url = 'http://localhost:17291/destroySession';
+        let url = `${config.SERVER_BASE_ADDRESS}/destroySession`;
         try {
             await axios.post(url);
             setTimeout(() => {

@@ -2,6 +2,7 @@ import React, { useState, createContext } from "react";
 import { useSearchParams } from 'react-router-dom';
 import TenantComponent from "./TenantComponent";
 import './css/MigrateResources.css';
+import config from "../config";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
 import SnackBar from './SnackBar';
@@ -12,7 +13,7 @@ import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 
 export const ContextProvider = createContext(null);
 
-export default function MigrateFlagProfiles() {
+export default function MigrateResources() {
 
     let [state, setState] = useState({
         sourceFileName: 'No File Choosen',
@@ -72,7 +73,7 @@ export default function MigrateFlagProfiles() {
         toggleMigrateButton(ele, 'loading', false);
 
         let resources = state.sourceResources.filter(resource => state.migrationList.includes(resource.id))
-        let url = `http://localhost:17291/migrate/${resourceFromURL}`;
+        let url = `${config.SERVER_BASE_ADDRESS}/migrate/${resourceFromURL}`;
 
         // empty migration list, this causes diabling migration button while migration is in progess
         setState(prev => ({

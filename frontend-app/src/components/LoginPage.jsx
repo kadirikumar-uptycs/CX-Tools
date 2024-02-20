@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import "./css/LoginPage.css";
-
+import config from "../config";
 import axios from "axios";
 
 const lightTheme = createTheme({
@@ -60,7 +60,7 @@ export default function LoginPage() {
     };
 
     try {
-      await axios.post("http://localhost:17291/validateLoginUser", userInfo);
+      await axios.post(`${config.SERVER_BASE_ADDRESS}/validateLoginUser`, userInfo);
       navigate('/');
     } catch (err) {
       console.log(err);
@@ -83,7 +83,7 @@ export default function LoginPage() {
       });
     } else {
       let response = await axios.post(
-        "http://localhost:17291/storeUserRequest",
+        `${config.SERVER_BASE_ADDRESS}/storeUserRequest`,
         { email: requestedUserEmail }
       );
       setModal({
