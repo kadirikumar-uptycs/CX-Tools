@@ -114,7 +114,7 @@ export default function AccordionComponent({ type, summary, details }) {
             } else {
                 if (resourceFromURL === 'flagProfiles') {
                     validateFlagProfiles({ resourceId, targetData, ele });
-                } else if (resourceFromURL === 'alertRules') {
+                } else if (resourceFromURL === 'alertRules' || resourceFromURL === 'eventRules') {
                     validateAlertRules({ resourceId, targetData, ele })
                 } else {
                     validateExceptions({ resourceId, targetData, ele })

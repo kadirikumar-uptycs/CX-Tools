@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import SnackBar from './SnackBar';
 import { ContextProvider } from "./MigrateResources";
-
+import Typography from '@mui/material/Typography';
 
 
 export default function TenantResources({ type }) {
@@ -120,7 +120,14 @@ export default function TenantResources({ type }) {
 
     return (
         <>
-            {isLoading ? <CircularProgress /> : (
+            {isLoading ? (<>
+                <CircularProgress />
+                <Typography sx={{
+                    marginTop: '5px',
+                    fontSize: '31px',
+                    color: '#999',
+                }}>Loading...</Typography>
+            </>) : (
                 <div className="accordion" id="flag-profiles-source" style={{ width: "100%" }}>
                     {accordionElements}
                 </div>

@@ -10,7 +10,7 @@ export default function SelectComponent() {
     let [searchParams, setSearchParams] = useSearchParams();
     let resourceValue = searchParams.get('resource');
 
-    if (!(['flagProfiles', 'exceptions', 'alertRules'].includes(resourceValue))) {
+    if (!(['flagProfiles', 'exceptions', 'alertRules', 'eventRules'].includes(resourceValue))) {
         resourceValue = 'flagProfiles';
     }
 
@@ -28,7 +28,8 @@ export default function SelectComponent() {
         <select name="Resource Type" onChange={handleChange} value={resourceValue} id="select-element">
             <option value="flagProfiles">Flag Profiles</option>
             <option value="exceptions">Exceptions</option>
-            <option value="alertRules">Alerts</option>
+            <option value="alertRules">Alert Rules</option>
+            <option value="eventRules">Event Rules</option>
         </select>
     )
 }

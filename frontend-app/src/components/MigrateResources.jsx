@@ -99,7 +99,7 @@ export default function MigrateResources() {
         } catch (err) {
             console.log(err);
             toggleMigrateButton(ele, 'done', true);
-            await sleep(2000);
+            await sleep(500);
             toggleMigrateButton(ele, 'reset', false);
             setSnackBar({
                 open: true,
@@ -107,7 +107,7 @@ export default function MigrateResources() {
                 severity: 'error',
                 duration: 4000,
             });
-            await sleep(2000);
+            await sleep(500);
             setTimeout(() => {
                 setDrawer({
                     open: true,

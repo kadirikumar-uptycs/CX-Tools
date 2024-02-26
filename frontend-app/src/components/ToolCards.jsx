@@ -23,14 +23,14 @@ let toolsData = [
         'resourceName': 'exceptions',
     },
     {
-        'name': 'Migrate Flag Profiles',
-        'description': 'Migrates flag profiles from one tenant to other.',
-        'imageURL': 'images/transfer.gif',
-        'resourceName': '',
+        'name': 'Migrate Event Rules',
+        'description': 'Migrates event rules from one tenant to other.',
+        'imageURL': 'images/event.gif',
+        'resourceName': 'eventRules',
     },
     {
-        'name': 'Migrate Flag Profiles',
-        'description': 'Migrates flag profiles from one tenant to other.',
+        'name': 'Migrate Resource',
+        'description': 'Migrates Resource from one tenant to other.',
         'imageURL': 'images/transfer.gif',
         'resourceName': '',
     }
