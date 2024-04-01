@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('Checkout') {
+    stage('Checkout Code') {
       steps {
-        sh 'git clone https://github.com/kadirikumar-uptycs/CX-Tools.git'
+        git(url: 'https://github.com/kadirikumar-uptycs/CX-Tools', branch: 'main')
       }
     }
 
