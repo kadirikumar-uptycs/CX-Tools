@@ -9,7 +9,7 @@ export default function HomePage() {
     return (
         <>
             <div className="homepage--wrapper">
-                 <Header />
+                <Header />
                 <Intro />
                 <ToolCards />
             </div>

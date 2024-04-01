@@ -4,15 +4,23 @@
   color: #f8f9fa;
   width: 100vw;
   height: max(100vh, 100%);
-  padding: 24px 0;
 }
 .header--wrapper{
-  position: relative;
-  z-index: 225;
-  background-image: url('../../../public/images/uptycs-logo.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: 30px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+  padding: 20px 0 10px;
+  transition: 0.3s all ease-in-out;
+}
+.fixed--header{
+  background-color: #55174e;
+  color: #fdfdfe;
+  border-bottom: 1px solid #111;
+}
+.uptycs--logo{
+  margin-left: 20px;
 }
 .nav-link{
   font-size: 23px;
@@ -36,17 +44,22 @@
   margin-right: 15px;
   cursor: pointer;
 }
+
+#home {
+  background: transparent;
+  width: 100vw;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
 .video--wrapper {
   width: 100%;
   height: 100vh;
   min-height: 700px;
-  padding-left: 47px;
-  padding-right: 47px;
-  /* display: block;
+  display: block;
   position: absolute;
-  top: 0;
-  left : 0; */
-  z-index: -1001;
+  z-index: 1;
 }
 .intro--video {
   width: 100%;
@@ -63,12 +76,8 @@
   background-image: url("../../../public/images/backgroundImage.jpg");
 }
 
-#home {
-  background: transparent;
-  width: 100vw;
-}
 .intro-text--wrapper {
-  z-index: 1001;
+  z-index: 2;
   width: 100%;
   max-width: 1200px;
   margin-left: auto;
@@ -101,6 +110,8 @@
 
 
 #migrate {
+  margin: 30vh 0;
+  padding-top: 120px;
   width: 100vw;
   height: auto;
   min-height: 100vh;

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import ScrollTrigger from 'react-scroll-trigger';
 
 
-export default function Card({ index, name, description, imageURL, resourceName }) {
+export default function Card({ index, name, description, imageURL, URL }) {
     const [isVisible, setIsVisible] = useState(false);
 
     return (
@@ -14,7 +14,7 @@ export default function Card({ index, name, description, imageURL, resourceName 
                     <div className="card-right">
                         <span className="card--name">{name}</span>
                         <p className="lead card--description">{description}</p>
-                        <a href={`migrateResources?resource=${resourceName}`}>
+                        <a href={URL}>
                             <button className="card--button">Try this</button>
                         </a>
                     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/ScrollComponent.css';
 import VerticalAlignTopIcon from '@mui/icons-material/VerticalAlignTop';
 
@@ -20,7 +20,7 @@ const ScrollToTopButton = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

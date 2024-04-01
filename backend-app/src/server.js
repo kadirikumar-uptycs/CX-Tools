@@ -3,21 +3,36 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 var cookieParser = require('cookie-parser');
+let { getmongoURI } = require('./models');
 let routes = require('./routes')
 const app = express();
-app.use(bodyParser.json());
+let jsonLimit = 5 * 1024 * 1024; // Max payload is 5MB
+app.use(bodyParser.json({ limit: jsonLimit }));
+
+
+const mongoDBStore = new MongoDBStore({
+    uri: getmongoURI(),
+    collection: 'sessions'
+});
+
+
 app.use(cors({
-    origin : "http://localhost:3000",
-    methods : ["GET", "POST"],
-    credentials : true,
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true,
 }));
 app.use(
     session({
-        name : 'CX-Tools',
-        secret : process.env.SESSION_SECRET,
-        resave : false,
-        saveUninitialized : true,
+        name: 'CX-Tools',
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        store: mongoDBStore,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24
+        }
     })
 );
 app.use(cookieParser());

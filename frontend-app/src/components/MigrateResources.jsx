@@ -9,7 +9,7 @@ import SnackBar from './SnackBar';
 import DrawerComponent from "./Drawer";
 import SelectComponent from './SelectComponent';
 import ScrollToTopButton from "./ScrollComponent";
-import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import HomeLink from "./Home-Link";
 
 export const ContextProvider = createContext(null);
 
@@ -82,7 +82,7 @@ export default function MigrateResources() {
         }));
 
         try {
-            await axios.post(url, { resources, credentials: state.targetCredentials });
+            await axios.post(url, { resources, sourceCredentials: state.sourceCredentials, targetCredentials: state.targetCredentials });
             toggleMigrateButton(ele, 'done', false);
             await sleep(2000);
             toggleMigrateButton(ele, 'reset', false);
@@ -101,6 +101,13 @@ export default function MigrateResources() {
             toggleMigrateButton(ele, 'done', true);
             await sleep(500);
             toggleMigrateButton(ele, 'reset', false);
+            let details = err?.response?.data?.details || {};
+            if(details.length > 0 && details.failed < details.total){
+                setState(prev => ({
+                    ...prev,
+                    targetReload: true,
+                }));
+            }
             setSnackBar({
                 open: true,
                 message: 'Error Occured while migrating some of the resources',
@@ -111,7 +118,7 @@ export default function MigrateResources() {
             setTimeout(() => {
                 setDrawer({
                     open: true,
-                    content: err.response.data.errorDetails,
+                    content: err?.response?.data?.details || {},
                 }, 2000);
             });
 
@@ -120,9 +127,7 @@ export default function MigrateResources() {
 
     return (
         <ContextProvider.Provider value={{ state, setState }}>
-            <a href="/" className="home-link">
-            <ReplyAllIcon/> Home
-            </a>
+            <HomeLink/>
             <SelectComponent />
             <section id="container">
                 <TenantComponent type='source' />
@@ -142,7 +147,7 @@ export default function MigrateResources() {
             <SnackBar getChildState={setChildState} />
 
             {/* Drawer */}
-            <DrawerComponent getChildState={setDrawerState} />
+            <DrawerComponent passChildStateSetter={setDrawerState} />
 
             {/* Scroll To Top */}
             <ScrollToTopButton />

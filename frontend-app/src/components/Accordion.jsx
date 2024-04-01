@@ -21,10 +21,25 @@ export default function AccordionComponent({ type, summary, details }) {
     function setChildState(childStateSetter) {
         setSnackBar = childStateSetter;
     }
-
-    function validateFlagProfiles({ resourceId, targetData, ele }) {
-        if (!targetData.some(flagProfile => flagProfile.priority === details.priority)) {
-            if (!targetData.some(flagProfile => flagProfile.name === summary)) {
+    function checkNameisUnique({ resourceId, targetData, ele }) {
+        if (!targetData.some(resource => resource.name === summary)) {
+            setState(prev => ({
+                ...prev,
+                migrationList: [...prev.migrationList, resourceId],
+            }));
+        } else {
+            ele.checked = false;
+            setSnackBar({
+                open: true,
+                message: 'Resource with same NAME already exists on target',
+                severity: 'error',
+                duration: 3000,
+            })
+        }
+    }
+    function checkNameAndPriorityAreUnique({ resourceId, targetData, ele }) {
+        if (!targetData.some(resource => resource.priority === details.priority)) {
+            if (!targetData.some(resource => resource.name === summary)) {
                 setState(prev => ({
                     ...prev,
                     migrationList: [...prev.migrationList, resourceId],
@@ -48,7 +63,6 @@ export default function AccordionComponent({ type, summary, details }) {
             })
         }
     }
-
 
     function validateAlertRules({ resourceId, targetData, ele }) {
         if (!targetData.some(alertRule => alertRule.code === details.code)) {
@@ -107,24 +121,28 @@ export default function AccordionComponent({ type, summary, details }) {
                 migrationList: prev.migrationList.filter(id => id !== resourceId),
             }));
         } else {
-            if (targetData.length === 0) {
+            if (targetData.length === 0 && !state.noTargetDataFound) {
                 setTimeout(() => {
                     ele.checked = false;
                 }, 500);
             } else {
-                if (resourceFromURL === 'flagProfiles') {
-                    validateFlagProfiles({ resourceId, targetData, ele });
+                if (['flagProfiles','eventExcludeProfiles', 'customProfiles'].includes(resourceFromURL)) {
+                    checkNameAndPriorityAreUnique({ resourceId, targetData, ele });
                 } else if (resourceFromURL === 'alertRules' || resourceFromURL === 'eventRules') {
-                    validateAlertRules({ resourceId, targetData, ele })
+                    validateAlertRules({ resourceId, targetData, ele });
+                } else if(['filePathGroups', 'yaraGroupRules', 'roles'].includes(resourceFromURL)){
+                    checkNameisUnique({ resourceId, targetData, ele });
                 } else {
-                    validateExceptions({ resourceId, targetData, ele })
+                    validateExceptions({ resourceId, targetData, ele });
                 }
             }
         }
     }
 
     return (
-        <div>
+        <div style={{
+            width: '100%',
+        }}>
             <Accordion sx={{
                 borderBottom: '1px solid #234',
             }}

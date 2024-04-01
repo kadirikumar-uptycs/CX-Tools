@@ -8,6 +8,10 @@ let {
     migrateTenantResources,
     getTenantResources,
     userInfo,
+    addUser,
+    getZohoTickets,
+    zohoToTotango,
+    getUsersDetails,
     logout,
 } = require('./controllers');
 
@@ -17,6 +21,10 @@ router.post('/isAuthenticated', isAuthenticated, Authenticated);
 router.get('/userInfo', userInfo);
 router.post('/get/:endpoint', isAuthenticated, (req, res) => getTenantResources(req, res));
 router.post('/migrate/:endpoint', isAuthenticated, (req, res) => migrateTenantResources(req, res));
+router.post('/zohoTickets', isAuthenticated, (req, res) => getZohoTickets(req, res));
+router.post('/migrateToTotango', isAuthenticated, (req, res) => zohoToTotango(req, res));
+router.post('/addUser', isAuthenticated, (req, res) => addUser(req, res));
+router.get('/users', isAuthenticated, getUsersDetails)
 router.post('/destroySession', logout);
 
 module.exports = router;

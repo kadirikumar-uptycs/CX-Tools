@@ -5,35 +5,65 @@ import Card from "./Card";
 
 let toolsData = [
     {
-        'name': 'Migrate Flag Profiles',
+        'name': 'Flag Profiles',
         'description': 'Migrates flag profiles from one tenant to other.',
         'imageURL': 'images/flag.gif',
-        'resourceName': 'flagProfiles',
+        'URL': 'migrateResources?resource=flagProfiles',
     },
     {
-        'name': 'Migrate Alert Rules',
+        'name': 'Alert Rules',
         'description': 'Migrates Alert Rules from one tenant to other.',
         'imageURL': 'images/Alert.gif',
-        'resourceName': 'alertRules',
+        'URL': 'migrateResources?resource=alertRules',
     },
     {
-        'name': 'Migrate Exceptions',
+        'name': 'Exceptions',
         'description': 'Migrates Exceptions from one tenant to other.',
         'imageURL': 'images/exception.gif',
-        'resourceName': 'exceptions',
+        'URL': 'migrateResources?resource=exceptions',
     },
     {
-        'name': 'Migrate Event Rules',
+        'name': 'Event Rules',
         'description': 'Migrates event rules from one tenant to other.',
         'imageURL': 'images/event.gif',
-        'resourceName': 'eventRules',
+        'URL': 'migrateResources?resource=eventRules',
     },
     {
-        'name': 'Migrate Resource',
-        'description': 'Migrates Resource from one tenant to other.',
-        'imageURL': 'images/transfer.gif',
-        'resourceName': '',
-    }
+        'name': 'FIM Rules',
+        'description': 'Migrate FIM Rules from one tenant to other.',
+        'imageURL': 'images/FIM.gif',
+        'URL': 'migrateResources?resource=filePathGroups',
+    },
+    {
+        'name': 'Event Exclude Profiles',
+        'description': 'Migrates Event Exclusion Profiles from one tenant to other.',
+        'imageURL': 'images/eventExclusion.gif',
+        'URL': 'migrateResources?resource=eventExcludeProfiles',
+    },
+    {
+        'name': 'Dashboards',
+        'description': 'Migrates Bulk dashboards from one tenant to other.',
+        'imageURL': 'images/dashboard.gif',
+        'URL': 'migrateResources?resource=customdashboards',
+    },
+    {
+        'name': 'Yara Rules',
+        'description': 'Migrates Yara Rules from one tenant to other.',
+        'imageURL': 'images/yara.gif',
+        'URL': 'migrateResources?resource=yaraGroupRules',
+    },
+    {
+        'name': 'Roles',
+        'description': 'Migrates Roles from one tenant to other.',
+        'imageURL': 'images/role.gif',
+        'URL': 'migrateResources?resource=roles',
+    },
+    {
+        'name': 'Custom Profiles',
+        'description': 'Migrates Custom Profiles from one tenant to other.',
+        'imageURL': 'images/customProfile.gif',
+        'URL': 'migrateResources?resource=customProfiles',
+    },
 ]
 
 export default function ToolCards() {
@@ -50,7 +80,7 @@ export default function ToolCards() {
                                     name={tool.name}
                                     description={tool.description}
                                     imageURL={tool.imageURL}
-                                    resourceName={tool.resourceName}
+                                    URL={tool.URL}
                                     key={index}
                                 />
                             </Grid>

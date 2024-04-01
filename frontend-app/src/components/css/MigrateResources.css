@@ -1,88 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap");
 
 #container {
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 100px
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 100px;
 }
 
 #source,
 #target {
-    width: 40%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 10px 30px;
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 30px;
 }
 
 #source {
-    margin-right: 100px;
+  margin-right: 100px;
 }
 
 #target {
-    margin-left: 100px;
+  margin-left: 100px;
 }
 .Tenant-Heading {
-    font-size: 31px;
-    width: 100%;
-    text-align: center;
-    font-weight: bolder;
-    margin-bottom: 17px;
-    padding: 10px 0;
+  font-size: 31px;
+  width: 100%;
+  text-align: center;
+  font-weight: bolder;
+  margin-bottom: 17px;
+  padding: 10px 0;
 }
-.file-upload{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .file-name {
-    margin-top: 10px;
-    margin-bottom: 50px;
-    font-size: 14px;
-    color: #555;
+  margin-top: 10px;
+  margin-bottom: 50px;
+  font-size: 14px;
+  color: #555;
 }
 
 #migrate-button {
-    color: #3498db;
-    transition: 0.5s all;
-    box-shadow: 0 0 17px #3498db;
+  color: #3498db;
+  transition: 0.5s all;
+  box-shadow: 0 0 17px #3498db;
 }
 
 #migrate-button:disabled {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 #migrate-button:hover {
-    color: #F3F3F3;
-    background-color: #3498db;
+  color: #f3f3f3;
+  background-color: #3498db;
 }
 
 #migrate-button:active {
-    background-color: #43f298;
+  background-color: #43f298;
 }
-#transfer-button{
-    cursor: not-allowed;
+#transfer-button {
+  cursor: not-allowed;
 }
-.home-link{
-        text-decoration: none;
-        font-size: 23px;
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        border-bottom: 1px solid #555;
-        border-right: 1px solid #555;
-        padding-right: 7px;
-        border-bottom-right-radius : 7px;
-        border-top-right-radius: 2px;
-        border-bottom-left-radius: 3px;
-        color: #0e59ca;
-}
-.home-link:hover {
-    border-color: #8a8686;
-    color: #0066ff;
-    text-shadow: 0 0 1px #F3F3F3,
-                 0 0 1px #F3F3F3;
-}
+

@@ -1,10 +1,14 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const dbName = "Uptycs";
 
-const userName = process.env.MONGO_USERNAME;
-const password = process.env.MONGO_PASSWORD;
+function getmongoURI() {
+    const userName = process.env.MONGO_USERNAME;
+    const password = process.env.MONGO_PASSWORD;
+    const uri = `mongodb+srv://${userName}:${password}@cluster0.ihfhwsd.mongodb.net/${dbName}?retryWrites=true&w=majority`;
+    return uri;
+}
 
-const uri = `mongodb+srv://${userName}:${password}@cluster0.ihfhwsd.mongodb.net/?retryWrites=true&w=majority`
+let uri = getmongoURI();
 
 
 async function connect() {
@@ -64,21 +68,82 @@ async function addRequestedUsersEmail(email) {
 }
 
 
+async function getUsers() {
+    try {
+        const client = await connect();
+        const db = client.db(dbName);
 
+        let usersCollection = db.collection('Users');
+        const documents = await usersCollection.find({}).toArray();
+        await client.close();
+        return documents;
+    } catch (error) {
+        console.log(error);
+        return null
+    }
+}
+
+
+async function addNewUser(document) {
+    try {
+        const client = await connect();
+        const db = client.db(dbName);
+
+        let usersCollection = db.collection('Users');
+        let response = await usersCollection.insertOne(document);
+        await client.close();
+        return { status: 200, data: response };
+    } catch (error) {
+        console.log(error);
+        return { status: 500, data: error };
+    }
+}
+
+
+async function updateUserInfo(document) {
+    try {
+        const client = await connect();
+        const db = client.db(dbName);
+
+        const updateData = {
+            $set: {
+                'picture': document?.picture,
+            }
+        };
+
+        let usersCollection = db.collection('Users');
+        let response = await usersCollection.updateOne({ 'email': document?.email }, updateData);
+        console.log('Updated User Details.');
+        await client.close();
+        return { status: 200, data: response };
+    } catch (error) {
+        console.log('Error while updating user details')
+        console.log(error);
+        return { status: 500, data: error };
+    }
+}
 
 async function isUserExists(userData) {
-    const client = await connect();
-    const db = client.db(dbName);
+    try {
+        const client = await connect();
+        const db = client.db(dbName);
 
-    let usersCollection = db.collection('Users');
-    isExists = await isPresent(usersCollection, userData);
-    await client.close();
-    return isExists;
+        let usersCollection = db.collection('Users');
+        isExists = await isPresent(usersCollection, userData);
+        await client.close();
+        return isExists;
+    } catch (error) {
+        return false;
+    }
 }
 
 
 module.exports = {
     addRequestedUsersEmail,
     isUserExists,
+    getUsers,
+    addNewUser,
+    updateUserInfo,
+    getmongoURI,
 }
 
