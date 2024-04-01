@@ -3,7 +3,6 @@ import Backdrop from '@mui/material/Backdrop';
 import { CircularProgress } from '@mui/material';
 
 const BackdropEffect = ({isLoading=false, color="#ccc", message}) => {
-    console.log(isLoading, color, message);
     return (
         <Backdrop
             sx={{ color: color, zIndex: 11111, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
