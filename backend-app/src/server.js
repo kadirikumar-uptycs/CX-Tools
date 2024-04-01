@@ -18,7 +18,7 @@ const mongoDBStore = new MongoDBStore({
 });
 
 app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:17293", "https://cxtools.uptycs.dev"],
+    origin: ["http://localhost:3000", "http://localhost:17293", "https://cxtools.uptycs.dev", process.env.UI_BASE_URL],
     methods: ["GET", "POST"],
     credentials: true,
 }));
