@@ -19,7 +19,7 @@ export default function Header() {
     }, []);
     return (
         <div id="header" className="header--wrapper">
-            <img src="images/uptycs-logo.png" width='70' className="uptycs--logo"/>
+            <img src="images/uptycs-logo.png" width='70' className="uptycs--logo" alt=""/>
             <div className="row align-items-center">
                 <NavBar />
                 <UserProfile />
