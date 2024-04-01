@@ -24,6 +24,7 @@ pipeline {
         stage('Production Build') {
           steps {
             dir(path: 'frontend-app') {
+              sh 'npm install'
               sh 'npm run build'
               sh 'sudo docker build -t mohankumar1729/cx-tools:frontend-app .'
             }
