@@ -31,7 +31,7 @@ async function filePathGroup(targetCredentials, payload) {
 
                     if (status !== 200) {
                         await deleteSignatures(targetCredentials, signatureDetails.filter(obj => obj.isCreated));
-                        return { status, data: `Error while migrating signature ${signature?.name}, ` + signPostResponse.message.detail }
+                        return { status, data: `Error while migrating signature ${signature?.name}, ` + signPostResponse?.message?.detail }
                     }
                     signatureDetails.push({ id: signPostResponse?.id, 'isCreated': true });
                 }
