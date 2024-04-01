@@ -32,7 +32,7 @@ export default function Users() {
                 </div>
                 <div className="profile-body">
                     <p className="profile-email">{user?.email}</p>
-                    <img className="profile-icon" src={user?.profile || ''} />
+                    <img className="profile-icon" src={user?.profile || ''} alt=""/>
                 </div>
             </div>
         )

@@ -10,6 +10,8 @@ import { ContextProvider } from "./MigrateResources";
 import Typography from '@mui/material/Typography';
 import './css/TenantResources.css';
 
+
+
 export default function TenantResources({ type }) {
 
     let { state, setState } = useContext(ContextProvider);
@@ -130,7 +132,7 @@ export default function TenantResources({ type }) {
         };
 
         fetchData();
-        reloadControllerValue.current = doReload;
+        reloadControllerValue.current = doReload; // eslint-disable-next-line
     }, [credentials, resourceFromURL, doReload]);
 
     // Show Not Found Template if resources are empty else all resources
@@ -165,7 +167,7 @@ export default function TenantResources({ type }) {
                 }}>Loading...</Typography>
             </>) : (
                 <div className="accordion">
-                    { resourceTemplate() }
+                    {resourceTemplate()}
                 </div>
             )}
 

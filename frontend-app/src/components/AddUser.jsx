@@ -8,11 +8,11 @@ const AddUser = () => {
     let [isModalOpen, setIsModalOpen] = useState(false);
     let closeModal = useCallback(() => {
         setIsModalOpen(false);
-    }, [isModalOpen]);
+    }, []);
 
     let openModal = useCallback(() => {
         setIsModalOpen(true);
-    }, [isModalOpen]);
+    }, []);
 
     
 
