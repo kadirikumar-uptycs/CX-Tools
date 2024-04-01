@@ -14,13 +14,16 @@ async function filePathGroup(targetCredentials, payload) {
         //  migrate signatures
         for (let signature of sourceSignatures) {
             try {
+                let newName = payload?.name + '__' + signature?.name;
                 let findSign = allTargetSignatures.find(obj => {
                     const { name, description, paths } = obj;
-                    return name === signature.name && description === signature.description && paths === signature.paths;
+                    return (name === signature.name || name == newName) && description === signature.description && paths === signature.paths;
                 });
+
                 if (findSign) {
                     signatureDetails.push({ id: findSign?.id, 'isCreated': false });
                 } else {
+
                     let signPayload = { 'name': payload?.name + '__' + signature?.name, 'description': signature.description, 'paths': signature.paths };
 
                     // POST Signature to target
@@ -28,7 +31,7 @@ async function filePathGroup(targetCredentials, payload) {
 
                     if (status !== 200) {
                         await deleteSignatures(targetCredentials, signatureDetails.filter(obj => obj.isCreated));
-                        return { status, data: `Error while migrating signature ${signature?.name}, ` + signPostResponse.message.detail }
+                        return { status, data: `Error while migrating signature ${signature?.name}, ` + signPostResponse?.message?.detail }
                     }
                     signatureDetails.push({ id: signPostResponse?.id, 'isCreated': true });
                 }

@@ -125,6 +125,7 @@ const migrateTenantResources = async (req, res) => {
 				payload.yaraGroupRules = subMigrationsData?.yaraRuleDetails.map(obj => ({ 'id': obj.id }));
 			} else {
 				resStatus = status;
+				errorDetails.push({ "name": resource.name, "error": subMigrationsData });
 			}
 		}
 
