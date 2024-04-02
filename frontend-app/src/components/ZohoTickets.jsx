@@ -117,7 +117,7 @@ const ZohoTickets = () => {
     async function getTickets(event) {
         event.stopPropagation();
         setIsLoading(true);
-        let url = `${config.SERVER_BASE_ADDRESS}/zohoTickets?limit=${limit}`;
+        let url = `${process.env.SERVER_BASE_ADDRESS}/zohoTickets?limit=${limit}`;
 
         try {
             let response = await axios.post(url);
@@ -141,7 +141,7 @@ const ZohoTickets = () => {
     }
 
     async function sendMigrationRequest(){
-        let url = `${config.SERVER_BASE_ADDRESS}/migrateToTotango?limit=${limit}`;
+        let url = `${process.env.SERVER_BASE_ADDRESS}/migrateToTotango?limit=${limit}`;
 
         try{
             let response = await axios.post(url);

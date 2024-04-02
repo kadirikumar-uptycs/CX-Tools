@@ -7,7 +7,7 @@ axios.defaults.withCredentials = true;
 
 export default async function authValidater(){
     
-    let url = `${config.SERVER_BASE_ADDRESS}/isAuthenticated`;
+    let url = `${process.env.SERVER_BASE_ADDRESS}/isAuthenticated`;
     try{
         let respose = await axios.post(url);
         if(respose?.data?.Authorized){

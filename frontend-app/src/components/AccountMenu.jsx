@@ -22,7 +22,7 @@ export default function AccountMenu({ anchorElement, handleClose, userInfo }) {
 
     async function handleLogOut() {
         setIsLoading(true);
-        let url = `${config.SERVER_BASE_ADDRESS}/destroySession`;
+        let url = `${process.env.SERVER_BASE_ADDRESS}/destroySession`;
         try {
             await axios.post(url);
             setTimeout(() => {
