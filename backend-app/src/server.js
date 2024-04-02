@@ -6,10 +6,12 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 var cookieParser = require('cookie-parser');
 let { getmongoURI } = require('./models');
-let routes = require('./routes')
+let routes = require('./routes');
 const app = express();
 let jsonLimit = 5 * 1024 * 1024; // Max payload is 5MB
 app.use(bodyParser.json({ limit: jsonLimit }));
+
+
 
 
 const mongoDBStore = new MongoDBStore({

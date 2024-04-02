@@ -9,6 +9,7 @@ import DrawerComponent from "./Drawer";
 import SelectComponent from './SelectComponent';
 import ScrollToTopButton from "./ScrollComponent";
 import HomeLink from "./Home-Link";
+import config from "../config";
 
 export const ContextProvider = createContext(null);
 
@@ -72,7 +73,7 @@ export default function MigrateResources() {
         toggleMigrateButton(ele, 'loading', false);
 
         let resources = state.sourceResources.filter(resource => state.migrationList.includes(resource.id))
-        let url = `${process.env.SERVER_BASE_ADDRESS}/migrate/${resourceFromURL}`;
+        let url = `${config.SERVER_BASE_ADDRESS}/migrate/${resourceFromURL}`;
 
         // empty migration list, this causes diabling migration button while migration is in progess
         setState(prev => ({
