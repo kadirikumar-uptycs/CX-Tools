@@ -1,5 +1,5 @@
 let config = {};
 
-config.SERVER_BASE_ADDRESS = "http://3.92.96.200:17291"
+config.SERVER_BASE_ADDRESS = "https://server-cxtools.uptycs.dev";
 
 export default config;
