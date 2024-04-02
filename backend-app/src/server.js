@@ -32,7 +32,10 @@ app.use(
         saveUninitialized: true,
         store: mongoDBStore,
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24
+            maxAge: 1000 * 60 * 60 * 24,
+            domain: ".3.92.96.200",
+            sameSite: 'None',
+            secure: true,
         }
     })
 );
