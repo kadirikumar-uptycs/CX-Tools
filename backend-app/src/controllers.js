@@ -14,6 +14,7 @@ let storeUserRequest = async (req, res) => {
 }
 
 let validateLoginUser = async (req, res) => {
+	console.log(`Validating request from ${req?.headers?.host}`)
 	let userInfo = req.body;
 	let isExists = await isUserExists({ 'email': userInfo.email });
 	if (!isExists) {
