@@ -10,7 +10,7 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import BackdropEffect from './BackdropEffect';
-
+import config from '../config';
 
 
 export default function AccountMenu({ anchorElement, handleClose, userInfo }) {
@@ -21,7 +21,7 @@ export default function AccountMenu({ anchorElement, handleClose, userInfo }) {
 
     async function handleLogOut() {
         setIsLoading(true);
-        let url = `${process.env.SERVER_BASE_ADDRESS}/destroySession`;
+        let url = `${config.SERVER_BASE_ADDRESS}/destroySession`;
         try {
             await axios.post(url);
             setTimeout(() => {

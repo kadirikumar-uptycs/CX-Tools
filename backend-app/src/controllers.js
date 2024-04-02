@@ -22,7 +22,6 @@ let validateLoginUser = async (req, res) => {
 	req.session.user = userInfo;
 	updateUserInfo(userInfo);
 	return res.status(200).send({ "message": "Auth Done!!!" })
-
 }
 
 let Authenticated = async (_, res) => {

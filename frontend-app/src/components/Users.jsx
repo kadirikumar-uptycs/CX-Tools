@@ -4,13 +4,13 @@ import HomeLink from "./Home-Link";
 import UsersPageSkeleton from "./usersPageSkeleton";
 import AddUser from "./AddUser";
 import './css/Users.css';
-
+import config from "../config";
 
 export default function Users() {
     let [users, setUsers] = useState([]);
     useEffect(() => {
         let callUsersAPI = async () => {
-            const url = `${process.env.SERVER_BASE_ADDRESS}/users`;
+            const url = `${config.SERVER_BASE_ADDRESS}/users`;
             try {
                 let response = await axios.get(url);
                 setUsers(response?.data);

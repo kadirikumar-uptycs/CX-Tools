@@ -9,6 +9,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import "./css/LoginPage.css";
 import axios from "axios";
 import BackdropEffect from "./BackdropEffect";
+import config from "../config";
+
 
 const lightTheme = createTheme({
 	palette: {
@@ -61,7 +63,7 @@ export default function LoginPage() {
 		try {
 			setIsLoading(true);
 			setMessage('Validating...');
-			await axios.post(`${process.env.SERVER_BASE_ADDRESS}/validateLoginUser`, userInfo);
+			await axios.post(`${config.SERVER_BASE_ADDRESS}/validateLoginUser`, userInfo);
 			setMessage('Verified!!!');
 			window.location.href = '/';
 		} catch (err) {
@@ -91,7 +93,7 @@ export default function LoginPage() {
 			setIsLoading(true);
 			try {
 				response = await axios.post(
-					`${process.env.SERVER_BASE_ADDRESS}/storeUserRequest`,
+					`${config.SERVER_BASE_ADDRESS}/storeUserRequest`,
 					{ email: requestedUserEmail }
 				);
 			} catch (error) {

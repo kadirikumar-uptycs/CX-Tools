@@ -10,6 +10,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import MoveUpIcon from '@mui/icons-material/MoveUp';
+import config from '../config';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 200 },
@@ -116,7 +117,7 @@ const ZohoTickets = () => {
     async function getTickets(event) {
         event.stopPropagation();
         setIsLoading(true);
-        let url = `${process.env.SERVER_BASE_ADDRESS}/zohoTickets?limit=${limit}`;
+        let url = `${config.SERVER_BASE_ADDRESS}/zohoTickets?limit=${limit}`;
 
         try {
             let response = await axios.post(url);
@@ -140,7 +141,7 @@ const ZohoTickets = () => {
     }
 
     async function sendMigrationRequest(){
-        let url = `${process.env.SERVER_BASE_ADDRESS}/migrateToTotango?limit=${limit}`;
+        let url = `${config.SERVER_BASE_ADDRESS}/migrateToTotango?limit=${limit}`;
 
         try{
             let response = await axios.post(url);

@@ -8,7 +8,7 @@ import SnackBar from './SnackBar';
 import { ContextProvider } from "./MigrateResources";
 import Typography from '@mui/material/Typography';
 import './css/TenantResources.css';
-
+import config from '../config';
 
 
 export default function TenantResources({ type }) {
@@ -66,7 +66,7 @@ export default function TenantResources({ type }) {
         const fetchData = async () => {
             if (credentials && Object.keys(credentials).length > 0 && (!reloadControllerValue.current)) {
                 setIsLoading(true);
-                const url = `${process.env.SERVER_BASE_ADDRESS}/get/${resourceFromURL}`;
+                const url = `${config.SERVER_BASE_ADDRESS}/get/${resourceFromURL}`;
                 try {
                     const response = await axios.post(url, { 'credentials': credentials });
                     setIsLoading(false);
