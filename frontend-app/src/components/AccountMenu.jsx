@@ -9,7 +9,6 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import config from '../config';
 import BackdropEffect from './BackdropEffect';
 
 

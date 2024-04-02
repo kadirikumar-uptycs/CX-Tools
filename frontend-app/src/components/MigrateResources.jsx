@@ -2,7 +2,6 @@ import React, { useState, createContext } from "react";
 import { useSearchParams } from 'react-router-dom';
 import TenantComponent from "./TenantComponent";
 import './css/MigrateResources.css';
-import config from "../config";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
 import SnackBar from './SnackBar';

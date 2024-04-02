@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import config from '../config';
 import HomeLink from "./Home-Link";
 import UsersPageSkeleton from "./usersPageSkeleton";
 import AddUser from "./AddUser";

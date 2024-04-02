@@ -3,7 +3,6 @@ import axios from "axios";
 import { redirect } from "react-router-dom";
 import AccountMenu from "./AccountMenu";
 import { Tooltip } from "@mui/material";
-import config from "../config";
 
 
 export default function UserProfile() {

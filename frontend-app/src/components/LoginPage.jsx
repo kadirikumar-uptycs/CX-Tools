@@ -7,7 +7,6 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import "./css/LoginPage.css";
-import config from "../config";
 import axios from "axios";
 import BackdropEffect from "./BackdropEffect";
 

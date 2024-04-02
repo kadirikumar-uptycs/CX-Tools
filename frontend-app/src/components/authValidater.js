@@ -1,6 +1,5 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
-import config from "../config";
 
 
 axios.defaults.withCredentials = true;

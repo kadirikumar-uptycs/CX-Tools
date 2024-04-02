@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import YoutubeSearchedForIcon from '@mui/icons-material/YoutubeSearchedFor';
 import CircularProgress from '@mui/material/CircularProgress';
-import config from '../config';
 import axios from 'axios';
 import TableComponent from './TableComponent';
 import Typography from '@mui/material/Typography';
