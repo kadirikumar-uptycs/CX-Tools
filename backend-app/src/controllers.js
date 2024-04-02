@@ -14,7 +14,11 @@ let storeUserRequest = async (req, res) => {
 }
 
 let validateLoginUser = async (req, res) => {
-	console.log(`Validating request from ${req?.headers?.host}`)
+	var host = req?.get('host');
+	var origin = req?.get('origin');
+	var userIP = req?.socket?.remoteAddress;
+
+	console.log(`Validating request from host: ${host}, origin: ${origin}, IP: ${userIP}`);
 	let userInfo = req.body;
 	let isExists = await isUserExists({ 'email': userInfo.email });
 	if (!isExists) {
@@ -99,15 +103,15 @@ const migrateTenantResources = async (req, res) => {
 		}
 		// S U B   M I G R A T I O N S
 
-		if (endpoint === 'alertRules'){
-			let {status, data} = await sub_migrations.migrateExceptions(payload?.alertRuleExceptions || [], sourceCredentials, targetCredentials);
+		if (endpoint === 'alertRules') {
+			let { status, data } = await sub_migrations.migrateExceptions(payload?.alertRuleExceptions || [], sourceCredentials, targetCredentials);
 			subMigrationsData = data;
 			console.log("S U B   M I G R A T I O N S : ", status);
 
 			isOk = status === 200;
-			if(status === 200){
-				payload.alertRuleExceptions = subMigrationsData.map(obj => ({'exceptionId': obj.exceptionId}));
-			}else{
+			if (status === 200) {
+				payload.alertRuleExceptions = subMigrationsData.map(obj => ({ 'exceptionId': obj.exceptionId }));
+			} else {
 				resStatus = status;
 			}
 		}
@@ -135,7 +139,7 @@ const migrateTenantResources = async (req, res) => {
 				resStatus = status;
 				errorDetails.push({ "name": resource.name, "error": postResponse.message.detail });
 				if (['eventRules', 'alertRules'].includes(endpoint)) await sub_migrations.deleteExceptions(targetCredentials, subMigrationsData.filter(obj => obj.isCreated));
-				if (endpoint === 'filePathGroups'){
+				if (endpoint === 'filePathGroups') {
 					await sub_migrations.deleteSignatures(targetCredentials, subMigrationsData?.signatureDetails.filter(obj => obj.isCreated));
 					await sub_migrations.deleteYaraRules(targetCredentials, subMigrationsData?.yaraRuleDetails.filter(obj => obj.isCreated));
 				}
@@ -160,7 +164,7 @@ const migrateTenantResources = async (req, res) => {
 
 let getUsersDetails = async (req, res) => {
 	let users = await getUsers();
-	return res.status(users?200:500).send(users);
+	return res.status(users ? 200 : 500).send(users);
 }
 
 let addUser = async (req, res) => {
