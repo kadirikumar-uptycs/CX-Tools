@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import AccordionComponent from './Accordion';
 import axios from 'axios';
-import config from '../config';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import SnackBar from './SnackBar';
@@ -67,7 +66,7 @@ export default function TenantResources({ type }) {
         const fetchData = async () => {
             if (credentials && Object.keys(credentials).length > 0 && (!reloadControllerValue.current)) {
                 setIsLoading(true);
-                const url = `${config.SERVER_BASE_ADDRESS}/get/${resourceFromURL}`;
+                const url = `${process.env.SERVER_BASE_ADDRESS}/get/${resourceFromURL}`;
                 try {
                     const response = await axios.post(url, { 'credentials': credentials });
                     setIsLoading(false);

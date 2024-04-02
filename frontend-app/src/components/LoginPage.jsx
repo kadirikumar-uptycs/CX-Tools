@@ -7,7 +7,6 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import "./css/LoginPage.css";
-import config from "../config";
 import axios from "axios";
 import BackdropEffect from "./BackdropEffect";
 
@@ -62,7 +61,7 @@ export default function LoginPage() {
 		try {
 			setIsLoading(true);
 			setMessage('Validating...');
-			await axios.post(`${config.SERVER_BASE_ADDRESS}/validateLoginUser`, userInfo);
+			await axios.post(`${process.env.SERVER_BASE_ADDRESS}/validateLoginUser`, userInfo);
 			setMessage('Verified!!!');
 			window.location.href = '/';
 		} catch (err) {
@@ -92,7 +91,7 @@ export default function LoginPage() {
 			setIsLoading(true);
 			try {
 				response = await axios.post(
-					`${config.SERVER_BASE_ADDRESS}/storeUserRequest`,
+					`${process.env.SERVER_BASE_ADDRESS}/storeUserRequest`,
 					{ email: requestedUserEmail }
 				);
 			} catch (error) {

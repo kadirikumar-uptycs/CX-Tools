@@ -2,7 +2,6 @@ import React, { useState, createContext } from "react";
 import { useSearchParams } from 'react-router-dom';
 import TenantComponent from "./TenantComponent";
 import './css/MigrateResources.css';
-import config from "../config";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
 import SnackBar from './SnackBar';
@@ -73,7 +72,7 @@ export default function MigrateResources() {
         toggleMigrateButton(ele, 'loading', false);
 
         let resources = state.sourceResources.filter(resource => state.migrationList.includes(resource.id))
-        let url = `${config.SERVER_BASE_ADDRESS}/migrate/${resourceFromURL}`;
+        let url = `${process.env.SERVER_BASE_ADDRESS}/migrate/${resourceFromURL}`;
 
         // empty migration list, this causes diabling migration button while migration is in progess
         setState(prev => ({

@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import config from "../config";
 import axios from 'axios';
 
 let inputStyle = {
@@ -32,7 +31,7 @@ const AddUserForm = () => {
         if (validateEmail(email)) {
             if (name) {
                 buttonRef.current.value = 'adding...';
-                let url = `${config.SERVER_BASE_ADDRESS}/addUser`;
+                let url = `${process.env.SERVER_BASE_ADDRESS}/addUser`;
                 try{
                     await axios.post(url, {name, email});
                     buttonRef.current.value = 'Added';

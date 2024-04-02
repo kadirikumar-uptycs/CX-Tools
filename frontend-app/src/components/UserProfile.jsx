@@ -3,7 +3,6 @@ import axios from "axios";
 import { redirect } from "react-router-dom";
 import AccountMenu from "./AccountMenu";
 import { Tooltip } from "@mui/material";
-import config from "../config";
 
 
 export default function UserProfile() {
@@ -12,7 +11,7 @@ export default function UserProfile() {
     useEffect(() => {
         async function fetchData() {
             try {
-                let response = await axios.get(`${config.SERVER_BASE_ADDRESS}/userInfo`);
+                let response = await axios.get(`${process.env.SERVER_BASE_ADDRESS}/userInfo`);
                 if (response.status === 200) {
                     setUserInfo(response.data);
                 } else {
