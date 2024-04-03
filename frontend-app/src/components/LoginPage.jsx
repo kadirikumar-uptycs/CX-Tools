@@ -10,7 +10,7 @@ import "./css/LoginPage.css";
 import axios from "axios";
 import BackdropEffect from "./BackdropEffect";
 import config from "../config";
-
+import {useNavigate} from 'react-router-dom';
 
 const lightTheme = createTheme({
 	palette: {
@@ -21,7 +21,9 @@ const lightTheme = createTheme({
 	},
 });
 
+
 export default function LoginPage() {
+	const navigate =useNavigate();
 	let [modal, setModal] = useState({
 		show: false,
 		title: "",
@@ -65,7 +67,7 @@ export default function LoginPage() {
 			setMessage('Validating...');
 			await axios.post(`${config.SERVER_BASE_ADDRESS}/validateLoginUser`, userInfo);
 			setMessage('Verified!!!');
-			window.location.href = '/';
+			navigate('/');
 		} catch (err) {
 			console.log(err);
 			setMessage('Error');
