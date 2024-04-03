@@ -168,7 +168,7 @@
   opacity: 0.7;
 }
 .card:hover {
-  box-shadow: 0 0 7px #909091;
+  box-shadow: 0 0 7px #36369f;
   transform: scale(1.02);
   opacity: 1;
 }
