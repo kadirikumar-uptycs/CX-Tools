@@ -23,8 +23,17 @@ let validateLoginUser = async (req, res) => {
 	if (!isExists) {
 		return res.status(401).send({ 'message': "User Not Exist, please create an account" })
 	}
+
+	// store user data in the session
 	req.session.user = userInfo;
-	res.session = req.session;
+
+	// Configure CORS headers
+	res.setHeader('Access-Control-Allow-Origin', origin);
+	res.setHeader('Access-Control-Allow-Credentials', 'true');
+	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
+	// set cookies in response header
+	res.cookies = req.cookies;
 	updateUserInfo(userInfo);
 	return res.status(200).send({ "message": "Auth Done!!!" })
 }
