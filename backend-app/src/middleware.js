@@ -1,11 +1,10 @@
 let { isUserExists } = require('./models');
 
 let isAuthenticated = async (req, res, next) => {
-    var host = req?.get('host');
 	var origin = req?.get('origin');
 	var userIP = req?.socket?.remoteAddress;
 
-	console.log(`Validating request from host: ${host}, origin: ${origin}, IP: ${userIP}`);
+	console.log(`Validating request from origin: ${origin}, IP: ${userIP}`);
 
     if (req.session && req.session.user) {
         let userInfo = { 'email': req.session.user.email};

@@ -14,17 +14,17 @@ let storeUserRequest = async (req, res) => {
 }
 
 let validateLoginUser = async (req, res) => {
-	var host = req?.get('host');
 	var origin = req?.get('origin');
 	var userIP = req?.socket?.remoteAddress;
 
-	console.log(`Validating request from host: ${host}, origin: ${origin}, IP: ${userIP}`);
+	console.log(`Validating request origin: ${origin}, IP: ${userIP}`);
 	let userInfo = req.body;
 	let isExists = await isUserExists({ 'email': userInfo.email });
 	if (!isExists) {
 		return res.status(401).send({ 'message': "User Not Exist, please create an account" })
 	}
 	req.session.user = userInfo;
+	res.session = req.session;
 	updateUserInfo(userInfo);
 	return res.status(200).send({ "message": "Auth Done!!!" })
 }

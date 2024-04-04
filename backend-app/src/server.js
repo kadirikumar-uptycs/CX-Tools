@@ -24,21 +24,28 @@ app.use(cors({
     methods: ["GET", "POST"],
     credentials: true,
 }));
-app.use(
-    session({
-        name: 'CX-Tools',
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: true,
-        store: mongoDBStore,
-        cookie: {
-            sameSite: 'none',
-            secure: true,
-            maxAge: 1000 * 60 * 60 * 24,
-        }
-    })
-);
+
 app.use(cookieParser());
+
+app.use(
+    (req, res, next) => {
+        if (req.path === '/validateLoginUser' || (req?.cookies && req.cookies['CX-Tools'])) {
+            return session({
+                name: 'CX-Tools',
+                secret: process.env.SESSION_SECRET,
+                resave: false,
+                saveUninitialized: true,
+                store: mongoDBStore,
+                cookie: {
+                    maxAge: 1000 * 60 * 60 * 24,
+                }
+            })(req, res, next);
+        } else {
+            return next();
+        }
+    }
+);
+
 app.use('/', routes);
 
 const PORT = 17291;
