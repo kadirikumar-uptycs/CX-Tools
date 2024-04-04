@@ -65,7 +65,6 @@ export default function LoginPage() {
 		try {
 			setIsLoading(true);
 			setMessage('Validating...');
-			console.log("Env:", process.env);
 			await axios.post(`${config.SERVER_BASE_ADDRESS}/validateLoginUser`, userInfo, { withCredentials: true });
 			setMessage('Verified!!!');
 			navigate('/');

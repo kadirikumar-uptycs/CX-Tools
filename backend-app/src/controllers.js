@@ -25,7 +25,6 @@ let validateLoginUser = async (req, res) => {
 		return res.status(401).send({ 'message': "User Not Exist, please create an account" })
 	}
 	req.session.user = userInfo;
-	// res.setHeader('Set-Cookie', 'name=value; SameSite=None; Secure');
 	updateUserInfo(userInfo);
 	return res.status(200).send({ "message": "Auth Done!!!" })
 }
