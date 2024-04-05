@@ -30,6 +30,8 @@ app.use(cookieParser());
 app.use(
     (req, res, next) => {
         if (req.path === '/validateLoginUser' || (req?.cookies && req.cookies['CX-Tools'])) {
+            const referer = req?.headers?.referer;
+            const domain = new URL(referer)?.hostname;
             return session({
                 name: 'CX-Tools',
                 secret: process.env.SESSION_SECRET,
@@ -40,6 +42,7 @@ app.use(
                     maxAge: 1000 * 60 * 60 * 24,
                     sameSite: 'none',
                     secure: true,
+                    domain: domain,
                 }
             })(req, res, next);
         } else {
