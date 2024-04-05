@@ -9,7 +9,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
-import authValidater from "./authValidater";
 import MigrateResources from "./MigrateResources";
 import Users from "./Users";
 import ZohoToTotango from "./ZohoToTotango";
@@ -31,27 +30,22 @@ const router = createBrowserRouter(
 			<Route
 				index
 				element={<HomePage />}
-				loader={authValidater}
 			/>
 			<Route
 				path="migrateResources"
 				element={<MigrateResources />}
-				loader={authValidater}
 			/>
 			<Route
 				path="users"
 				element={<Users />}
-				loader={authValidater}
 			/>
 			<Route
 				path="updateResources"
 				element={<UpdateResources/>}
-				loader={authValidater}
 			/>
 			<Route
 				path="zohoToTotango"
 				element={<ZohoToTotango />}
-				loader={authValidater}
 			/>
 		</Route>
 	)

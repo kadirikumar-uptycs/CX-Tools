@@ -57,9 +57,7 @@ export default function MigrateResources() {
             else {
                 ele.innerHTML = `Success<i class="bi bi-patch-check-fill ms-3 text-success"></i>`
             }
-
-        }
-        else {
+        }else {
             ele.innerHTML = `Migrate <i
             class="bi bi-send-arrow-up"></i>`;
         }
@@ -82,7 +80,7 @@ export default function MigrateResources() {
         }));
 
         try {
-            await axios.post(url, { resources, sourceCredentials: state.sourceCredentials, targetCredentials: state.targetCredentials });
+            await axios.post(url, { resources, sourceCredentials: state.sourceCredentials, targetCredentials: state.targetCredentials }, { withCredentials: true });
             toggleMigrateButton(ele, 'done', false);
             await sleep(2000);
             toggleMigrateButton(ele, 'reset', false);

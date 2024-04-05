@@ -6,8 +6,9 @@
     flex-direction: column;
   }
   
-
-
-  /* .accordion::-webkit-scrollbar {
-    display: none;
-  } */
+.message--403{
+  font-size: 31px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 700;
+  color: #fa8072;
+}

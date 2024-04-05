@@ -12,7 +12,7 @@ export default function Users() {
         let callUsersAPI = async () => {
             const url = `${config.SERVER_BASE_ADDRESS}/users`;
             try {
-                let response = await axios.get(url);
+                let response = await axios.get(url, { withCredentials: true });
                 setUsers(response?.data);
             } catch (error) {
                 console.log(error);
