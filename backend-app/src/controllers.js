@@ -28,12 +28,12 @@ let validateLoginUser = async (req, res) => {
 	req.session.user = userInfo;
 
 	// Configure CORS headers
-	res.setHeader('Access-Control-Allow-Origin', origin);
-	res.setHeader('Access-Control-Allow-Credentials', 'true');
-	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+	// res.setHeader('Access-Control-Allow-Origin', origin);
+	// res.setHeader('Access-Control-Allow-Credentials', 'true');
+	// res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
 	// set cookies in response header
-	res.cookies = req.cookies;
+	// res.cookie();
 	updateUserInfo(userInfo);
 	return res.status(200).send({ "message": "Auth Done!!!" })
 }
