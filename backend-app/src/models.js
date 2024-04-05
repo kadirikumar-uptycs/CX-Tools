@@ -107,7 +107,7 @@ async function updateUserInfo(document) {
 
         const updateData = {
             $set: {
-                'picture': document?.picture,
+                'profile': document?.picture,
             }
         };
 
