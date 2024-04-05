@@ -10,9 +10,10 @@ let routes = require('./routes');
 const app = express();
 let jsonLimit = 5 * 1024 * 1024; // Max payload is 5MB
 app.use(bodyParser.json({ limit: jsonLimit }));
+app.use(cookieParser());
 
-
-
+// Trust the first proxy in the chain
+app.set('trust proxy', 1);
 
 const mongoDBStore = new MongoDBStore({
     uri: getmongoURI(),
@@ -21,17 +22,25 @@ const mongoDBStore = new MongoDBStore({
 
 app.use(cors({
     origin: ["http://localhost:3000", "http://localhost:17293", "https://cxtools.uptycs.dev", "http://34.239.162.244:17293", process.env.UI_BASE_URL],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
 
-app.use(cookieParser());
+
+
 
 app.use(
     (req, res, next) => {
         if (req.path === '/validateLoginUser' || (req?.cookies && req.cookies['CX-Tools'])) {
-            const referer = req?.headers?.referer;
-            const domain = new URL(referer)?.hostname;
+            const origin = req?.headers?.origin;
+
+            // set response headers
+            res.header("Access-Control-Allow-Credentials", true);
+            res.header("Access-Control-Allow-Origin", origin);
+            res.header("Access-Control-Allow-Headers",
+            "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-HTTP-Method-Override, Set-Cookie, Cookie");
+            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+
             return session({
                 name: 'CX-Tools',
                 secret: process.env.SESSION_SECRET,
@@ -42,7 +51,6 @@ app.use(
                     maxAge: 1000 * 60 * 60 * 24,
                     sameSite: 'none',
                     secure: true,
-                    domain: domain,
                 }
             })(req, res, next);
         } else {
