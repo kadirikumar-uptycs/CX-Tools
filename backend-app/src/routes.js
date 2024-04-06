@@ -16,7 +16,6 @@ let {
 
 router.post('/storeUserRequest', storeUserRequest);
 router.post('/validateLoginUser', validateLoginUser);
-// router.post('/isAuthenticated', isAuthenticated, Authenticated);
 router.get('/userInfo', userInfo);
 router.post('/get/:endpoint', isAuthenticated, isDomainAllowed, (req, res) => getTenantResources(req, res));
 router.post('/migrate/:endpoint', isAuthenticated, isDomainAllowed, (req, res) => migrateTenantResources(req, res));

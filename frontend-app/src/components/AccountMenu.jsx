@@ -23,7 +23,7 @@ export default function AccountMenu({ anchorElement, handleClose, userInfo }) {
         setIsLoading(true);
         let url = `${config.SERVER_BASE_ADDRESS}/destroySession`;
         try {
-            await axios.post(url);
+            await axios.post(url, { withCredentials: true });
             setTimeout(() => {
                 setIsLoading(false);
                 navigate('/login');

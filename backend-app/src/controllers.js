@@ -74,7 +74,6 @@ const migrateTenantResources = async (req, res) => {
 		}
 
 		let payload = JSON.parse(JSON.stringify(resource));
-		let id = payload.id;
 		let isOk = true;
 		if (endpoint === 'eventRules') payload = helpers.payloadFormatter.eventRule(payload);
 		if (endpoint === 'alertRules') payload = helpers.payloadFormatter.alertRule(payload);
@@ -132,6 +131,7 @@ const migrateTenantResources = async (req, res) => {
 		}
 
 		if (isOk) {
+			console.log(payload);
 			const { status, data: postResponse } = await helpers.postResources(targetCredentials, payload, endpoint);
 			if (status !== 200) {
 				resStatus = status;

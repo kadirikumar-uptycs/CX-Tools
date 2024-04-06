@@ -13,7 +13,7 @@ app.use(bodyParser.json({ limit: jsonLimit }));
 app.use(cookieParser());
 
 // Trust the first proxy in the chain
-app.set('trust proxy', 1);
+// app.set('trust proxy', 1);
 
 const mongoDBStore = new MongoDBStore({
     uri: getmongoURI(),
@@ -35,11 +35,11 @@ app.use(
             const origin = req?.headers?.origin;
 
             // set response headers
-            res.header("Access-Control-Allow-Credentials", true);
-            res.header("Access-Control-Allow-Origin", origin);
-            res.header("Access-Control-Allow-Headers",
-            "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-HTTP-Method-Override, Set-Cookie, Cookie");
-            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+            // res.header("Access-Control-Allow-Credentials", true);
+            // res.header("Access-Control-Allow-Origin", origin);
+            // res.header("Access-Control-Allow-Headers",
+            // "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-HTTP-Method-Override, Set-Cookie, Cookie");
+            // res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
 
             return session({
                 name: 'CX-Tools',
@@ -49,8 +49,8 @@ app.use(
                 store: mongoDBStore,
                 cookie: {
                     maxAge: 1000 * 60 * 60 * 24,
-                    sameSite: 'none',
-                    secure: true,
+                    // sameSite: 'none',
+                    // secure: true,
                 }
             })(req, res, next);
         } else {
