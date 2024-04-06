@@ -26,6 +26,7 @@ function eventRule(payload) {
         'createdAt',
         'links',
         'isInternal',
+        'scriptConfig',
         'throttled',
         'sigmaRule',
         'createdBy',
@@ -41,6 +42,12 @@ function eventRule(payload) {
         'builderConfig.customerId',
     ]
 
+
+    let sqlKeysToBeDeleted = [
+        'builderConfig',
+    ]
+
+
     let eventType = payload.type;
     payload.sqlConfig ??= {};
     payload.scriptConfig ??= {};
@@ -51,13 +58,15 @@ function eventRule(payload) {
 
     payload.builderConfig.transformations = payload.transformations;
 
-    keysToBeDeleted = [...keysToDelete];
+    let keysToBeDeleted = [...keysToDelete];
 
     if (eventType === 'builder') {
-        payload.scriptConfig.tableName = payload.builderConfig.tableName;
-        payload.scriptConfig.added = payload.builderConfig.added;
-        (payload.builderConfig.autoAlertConfig) && (payload.builderConfig.autoAlertConfig.disableAlert = false);
+        // (payload.builderConfig.autoAlertConfig) && (payload.builderConfig.autoAlertConfig.disableAlert = false);
         keysToBeDeleted = [...keysToBeDeleted, ...builderKeysToBeDeleted];
+    }
+
+    if(eventType === 'sql'){
+        keysToBeDeleted = [...keysToBeDeleted, ...sqlKeysToBeDeleted];
     }
 
     payload = deleteNestedProperty(payload, keysToBeDeleted);
@@ -78,6 +87,7 @@ function alertRule(payload) {
         "updatedBy",
         "isInternal",
         "lock",
+        "destinations",
         "alertNotifyInterval",
         "alertNotifyCount",
         "alertConfig",
