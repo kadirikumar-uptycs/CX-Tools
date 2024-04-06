@@ -87,7 +87,8 @@ export default function TenantResources({ type }) {
 						}));
 						setErrors(prev => ({
 							...prev,
-							error: 404, // when no data is found
+							status: 404,
+							error: 'No Data Found', // when no data is found
 						}));
 					} else {
 						setState((prev) => ({
