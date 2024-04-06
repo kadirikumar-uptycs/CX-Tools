@@ -86,7 +86,7 @@ const migrateTenantResources = async (req, res) => {
 
 		// S U B   M I G R A T I O N S
 
-		if (endpoint === 'eventRules') {
+		if (endpoint === 'eventRules' && resource?.type === 'builder') {
 			let { status, data } = await sub_migrations.eventRule(sourceCredentials, targetCredentials, endpoint, resource);
 			subMigrationsData = data;
 			console.log("S U B   M I G R A T I O N S : ", status);
