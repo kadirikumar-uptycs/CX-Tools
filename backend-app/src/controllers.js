@@ -27,19 +27,8 @@ let validateLoginUser = async (req, res) => {
 	// store user data in the session
 	req.session.user = userInfo;
 
-	// Configure CORS headers
-	// res.setHeader('Access-Control-Allow-Origin', origin);
-	// res.setHeader('Access-Control-Allow-Credentials', 'true');
-	// res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
-	// set cookies in response header
-	// res.cookie();
 	updateUserInfo(userInfo);
 	return res.status(200).send({ "message": "Auth Done!!!" })
-}
-
-let Authenticated = async (_, res) => {
-	return res.status(200).send({ 'Authorized': true });
 }
 
 
@@ -85,7 +74,6 @@ const migrateTenantResources = async (req, res) => {
 		}
 
 		let payload = JSON.parse(JSON.stringify(resource));
-		let id = payload.id;
 		let isOk = true;
 		if (endpoint === 'eventRules') payload = helpers.payloadFormatter.eventRule(payload);
 		if (endpoint === 'alertRules') payload = helpers.payloadFormatter.alertRule(payload);
@@ -143,6 +131,7 @@ const migrateTenantResources = async (req, res) => {
 		}
 
 		if (isOk) {
+			console.log(payload);
 			const { status, data: postResponse } = await helpers.postResources(targetCredentials, payload, endpoint);
 			if (status !== 200) {
 				resStatus = status;
@@ -215,7 +204,6 @@ let logout = (req, res) => {
 module.exports = {
 	storeUserRequest,
 	validateLoginUser,
-	Authenticated,
 	userInfo,
 	getTenantResources,
 	migrateTenantResources,

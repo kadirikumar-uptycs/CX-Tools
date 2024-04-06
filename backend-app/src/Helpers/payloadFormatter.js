@@ -91,6 +91,7 @@ function alertRule(payload) {
         "alertRuleExceptions.updatedAt",
         "alertRuleQueries.customerId",
         "alertRuleQueries.sequence",
+        'sqlConfig.lastRanAt',
         "links",
     ];
 
