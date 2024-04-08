@@ -13,6 +13,7 @@ import MigrateResources from "./MigrateResources";
 import Users from "./Users";
 import ZohoToTotango from "./ZohoToTotango";
 import UpdateResources from "./UpdateResources";
+import authValidater from "./authValidater";
 
 const darkTheme = createTheme({
 	palette: {
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
 			<Route
 				path="migrateResources"
 				element={<MigrateResources />}
+				loader={authValidater}
 			/>
 			<Route
 				path="users"
