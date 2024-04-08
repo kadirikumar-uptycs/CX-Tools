@@ -3,6 +3,8 @@ let helpers = require('../../Helpers');
 
 async function customdashboard(sourceCredentials, targetCredentials, resource, endpoint, targetdashboardId) {
     let id = resource.id;
+    let resStatus = 200;
+    let errors = [];
     let resourceEndpoint = `${endpoint}/${id}`;
     let { status, data: fullData } = await helpers.getResources(sourceCredentials, resourceEndpoint, true);
 
@@ -16,17 +18,20 @@ async function customdashboard(sourceCredentials, targetCredentials, resource, e
                 let formattedSection = helpers.payloadFormatter.reportSection(section);
                 let { status, data:postResponse } = await helpers.postResources(targetCredentials, formattedSection, sectionsEndpoint);
                 if (status !== 200) {
-                    return { status, "data": `Error while posting section ${section.name}, Error : ${postResponse?.message?.detail}` };
+                    resStatus = status;
+                    errors.push(`Error while posting section: "${section.title}", Error : ${postResponse?.message?.detail}`);
                 }
             } catch (error) {
-                return { status: 500, "data": `Error while posting section ${section.name}, Error : ${error}` };
+                errors.push(`Error while posting section: "${section.title}", Error : ${error}`);
+                resStatus = 500;
             }
         }
     } else {
-        return { status, "data": fullData.message.detail };
+        errors.push(`Error retrieving corresponding sections data, ${fullData?.message?.detail}`);
+        resStatus = status;
     }
 
-    return {status: 200, "data": "Done!!!"}
+    return {status: resStatus, errors};
 }
 
 module.exports = customdashboard;

@@ -22,6 +22,18 @@ export default function DrawerComponent({ passChildStateSetter }) {
 		})
 	}
 
+	function ListView(list) {
+		console.log(list);
+		return (
+			<ul>
+				{list.map((item, index) => (
+					<li key={index}>{item}</li>
+				))}
+			</ul>
+		);
+	}
+	
+
 	return (
 		<div>
 			<React.Fragment>
@@ -43,7 +55,12 @@ export default function DrawerComponent({ passChildStateSetter }) {
 						{drawer.content.errors?.map(row => (
 							<div className="row" key={row?.name}>
 								<div className="col">{row.name}</div>
-								<div className="col col-2">{row.error}</div>
+								<div className="col col-2">
+									{
+										Array.isArray(row?.error) ?
+										ListView(row?.error) : row?.error
+									}
+								</div>
 								<hr />
 							</div>
 						))}
