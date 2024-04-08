@@ -16,7 +16,10 @@ let {
 
 router.post('/storeUserRequest', storeUserRequest);
 router.post('/validateLoginUser', validateLoginUser);
-router.get('/userInfo', userInfo);
+router.get('/isAuthenticated', isAuthenticated, (req, res) => {
+    return res.status(200).send({'Authorized': true});
+});
+router.get('/userInfo', isAuthenticated, userInfo);
 router.post('/get/:endpoint', isAuthenticated, isDomainAllowed, (req, res) => getTenantResources(req, res));
 router.post('/migrate/:endpoint', isAuthenticated, isDomainAllowed, (req, res) => migrateTenantResources(req, res));
 router.post('/zohoTickets', isAuthenticated, (req, res) => getZohoTickets(req, res));
