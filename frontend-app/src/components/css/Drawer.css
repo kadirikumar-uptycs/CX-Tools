@@ -24,6 +24,7 @@
     height: 700px;
     margin-bottom: 30px;
     overflow-y: scroll;
+    scroll-snap-type: proximity;
 }
 
 .row{
@@ -32,6 +33,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
+    scroll-behavior: smooth;
 }
 
 .row > .col{
@@ -51,6 +53,22 @@
     color: #da230b;
 }
 
+.col-2 > ul{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: inherit;
+    background: inherit;
+}
+.col-2 > ul > li{
+    list-style-type: none;
+    margin: 15px 0;
+}
+.col-2 > ul > li::marker{
+    content: '⛔ ';
+    font-size: 20px;
+}
 
 .footer{
     height: fit-content;

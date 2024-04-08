@@ -143,7 +143,7 @@ const migrateTenantResources = async (req, res) => {
 				}
 			} else {
 				if (endpoint === 'customdashboards') {
-					let { status, data: sectionResponse } = await sub_migrations.customdashboard(sourceCredentials, targetCredentials, resource, endpoint, postResponse.id);
+					let { status, errors: sectionResponse } = await sub_migrations.customdashboard(sourceCredentials, targetCredentials, resource, endpoint, postResponse.id);
 
 					if (status !== 200) {
 						errorDetails.push({ "name": resource.name, "error": sectionResponse });
