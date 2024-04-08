@@ -14,8 +14,11 @@ export default function Users() {
             try {
                 let response = await axios.get(url, { withCredentials: true });
                 setUsers(response?.data);
-            } catch (error) {
-                console.log(error);
+            } catch (err) {
+                console.log(err);
+                if(err?.response?.data?.Authorized === false || err?.response?.status === 401){
+                    window.location.href = '/login';
+                }
                 alert('Error while retrieving data');
             }
         }

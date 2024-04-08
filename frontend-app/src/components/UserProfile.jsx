@@ -16,6 +16,9 @@ export default function UserProfile() {
                 }
             } catch (err) {
                 console.log(err);
+                if(err?.response?.data?.Authorized === false || err?.response?.status === 401){
+                    window.location.href = '/login';
+                }
             }
         }
 
