@@ -24,6 +24,7 @@ export default function MigrateResources() {
         targetResources: [],
         migrationList: [],
         targetReload: false,
+        noTargetDataFound: false,
     });
 
     const sleep = time => new Promise(res => setTimeout(res, time));

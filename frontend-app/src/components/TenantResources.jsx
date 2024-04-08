@@ -73,7 +73,7 @@ export default function TenantResources({ type }) {
 					const response = await axios.post(url, { credentials: credentials }, { withCredentials: true });
 					setIsLoading(false);
 					let responseData = response.data;
-					if (responseData.length === 0) {
+					if (responseData?.length === 0) {
 						setSnackBar({
 							open: true,
 							message: `No data found on ${type}`,
@@ -84,6 +84,7 @@ export default function TenantResources({ type }) {
 							...prev,
 							[type + "Resources"]: [],
 							targetReload: false,
+							noTargetDataFound: type === 'target'?true:prev.noTargetDataFound,
 						}));
 						setErrors(prev => ({
 							...prev,
@@ -95,6 +96,7 @@ export default function TenantResources({ type }) {
 							...prev,
 							[type + "Resources"]: responseData,
 							targetReload: false,
+							noTargetDataFound: type === 'target'?false:prev.noTargetDataFound,
 						}));
 
 						setErrors(prev => ({
@@ -111,6 +113,7 @@ export default function TenantResources({ type }) {
 						[type + "Resources"]: [],
 						[type + "Credentials"]: {},
 						targetReload: false,
+						noTargetDataFound: type === 'target'?false:prev.noTargetDataFound,
 					}));
 					let errorStatus = err?.response?.status;
 					if (errorStatus === 401) {
