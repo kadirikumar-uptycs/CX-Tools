@@ -101,8 +101,10 @@ export default function LoginPage() {
 				);
 			} catch (error) {
 				console.log(error);
+				setMessage('Error');
+				setIsLoading(false);
 			}
-			setMessage('Error');
+			setMessage('Requested!!!');
 			setIsLoading(false);
 			setModal({
 				show: true,
