@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ContextProvider } from './MigrateResources';
 import './css/SelectComponent.css';
