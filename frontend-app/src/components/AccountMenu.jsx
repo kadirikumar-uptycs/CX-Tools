@@ -45,8 +45,8 @@ export default function AccountMenu({ anchorElement, handleClose, userInfo }) {
                 anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
                 PaperProps={{
                     style: {
-                        background: '#333',
-                        color: '#ccc'
+                        background: '#350f76',
+                        color: '#F3F3F3'
                     }
                 }}
             >
