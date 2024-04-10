@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import { useSearchParams } from 'react-router-dom';
 import TenantComponent from "./TenantComponent";
 import './css/MigrateResources.css';
@@ -10,6 +10,7 @@ import SelectComponent from './SelectComponent';
 import ScrollToTopButton from "./ScrollComponent";
 import HomeLink from "./Home-Link";
 import config from "../config";
+import resourcesList from "../resourcesList";
 
 export const ContextProvider = createContext(null);
 
@@ -41,7 +42,7 @@ export default function MigrateResources() {
         setSnackBar = childStateSetter;
     }
 
-    let [searchParams, ] = useSearchParams();
+    let [searchParams,] = useSearchParams();
     let resourceFromURL = searchParams.get('resource') || 'flagProfiles';
 
 
@@ -58,7 +59,7 @@ export default function MigrateResources() {
             else {
                 ele.innerHTML = `Success<i class="bi bi-patch-check-fill ms-3 text-success"></i>`
             }
-        }else {
+        } else {
             ele.innerHTML = `Migrate <i
             class="bi bi-send-arrow-up"></i>`;
         }
@@ -101,7 +102,7 @@ export default function MigrateResources() {
             await sleep(500);
             toggleMigrateButton(ele, 'reset', false);
             let details = err?.response?.data?.details || {};
-            if(details.length > 0 && details.failed < details.total){
+            if (details.length > 0 && details.failed < details.total) {
                 setState(prev => ({
                     ...prev,
                     targetReload: true,
@@ -124,9 +125,13 @@ export default function MigrateResources() {
         }
     }
 
+    useEffect(() => {
+        document.title = resourcesList?.filter(obj => obj.endpoint === resourceFromURL)[0]?.name || resourceFromURL;
+    }, [resourceFromURL])
+
     return (
         <ContextProvider.Provider value={{ state, setState }}>
-            <HomeLink/>
+            <HomeLink />
             <SelectComponent />
             <section id="container">
                 <TenantComponent type='source' />
