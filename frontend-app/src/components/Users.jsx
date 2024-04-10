@@ -8,6 +8,7 @@ import config from "../config";
 
 export default function Users() {
     let [users, setUsers] = useState([]);
+    document.title = 'Users';
     useEffect(() => {
         let callUsersAPI = async () => {
             const url = `${config.SERVER_BASE_ADDRESS}/users`;
@@ -16,7 +17,7 @@ export default function Users() {
                 setUsers(response?.data);
             } catch (err) {
                 console.log(err);
-                if(err?.response?.data?.Authorized === false || err?.response?.status === 401){
+                if (err?.response?.data?.Authorized === false || err?.response?.status === 401) {
                     window.location.href = '/login';
                 }
                 alert('Error while retrieving data');
@@ -34,7 +35,7 @@ export default function Users() {
                 </div>
                 <div className="profile-body">
                     <p className="profile-email">{user?.email}</p>
-                    <img className="profile-icon" src={user?.profile || ''} alt=""/>
+                    <img className="profile-icon" src={user?.profile || ''} alt="" referrerPolicy="no-referrer" />
                 </div>
             </div>
         )
@@ -44,7 +45,7 @@ export default function Users() {
         <>
             <div className="header">
                 <HomeLink />
-                <AddUser/>
+                <AddUser />
             </div>
             <div className="heading">Users</div>
             {
