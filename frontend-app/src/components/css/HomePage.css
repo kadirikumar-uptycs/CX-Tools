@@ -5,7 +5,7 @@
   width: 100vw;
   height: max(100vh, 100%);
 }
-.header--wrapper{
+.header--wrapper {
   display: flex;
   align-items: center;
   position: fixed;
@@ -14,21 +14,21 @@
   padding: 20px 0 10px;
   transition: 0.3s all ease-in-out;
 }
-.fixed--header{
+.fixed--header {
   background-color: #170437;
   color: #fdfdfe;
   border-bottom: 1px solid #111;
 }
-.uptycs--logo{
+.uptycs--logo {
   margin-left: 20px;
 }
-.nav-link{
+.nav-link {
   font-size: 23px;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-weight: 700;
   opacity: 0.8;
 }
-.nav-link:hover{
+.nav-link:hover {
   border-bottom: 2px double #f8f9fa;
   opacity: 1;
 }
@@ -98,61 +98,34 @@
   margin-bottom: 26px;
   font-size: 85px;
   line-height: 80px;
-  font-family: karmina,sans-serif;
+  font-family: karmina, sans-serif;
 }
-.intro-description{
+.intro-description {
   margin-top: 10px;
   margin-bottom: 10px;
-  font-family: Open Sans,sans-serif;
+  font-family: Open Sans, sans-serif;
   font-size: 28px;
   opacity: 0.8;
 }
 
-
 #migrate {
-  margin: 30vh 0;
+  margin: 5vh 0;
   padding-top: 120px;
   width: 100vw;
   height: auto;
   min-height: 100vh;
   background-color: #4d4855;
   background-image: linear-gradient(to bottom, #000000 0%, #111 95%);
-  
 }
-.card-1 {
-  opacity: 0;
-  transform: translateX(-200px);
-  transition: opacity 3s, transform 2s;
-  margin-left: 10px;
-}
-
-.card-1.visible {
-  opacity: 0.7;
-  transform: translateX(0);
+.ascii-heading {
+  font-size: 13px;
+  margin-bottom: 70px;
+  border-bottom: 3px double #ddd;
+  border-top: 3px double #ddd;
+  color: #dfdf25;
+  width: fit-content;
 }
 
-.card-2 {
-  opacity: 0;
-  transform: scale(0);
-  transition: opacity 3s, transform 2s;
-}
-
-.card-2.visible {
-  opacity: 0.7;
-  transform: scale(1);
-}
-
-.card-3 {
-  opacity: 0;
-  transform: translateX(200px);
-  transition: opacity 3s, transform 2s;
-  margin-right: 30px;
-}
-
-.card-3.visible {
-  opacity: 0.7;
-  transform: translateX(0);
-}
 .card {
   display: flex;
   flex-direction: row;
@@ -165,8 +138,40 @@
   padding: 20px 10px;
   transition: transform 1s;
   transform-style: preserve-3d;
+  box-shadow: 0 4px 8px #000;
   opacity: 0.7;
 }
+.card:not(.visible){
+  opacity: 0;
+}
+.card-1{
+  margin-left: 10px;
+}
+.card-3{
+  margin-right: 30px;
+}
+
+.card-1.visible {
+  animation: fade-in-out 1.5s cubic-bezier(0.42, 0, 1.0, 1.0) 1;
+}
+
+.card-2.visible {
+  animation: fade-in-out 3s cubic-bezier(0.42, 0, 1.0, 1.0) 1;
+}
+
+.card-3.visible {
+  animation: fade-in-out 4.5s cubic-bezier(0.42, 0, 1.0, 1.0) 1;
+}
+
+@keyframes fade-in-out {
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 0.7;
+  }
+}
+
 .card:hover {
   box-shadow: 0 0 7px #36369f;
   transform: scale(1.02);

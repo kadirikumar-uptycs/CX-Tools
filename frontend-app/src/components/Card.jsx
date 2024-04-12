@@ -8,7 +8,7 @@ export default function Card({ index, name, description, imageURL, URL }) {
     const sleep = time => new Promise(res => setTimeout(res, time));
 
     let setanimation = useCallback(async (index) => {
-        await sleep(index * 1500 + 1000);
+        await sleep(index * 1500 + 100);
         cardRef.current.classList.add('visible');
     }, [cardRef?.current?.classList]);
 
