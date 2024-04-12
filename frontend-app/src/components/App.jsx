@@ -13,6 +13,7 @@ import MigrateResources from "./MigrateResources";
 import Users from "./Users";
 import ZohoToTotango from "./ZohoToTotango";
 import UpdateResources from "./UpdateResources";
+import OsqueryAnalysisPage from "./OsqueryAnalysisPage";
 import authValidater from "./authValidater";
 
 const darkTheme = createTheme({
@@ -48,6 +49,11 @@ const router = createBrowserRouter(
 			<Route
 				path="zohoToTotango"
 				element={<ZohoToTotango />}
+			/>
+			<Route
+				path="osqueryLogAnalysis"
+				element={<OsqueryAnalysisPage/>}
+				loader={authValidater}
 			/>
 		</Route>
 	)
