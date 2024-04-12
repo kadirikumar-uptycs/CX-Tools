@@ -13,10 +13,12 @@ export default async function authValidater(){
         }
         else{
             window.location.href = '/login';
+            return null;
         }
     }catch(err){
         console.log(err);
-        // window.location.href = '/login';
+        window.location.href = '/login';
+        return null;
     }
 
 }
