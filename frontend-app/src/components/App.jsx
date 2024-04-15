@@ -7,15 +7,14 @@ import {
 } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import LoginPage from "./LoginPage";
-import HomePage from "./HomePage";
-import MigrateResources from "./MigrateResources";
-import Users from "./Users";
-import ZohoToTotango from "./ZohoToTotango";
-import UpdateResources from "./UpdateResources";
-import OsqueryAnalysisPage from "./OsqueryAnalysisPage";
+import LoginPage from "./Login/LoginPage";
+import HomePage from "./HomePage/HomePage";
+import MigrateResources from "./Migrations/MigrateResources";
+import Users from "./HomePage/Users/Users";
+import ZohoToTotango from "./ZohoTotango/ZohoToTotango";
+import UpdateResources from "./Updations/UpdateResources";
+import OsqueryAnalysisPage from "./OsqueryLogAnalysis/OsqueryAnalysisPage";
 import authValidater from "./authValidater";
-
 const darkTheme = createTheme({
 	palette: {
 	  mode: 'dark',
