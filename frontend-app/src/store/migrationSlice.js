@@ -23,6 +23,7 @@ const initialState = {
     migrating: false,
     migrationErrors: {},
     resource: 'flagProfiles',
+    success: false,
 }
 
 
@@ -38,7 +39,7 @@ const fetchResources = createAsyncThunk('migration/fetchSourceResources', async 
 });
 
 
-const migrateResources = createAsyncThunk('migration/migrateResources', async ({ getState, rejectWithValue, dispatch }) => {
+const migrateResources = createAsyncThunk('migration/migrateResources', async (_, { getState, rejectWithValue, dispatch }) => {
     const resource = getState().migration?.resource;
     const { source, target, migrationResourceIds } = getState().migration;
     const payload = {
@@ -90,6 +91,9 @@ const migrationSlice = createSlice({
             const type = action.meta.arg;
             state[type].loading = true;
             state[type].noData = false;
+            state.migrationErrors = {};
+            state.migrationResourceIds = [];
+            state.success = false;
         });
         builder.addCase(fetchResources.fulfilled, (state, action) => {
             const type = action.meta.arg;
@@ -111,14 +115,16 @@ const migrationSlice = createSlice({
         });
         builder.addCase(migrateResources.pending, state => {
             state.migrating = true;
-            state.migrationErrors = {}
+            state.migrationErrors = {};
         });
         builder.addCase(migrateResources.fulfilled, (state) => {
             state.migrating = false;
             state.migrationErrors = {};
+            state.success = true;
         });
         builder.addCase(migrateResources.rejected, (state, action) => {
             state.migrating = false;
+            state.success = false;
             state.migrationErrors = action?.payload?.response?.data?.details
                 || action?.payload?.message || {};
         });
