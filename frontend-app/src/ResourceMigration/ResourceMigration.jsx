@@ -10,6 +10,7 @@ import Stack from '@mui/joy/Stack';
 import Button from '@mui/joy/Button';
 import SendIcon from '@mui/icons-material/Send';
 import ReportIcon from '@mui/icons-material/Report';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Typography from '@mui/joy/Typography';
 import IconButton from '@mui/joy/IconButton';
 
@@ -20,7 +21,7 @@ const ResourceMigration = () => {
     const migrationInfo = useSelector(state => state.migration);
     const source = migrationInfo?.source;
     const target = migrationInfo?.target;
-    const { migrationResourceIds, migrating, migrationErrors, resource } = migrationInfo || {};
+    const { migrationResourceIds, migrating, migrationErrors, resource, success } = migrationInfo || {};
     const { failed, total } = migrationErrors || {};
     const [showErrors, setShowErrors] = useState(false);
     const handleCloseErrorsDrawerComponent = () => setShowErrors(false);
@@ -42,8 +43,8 @@ const ResourceMigration = () => {
 
     const handleResourceChange = (newResource) => {
         dispatch(setResourceType(newResource));
-        if(Object.keys(source?.credentials)?.length && !source?.error) dispatch(fetchResources('source'));
-        if(Object.keys(target?.credentials)?.length && !target?.error) dispatch(fetchResources('target'));
+        if (Object.keys(source?.credentials)?.length && !source?.error) dispatch(fetchResources('source'));
+        if (Object.keys(target?.credentials)?.length && !target?.error) dispatch(fetchResources('target'));
     }
 
     useLayoutEffect(() => {
@@ -125,19 +126,19 @@ const ResourceMigration = () => {
                         migrating
                         &&
                         <Typography
-                        component='h1'
-                        sx={{
-                            color: 'var(--primary-color)',
-                            position: 'relative',
-                            top: '30px',
-                            '.MuiButton-loading': {
-                                color: 'red'
-                            }
-                        }}
+                            component='h1'
+                            sx={{
+                                color: 'var(--primary-color)',
+                                position: 'relative',
+                                top: '30px',
+                                '.MuiButton-loading': {
+                                    color: 'red'
+                                }
+                            }}
                         >Migrating ...
                         </Typography>}
                     {
-                        failed &&
+                        failed && !success &&
                         <Typography
                             color='danger'
                             startDecorator={
@@ -153,6 +154,24 @@ const ResourceMigration = () => {
                                 top: '100px',
                             }}
                         >{`${failed} out of ${total} failed`}
+                        </Typography>
+                    }
+                    {
+                        !failed && success &&
+                        <Typography
+                            color='success'
+                            startDecorator={
+                                <IconButton
+                                    color='success'
+                                >
+                                    <CheckCircleIcon />
+                                </IconButton>
+                            }
+                            sx={{
+                                position: 'relative',
+                                top: '100px',
+                            }}
+                        >Migrated Successfully!
                         </Typography>
                     }
                     {
