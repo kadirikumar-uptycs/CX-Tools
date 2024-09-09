@@ -1,0 +1,1 @@
+export const REQUIRED_KEYS = ["id", "customerId", "key", "secret", "domain", "domainSuffix"];

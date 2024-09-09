@@ -1,0 +1,71 @@
+.page {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.robo {
+  width: 30%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  transform: translateX(-330px);
+  animation: reveal ease-in-out 3s;
+}
+
+@keyframes reveal {
+  0% {
+    transform: translateX(0);
+    z-index: -1;
+  }
+  30%{
+    transform: translateY(-250px);
+  }
+  79% {
+    transform: translate(-430px, 0);
+    z-index: -1;
+  }
+  79.1% {
+    transform: translateX(-430px);
+    z-index: 1;
+  }
+  100% {
+    transform: translateX(-330px);
+    z-index: 1;
+  }
+}
+
+.sheet {
+  width: 400px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(100px);
+}
+
+.tool-name {
+  font-size: 43px !important;
+  font-family: "BungeeSpice-Regular" !important;
+}
+.sign-in-btn {
+  border-radius: 50px !important;
+  padding-left: 7px !important;
+}
+
+.google-icon {
+  background: #f3f3f3;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 10px;
+  padding: 9px;
+}
+
+.signin-text {
+  color: #f3f3f3;
+  padding-bottom: 3px;
+}

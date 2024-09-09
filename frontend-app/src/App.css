@@ -1,0 +1,163 @@
+@font-face {
+  font-family: "Poppins-ExtraBold";
+  src: url("./assets/fonts/Poppins/Poppins-ExtraBold.ttf");
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+@font-face {
+  font-family: "Poppins-semiBold";
+  src: url("./assets/fonts/Poppins/Poppins-SemiBold.ttf");
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@font-face {
+  font-family: "Poppins-Medium";
+  src: url("./assets/fonts/Poppins/Poppins-Medium.ttf");
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url("./assets/fonts/Poppins/Poppins-Regular.ttf");
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+@font-face {
+  font-family: "Hind-Regular";
+  src: url("./assets/fonts/Hind/Hind-Regular.ttf");
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+@font-face {
+  font-family: "Orbitron-Regular";
+  src: url("./assets/fonts/Orbitron/Orbitron-Regular.ttf");
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+@font-face {
+  font-family: "BungeeSpice-Regular";
+  src: url("./assets/fonts/BungeeSpice/BungeeSpice-Regular.ttf");
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins-Medium", sans-serif;
+}
+
+:root {
+  /* ===== Colors ===== */
+  --body-color: #e4e9f7;
+  --bg-color: #fff;
+  --primary-color: #695cfe;
+  --primary-color-light: #f6f5ff;
+  --secondary-color: #f4f9ff;
+  --text-color: #707070;
+  --shadow-color: rgba(0, 0, 0, 0.279);
+
+  /* ====== Transition ====== */
+  --tran-03: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.3s ease;
+  --tran-05: all 0.3s ease;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--body-color);
+  transition: var(--tran-05);
+}
+
+::selection {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+
+/* Scrollbar Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  cursor: grabbing;
+  border-radius: 30%;
+}
+
+
+.layout-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #cdced3;
+}
+
+.main {
+  margin-left: 255px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: var(--tran-05);
+}
+.main.sideBarClosed {
+  margin-left: 88px;
+}
+
+.header {
+  height: 60px;
+  background-color: var(--bg-color);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  transition: var(--tran-05);
+  box-shadow: inset 1px 0 1px var(--shadow-color);
+}
+
+.content {
+  flex-grow: 1;
+  overflow-y: auto;
+  height: calc(100vh - 60px);
+  background-color: var(--body-color);
+  transition: var(--tran-05);
+  padding: 15px 20px;
+}
+
+/* Reusable CSS Classes */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Migration List */
+.MuiSelect-listbox{
+  scrollbar-width: thin;
+}
