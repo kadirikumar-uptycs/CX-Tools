@@ -1,16 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { pushMigrationResourceId, popMigrationResourceId } from '../store/migrationSlice';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-json';
-import 'prismjs/themes/prism-okaidia.min.css'
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
 import Tooltip from '@mui/joy/Tooltip';
 import ListItemContent from '@mui/joy/ListItemContent';
 import Stack from '@mui/joy/Stack';
 import CheckBox from '../utils/CheckBox';
-import BasicPopover from '../utils/Popover';
+import ShowResource from './ShowResource';
 import Loading from '../common/Loading';
 import Error2 from '../common/Error2';
 import NoData from '../common/NoData';
@@ -20,12 +17,6 @@ const TenantResources = ({ type }) => {
     const dispatch = useDispatch();
     const state = useSelector(state => state?.migration?.[type]);
     const { loading, error, data, noData } = state
-
-    async function highLightCode() {
-        const wait = async (ms) => new Promise(resolve => setTimeout(resolve, ms));
-        await wait(10);
-        Prism.highlightAll();
-    }
 
     const handleCheckboxClick = (event, resourceId) => {
         if (event?.target?.checked) dispatch(pushMigrationResourceId(resourceId));
@@ -88,11 +79,7 @@ const TenantResources = ({ type }) => {
                                     {resource?.description}
                                 </Typography>
                             </ListItemContent>
-                            <BasicPopover onClick={highLightCode}>
-                                <pre style={{ maxHeight: '350px', overflowY: 'auto', whiteSpace: 'pre-line', fontSize: '11px', margin: 0 }}>
-                                    <code className='language-json'>{JSON.stringify(resource, null, 4)}</code>
-                                </pre>
-                            </BasicPopover>
+                            <ShowResource resource={resource} />
                         </Stack>
                     </Card>
                 ))
