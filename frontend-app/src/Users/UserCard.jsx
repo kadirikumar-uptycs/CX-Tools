@@ -63,7 +63,13 @@ const UserCard = ({ id, ProfileImage, name, role, phone, email }) => {
                 }}
             />
             <CardContent sx={{ display: 'flex', alignItems: 'center' }}>
-                <Tooltip title={name}>
+                <Tooltip
+                 title={name} 
+                 arrow 
+                 color='primary' 
+                 variant='solid'
+                 placement='bottom'
+                 >
                     <Typography
                         level="h6"
                         component="div"
