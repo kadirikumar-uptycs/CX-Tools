@@ -179,7 +179,7 @@ const Users = () => {
                     <UserCard
                         key={user._id}
                         id={user._id}
-                        ProfileImage={user.profile}
+                        ProfileImage={user.profileImage}
                         name={user.name}
                         role={user?.role || 'User'}
                         phone={user.phone}

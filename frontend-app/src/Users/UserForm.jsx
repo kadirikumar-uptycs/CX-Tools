@@ -8,8 +8,6 @@ const UserForm = ({ handleUserFormSubmit, edit, editFormDetails }) => {
     let openSnackbar = useSnackbar()
     let uptycsEmailRegex = new RegExp("^[a-zA-Z0-9._%+-]+@uptycs\\.com$");
 
-    editFormDetails.role ??= 'User';
-
     function checkRegexMatch(regex, testString) {
         return regex.test(testString);
     }
@@ -87,7 +85,7 @@ const UserForm = ({ handleUserFormSubmit, edit, editFormDetails }) => {
                                 type="new-user-role"
                                 first="User"
                                 second="Admin"
-                                defaultValue={setInputValue('role') || 'User'}
+                                defaultValue={setInputValue('role')}
                                 handleChangeEvent={handleSelectEvent}
                             />
                         </div>
