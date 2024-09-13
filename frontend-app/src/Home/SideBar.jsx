@@ -124,7 +124,7 @@ const SideBar = ({ onToggle }) => {
 
                 <div className="bottom-content">
                     <UptycsTooltip title={!sideBarOpen && "Logout"}>
-                        <li onClick={() => setOpen(true)} style={{ cursor: 'pointer'}}>
+                        <li className='logout-btn' onClick={() => setOpen(true)} style={{ cursor: 'pointer'}}>
                             <LogoutOutlinedIcon className='mui--icon' />
                             <span className="text nav-text">Logout</span>
                         </li>
