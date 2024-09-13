@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentPage } from '../store/authSlice';
 import { fetchResources, migrateResources, setResourceType } from '../store/migrationSlice';
@@ -9,10 +9,8 @@ import ResourceList from './ResourceList';
 import Stack from '@mui/joy/Stack';
 import Button from '@mui/joy/Button';
 import SendIcon from '@mui/icons-material/Send';
-import ReportIcon from '@mui/icons-material/Report';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Typography from '@mui/joy/Typography';
-import IconButton from '@mui/joy/IconButton';
 
 const ResourceMigration = () => {
 
@@ -22,10 +20,7 @@ const ResourceMigration = () => {
     const source = migrationInfo?.source;
     const target = migrationInfo?.target;
     const { migrationResourceIds, migrating, migrationErrors, resource, success } = migrationInfo || {};
-    const { failed, total } = migrationErrors || {};
-    const [showErrors, setShowErrors] = useState(false);
-    const handleCloseErrorsDrawerComponent = () => setShowErrors(false);
-    const handleClickShowErrors = () => setShowErrors(state => !state);
+    const { failed } = migrationErrors || {};
 
     const handleMigrationRequest = () => {
         if (typeof source?.credentials !== 'object' || !Object.keys(source?.credentials)?.length || source?.error) {
@@ -139,33 +134,14 @@ const ResourceMigration = () => {
                         </Typography>}
                     {
                         failed && !success &&
-                        <Typography
-                            color='danger'
-                            startDecorator={
-                                <IconButton
-                                    color='danger'
-                                    onClick={handleClickShowErrors}
-                                >
-                                    <ReportIcon />
-                                </IconButton>
-                            }
-                            sx={{
-                                position: 'relative',
-                                top: '100px',
-                            }}
-                        >{`${failed} out of ${total} failed`}
-                        </Typography>
+                        <ShowErrors details={migrationErrors} />
                     }
                     {
                         !failed && success &&
                         <Typography
                             color='success'
                             startDecorator={
-                                <IconButton
-                                    color='success'
-                                >
-                                    <CheckCircleIcon />
-                                </IconButton>
+                                <CheckCircleIcon color='success' />
                             }
                             sx={{
                                 position: 'relative',
@@ -173,9 +149,6 @@ const ResourceMigration = () => {
                             }}
                         >Migrated Successfully!
                         </Typography>
-                    }
-                    {
-                        <ShowErrors open={showErrors} handleClose={handleCloseErrorsDrawerComponent} details={migrationErrors} />
                     }
                 </div>
                 <div

@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { pushMigrationResourceId, popMigrationResourceId } from '../store/migrationSlice';
+import { useSelector } from 'react-redux';
 import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
 import Tooltip from '@mui/joy/Tooltip';
@@ -10,18 +9,11 @@ import CheckBox from '../utils/CheckBox';
 import ShowResource from './ShowResource';
 import Loading from '../common/Loading';
 import Error2 from '../common/Error2';
-import NoData from '../common/NoData';
+import NoDataClassical from '../common/NoDataClassical';
 
 const TenantResources = ({ type }) => {
-
-    const dispatch = useDispatch();
     const state = useSelector(state => state?.migration?.[type]);
     const { loading, error, data, noData } = state
-
-    const handleCheckboxClick = (event, resourceId) => {
-        if (event?.target?.checked) dispatch(pushMigrationResourceId(resourceId));
-        else dispatch(popMigrationResourceId(resourceId));
-    }
 
     return (
         <div
@@ -36,7 +28,7 @@ const TenantResources = ({ type }) => {
         >
             {loading && <div style={{ width: '100%', height: '95%' }}><Loading /></div>}
             {!loading && error && <div style={{ width: '100%', height: '95%' }}><Error2 errors={error} /></div>}
-            {!loading && !error && noData && <div style={{ width: '100%', height: '95%' }}><NoData /></div>}
+            {!loading && !error && noData && <div style={{ width: '100%', height: '95%' }}><NoDataClassical /></div>}
             {!loading && !error && !noData && Array.isArray(data) && (
                 data.map(resource => (
                     <Card
@@ -52,7 +44,7 @@ const TenantResources = ({ type }) => {
                                 width: '100%'
                             }}
                         >
-                            {type === 'source' && <CheckBox handleCheckboxClick={(event) => handleCheckboxClick(event, resource?.id)} />}
+                            {type === 'source' && <CheckBox id={resource?.id} />}
                             <ListItemContent>
                                 <Tooltip
                                     title={resource?.name?.length >= 43 && resource?.name}
