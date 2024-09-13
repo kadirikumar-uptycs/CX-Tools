@@ -116,15 +116,16 @@ const migrationSlice = createSlice({
         builder.addCase(migrateResources.pending, state => {
             state.migrating = true;
             state.migrationErrors = {};
+            state.success = false;
         });
         builder.addCase(migrateResources.fulfilled, (state) => {
             state.migrating = false;
-            state.migrationErrors = {};
             state.success = true;
+            state.migrationResourceIds = [];
         });
         builder.addCase(migrateResources.rejected, (state, action) => {
             state.migrating = false;
-            state.success = false;
+            state.migrationResourceIds = [];
             state.migrationErrors = action?.payload?.response?.data?.details
                 || action?.payload?.message || {};
         });
