@@ -1,0 +1,9 @@
+version: '3'
+services:
+  backend-app:
+    build: .
+    ports:
+      - "17291:17291"
+    env_file:
+      - .env
+    restart: always

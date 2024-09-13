@@ -1,0 +1,9 @@
+version: '3'
+services:
+  frontend-app:
+    build: .
+    ports:
+      - "17293:17293"
+    env_file:
+      - .env
+    restart: always
