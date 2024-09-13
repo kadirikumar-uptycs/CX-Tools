@@ -9,12 +9,15 @@ export default function ConfirmationSnackBar({ open, onClose, message, onRespons
         <React.Fragment>
             <Snackbar
                 variant="soft"
-                color="primary"
+                color="danger"
                 size="lg"
                 invertedColors
                 open={open}
                 onClose={onClose}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                sx={{
+                    boxShadow: '0 0 70px rgba(0, 0, 0, 0.5)'
+                }}
             >
                 <div>
                     <Typography level="title-lg" sx={{ color: '#010101' }}>Hey, Wait!!</Typography>
