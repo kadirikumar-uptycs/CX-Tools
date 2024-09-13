@@ -8,6 +8,8 @@ const UserForm = ({ handleUserFormSubmit, edit, editFormDetails }) => {
     let openSnackbar = useSnackbar()
     let uptycsEmailRegex = new RegExp("^[a-zA-Z0-9._%+-]+@uptycs\\.com$");
 
+    editFormDetails.role ??= 'User';
+
     function checkRegexMatch(regex, testString) {
         return regex.test(testString);
     }
@@ -15,7 +17,7 @@ const UserForm = ({ handleUserFormSubmit, edit, editFormDetails }) => {
     function handleSelectEvent(event, index, option) {
         formDataRef.current = {
             ...formDataRef.current,
-            shift: option
+            role: option
         }
     }
 
@@ -33,17 +35,14 @@ const UserForm = ({ handleUserFormSubmit, edit, editFormDetails }) => {
         if (!formData.name) {
             openSnackbar('Name must be provided', 'danger')
         }
-        else if (!formData.role) {
-            openSnackbar('Role must be provided', 'danger')
-        }
         else if (!formData.email) {
             openSnackbar('Email must be provided', 'danger')
         }
-        else if (!formData.shift) {
-            openSnackbar('Shift must be choosen', 'danger')
-        }
         else if (!checkRegexMatch(uptycsEmailRegex, formData.email)) {
             openSnackbar('Invalid Uptycs Workspace Email', 'danger')
+        }
+        else if (!formData.role) {
+            openSnackbar('Role must be Chosen', 'danger')
         }
         else {
             handleUserFormSubmit(formData, edit, editFormDetails?._id);
@@ -67,11 +66,6 @@ const UserForm = ({ handleUserFormSubmit, edit, editFormDetails }) => {
                             <div className="underline"></div>
                             <label>Name</label>
                         </div>
-                        <div className="input-data">
-                            <input type="text" name='role' required onInput={handleInputEvent} defaultValue={setInputValue('role')} />
-                            <div className="underline"></div>
-                            <label>Role</label>
-                        </div>
                     </div>
                     <div className="form-row">
                         <div className="input-data">
@@ -88,12 +82,12 @@ const UserForm = ({ handleUserFormSubmit, edit, editFormDetails }) => {
                             flexDirection: 'column',
                             alignItems: 'flex-start',
                         }}>
-                            <label>Shift</label>
+                            <label>Role</label>
                             <RadioGroup
-                                type="new-user-shift"
-                                first="IND"
-                                second="US"
-                                defaultValue={setInputValue('shift')}
+                                type="new-user-role"
+                                first="User"
+                                second="Admin"
+                                defaultValue={setInputValue('role') || 'User'}
                                 handleChangeEvent={handleSelectEvent}
                             />
                         </div>
