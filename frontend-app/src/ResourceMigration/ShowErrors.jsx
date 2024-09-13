@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Drawer from '@mui/material/Drawer';
-import Tooltip from '@mui/material/Tooltip';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import Button from '@mui/material/Button';
+import Typography from '@mui/joy/Typography';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/joy/IconButton';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+import ReportIcon from '@mui/icons-material/Report';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import './ShowErrors.css';
 
-export default function ShowErrors({ open, handleClose, details }) {
+
+export default function ShowErrors({ details }) {
+
+    const [open, setOpen] = useState(false)
 
     function ListView(list) {
         return (
@@ -18,14 +24,29 @@ export default function ShowErrors({ open, handleClose, details }) {
         );
     }
 
-
     return (
         <div>
+            <Typography
+                color='danger'
+                startDecorator={
+                    <IconButton
+                        color='danger'
+                        onClick={() => setOpen(true)}
+                    >
+                        <ReportIcon />
+                    </IconButton>
+                }
+                sx={{
+                    position: 'relative',
+                    top: '100px',
+                }}
+            >{`${details?.failed} out of ${details?.total} failed`}
+            </Typography>
             <React.Fragment>
                 <Drawer
                     anchor='bottom'
                     open={open}
-                    onClose={handleClose}
+                    onClose={() => setOpen(false)}
                 >
                     <div className='nav-bar'>
                         <span className='drawer-heading'>Error occurred while migrating some resources</span>
@@ -39,7 +60,7 @@ export default function ShowErrors({ open, handleClose, details }) {
                         </div>
                         {details?.errors?.map((row, index) => (
                             <div className="row" key={row?.name}>
-                                <div className="col">{index+1}. {row.name}</div>
+                                <div className="col">{index + 1}. {row.name}</div>
                                 <div className="col col-2">
                                     {
                                         Array.isArray(row?.error) ?
@@ -59,7 +80,7 @@ export default function ShowErrors({ open, handleClose, details }) {
                             <span className='status'>Failed</span>
                         </div>
                         <Tooltip title='Close' color='primary'>
-                            <Button variant="contained" startIcon={<CloseFullscreenIcon />} onClick={handleClose} sx={{
+                            <Button variant="contained" startIcon={<CloseFullscreenIcon />} onClick={() => setOpen(false)} sx={{
                                 borderRadius: '0',
                                 height: '60px',
                                 color: 'var(--bg-color)',
