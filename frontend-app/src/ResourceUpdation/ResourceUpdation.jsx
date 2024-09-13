@@ -1,6 +1,8 @@
 import React, { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentPage } from '../store/authSlice';
+import WorkInProgress from '../common/WorkInProgress';
+
 
 const ResourceUpdation = () => {
     const dispatch = useDispatch();
@@ -12,7 +14,7 @@ const ResourceUpdation = () => {
 
     return (
         <div>
-            Resource Updation
+            <WorkInProgress />
         </div>
     );
 }

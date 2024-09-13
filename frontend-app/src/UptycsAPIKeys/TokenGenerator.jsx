@@ -1,6 +1,8 @@
 import React, { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentPage } from '../store/authSlice';
+import WorkInProgress from '../common/WorkInProgress';
+
 
 const TokenGenerator = () => {
     const dispatch = useDispatch();
@@ -12,7 +14,7 @@ const TokenGenerator = () => {
 
     return (
         <div>
-            Uptycs API Token Generator
+            <WorkInProgress />
         </div>
     );
 }

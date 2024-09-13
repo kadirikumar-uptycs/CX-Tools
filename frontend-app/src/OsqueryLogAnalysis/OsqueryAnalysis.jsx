@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentPage } from '../store/authSlice';
+import WorkInProgress from '../common/WorkInProgress';
 
 const OsqueryAnalysis = () => {
     const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const OsqueryAnalysis = () => {
 
     return (
         <div>
-
+            <WorkInProgress />
         </div>
     );
 }
