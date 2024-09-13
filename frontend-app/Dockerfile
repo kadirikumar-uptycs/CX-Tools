@@ -8,6 +8,8 @@ RUN npm install --force
 
 COPY . .
 
+RUN npm run build
+
 RUN npm install -g serve
 
 EXPOSE 17293
