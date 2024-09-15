@@ -44,8 +44,12 @@ const TokenGenerator = () => {
             ...prev,
             loading: true,
         }))
+        setShowCmd(false);
+        setNeedMoreInfo(false);
         try {
             let response = await axios.post(`${config.SERVER_BASE_ADDRESS}/authToken`, credentials, { withCredentials: true });
+            // User Reset Form
+            if(!fileName) return
             setApiInfo({
                 loading: false,
                 token: response?.data,
@@ -66,11 +70,11 @@ const TokenGenerator = () => {
     const handleReset = () => {
         setCredentials({});
         setFileName('');
-        setApiInfo(prev => ({
-            ...prev,
+        setApiInfo({
+            loading: false,
             token: '',
             error: ''
-        }));
+        });
         setNeedMoreInfo(false);
         setShowCmd(false);
         openSnackbar('Form Reset Done🧹', 'success');

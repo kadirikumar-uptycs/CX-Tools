@@ -81,6 +81,13 @@
   --tran-05: all 0.3s ease;
 }
 
+code[class*=language-]{
+  text-shadow: none;
+}
+pre[class*=language-]{
+  border: none;
+}
+
 body {
   min-height: 100vh;
   background-color: var(--body-color);

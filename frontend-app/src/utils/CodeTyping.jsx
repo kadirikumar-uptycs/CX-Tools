@@ -58,57 +58,85 @@ const CodeTyping = ({ heading, language, code, speed }) => {
 	return (
 		<Box
 			sx={{
-				backgroundColor: '#282c34',
-				borderRadius: '8px',
-				padding: '20px',
-				width: '100%',
-				maxWidth: '800px',
-				margin: '20px auto',
-				boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-				position: 'relative',
+				display: 'flex',
+				alignItems: 'center',
+				flexDirection: 'column',
 			}}
 		>
 			<Typography
 				variant="h6"
 				sx={{
-					color: '#ffffff',
 					fontFamily: 'monospace',
 					marginBottom: '10px',
+					paddingLeft: '10px',
+					width: '100%',
+					maxWidth: '800px',
 				}}
 			>
-				{heading} ({language})
+				{heading} :
 			</Typography>
-
-
-			<Tooltip title={isCopied ? 'Copied!' : 'Copy code'}>
-				<IconButton
-					onClick={handleCopy}
+			<Box
+				sx={{
+					backgroundColor: '#2f2f2f',
+					borderRadius: '8px',
+					paddingTop: '20px',
+					width: '800px',
+					margin: '20px auto',
+					boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+					position: 'relative',
+				}}
+			>
+				<Typography
+					variant="h6"
 					sx={{
-						position: 'absolute',
-						top: '15px',
-						right: '15px',
 						color: '#ffffff',
+						fontFamily: 'monospace',
+						marginBottom: '10px',
+						fontSize: '11px',
+						paddingLeft: '11px',
 					}}
 				>
-					<ContentCopyIcon />
-				</IconButton>
-			</Tooltip>
+					{language}
+				</Typography>
 
-			<pre style={{
-				padding: '20px',
-				whiteSpace: 'pre-line',
-				scrollbarWidth: 'thin',
-				maxWidth: '100%',
-				overflowX: 'auto'
-			}}
-			>
-				<code className={`language-${language}`}>
-					{displayedCode?.code}
-				</code>
-				{isTyping && <span className="cursor"></span>}
-			</pre>
 
-			<style>{`
+				<Tooltip title={isCopied ? 'Copied!' : 'Copy code'}>
+					<IconButton
+						onClick={handleCopy}
+						sx={{
+							position: 'absolute',
+							top: '5px',
+							right: '5px',
+							color: '#ffffff',
+						}}
+					>
+						<ContentCopyIcon sx={{
+							fontSize: '17px'
+						}} />
+						<Typography sx={{
+							fontSize: '13px',
+							marginLeft: '5px'
+						}}>
+							Copy code
+						</Typography>
+					</IconButton>
+				</Tooltip>
+
+				<pre style={{
+					padding: '20px',
+					whiteSpace: 'pre-line',
+					scrollbarWidth: 'thin',
+					maxWidth: '100%',
+					overflowX: 'auto'
+				}}
+				>
+					<code className={`language-${language}`}>
+						{displayedCode?.code}
+					</code>
+					{isTyping && <span className="cursor"></span>}
+				</pre>
+
+				<style>{`
         .cursor {
           display: inline-block;
           width: 10px;
@@ -121,6 +149,7 @@ const CodeTyping = ({ heading, language, code, speed }) => {
           }
         }
       `}</style>
+			</Box>
 		</Box>
 	);
 };
