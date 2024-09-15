@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const MONGODB_URI = require('../models/db-creds');
+mongoose.set('debug', true);
 
 
 let isConnected = false;
@@ -11,8 +12,11 @@ const connectDB = async () => {
 		return;
 	}
 	try {
+		console.log('➕ New Connection...');
 		await mongoose.connect(MONGODB_URI, {
 			dbName: process.env.MONGO_DB_NAME,
+			maxPoolSize: 2,
+			socketTimeoutMS: 10000,
 		});
 	} catch (err) {
 		console.error('⛔ Error connecting to MongoDB', err);
