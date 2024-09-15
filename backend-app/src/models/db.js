@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const MONGODB_URI = require('../models/db-creds');
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 
 
 let isConnected = false;
