@@ -3,7 +3,7 @@ import Button from '@mui/joy/Button';
 import { styled } from '@mui/joy';
 import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
 import { useSnackbar } from '../hooks/SnackBarProvider';
-
+import parseInputFileData from './parseJsonFileInput';
 const VisuallyHiddenInput = styled('input')`
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -20,34 +20,9 @@ export default function InputFileUpload({ label, uploadHandler }) {
 
     const openSnackbar = useSnackbar();
 
-    const ParseInputFileData = async (event) => {
-        const fileInput = event.currentTarget;
-        const file = fileInput.files[0];
-
-        return new Promise((resolve, reject) => {
-            if (file) {
-                const reader = new FileReader();
-
-                reader.onload = function (e) {
-                    try {
-                        const data = JSON.parse(e.target.result);
-                        const fileName = file.name;
-                        resolve({ data, fileName });
-                    } catch (error) {
-                        reject('Error while parsing, provide JSON file');
-                    }
-                };
-
-                reader.readAsText(file);
-            } else {
-                reject('No file selected');
-            }
-        });
-    }
-
     const handleInput = async (event) => {
         try {
-            let response = await ParseInputFileData(event);
+            let response = await parseInputFileData(event);
             let { data, fileName } = response;
             uploadHandler(data, fileName);
         } catch (err) {

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useSnackbar } from '../hooks/SnackBarProvider';
 import { fetchResources } from '../store/migrationSlice';
 import TenantResources from './TenantResources';
-import * as constants from './constants';
+import * as constants from '../utils/constants';
 import InputFileUpload from '../utils/FileUpload';
 
 
