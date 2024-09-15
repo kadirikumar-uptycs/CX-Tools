@@ -69,7 +69,7 @@
   --body-color: #e4e9f7;
   --bg-color: #fff;
   --primary-color: #695cfe;
-  --primary-color-light: #f6f5ff;
+  --primary-color-light: #a49df8;
   --secondary-color: #f4f9ff;
   --text-color: #707070;
   --shadow-color: rgba(0, 0, 0, 0.279);
@@ -84,7 +84,6 @@
 body {
   min-height: 100vh;
   background-color: var(--body-color);
-  transition: var(--tran-05);
 }
 
 ::selection {
@@ -148,7 +147,6 @@ body {
   overflow-y: auto;
   height: calc(100vh - 60px);
   background-color: var(--body-color);
-  transition: var(--tran-05);
   padding: 15px 20px;
 }
 
