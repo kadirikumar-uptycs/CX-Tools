@@ -98,7 +98,9 @@ class ErrorBoundary extends Component {
                         Oops, You have some bad code somewhere!
                     </Typography>
                 </DialogTitle>
-                <DialogContent>
+                <DialogContent sx={{
+                    scrollbarWidth: 'thin'
+                }}>
                     <Typography classes={{ root: classes.errorTitle }} component="p">
                         Error Thrown
                     </Typography>
