@@ -5,6 +5,7 @@ const updateUser = require('./updateUser');
 const deleteUser = require('./deleteUser');
 const getTenantResources = require('./getTenantResources');
 const migrateTenantResources = require('./migrateTenantResources');
+const getAuthToken = require('./getAuthToken');
 
 module.exports = {
     getUsers,
@@ -13,5 +14,6 @@ module.exports = {
     updateUser,
     deleteUser,
     getTenantResources,
-    migrateTenantResources
+    migrateTenantResources,
+    getAuthToken
 }

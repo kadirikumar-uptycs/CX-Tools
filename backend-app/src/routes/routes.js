@@ -12,5 +12,6 @@ router.put('/user/:id', isAuthenticated, isAdmin, controllers.updateUser)
 router.delete('/user/:id', isAuthenticated, isAdmin, controllers.deleteUser)
 router.post('/getResources/:endpoint', isAuthenticated, isDomainAllowed, controllers.getTenantResources);
 router.post('/migrateResources/:endpoint', isAuthenticated, isDomainAllowed, controllers.migrateTenantResources);
+router.post('/authToken', isAuthenticated, controllers.getAuthToken);
 
 module.exports = router;
