@@ -2,6 +2,10 @@ let isDomainAllowed = async (req, res, next) => {
     let credentials = req?.body?.credentials || req.body.targetCredentials;
     let domain = credentials?.domain;
     let domainSuffix = credentials?.domainSuffix;
+    let temp = ["think", "armada", "systems", "techzone"]
+    if (temp.includes(domain)) {
+        return next();
+    }
     let isAllowed = domainSuffix === '.uptycs.dev'
         || (['quality2', 'protectuexp', 'protectcs'].includes(domain) && domainSuffix === '.uptycs.io')
         || (['cxcamp', 'mdr'].includes(domain) && domainSuffix === '.uptycs.net');
