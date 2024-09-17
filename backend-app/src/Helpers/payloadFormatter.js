@@ -56,6 +56,10 @@ function eventRule(payload) {
     // payload.tags = payload.tags.map(({id}) => ({id}));
     payload.tags = [];
 
+    if(payload.groupingL4 === ""){
+        payload.groupingL4 = null;
+    }
+
     payload.builderConfig.transformations = payload.transformations;
 
     let keysToBeDeleted = [...keysToDelete];
