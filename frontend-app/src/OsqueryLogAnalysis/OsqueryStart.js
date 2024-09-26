@@ -1,287 +1,186 @@
-import fs from 'fs';
-import readline from 'readline';
-import {convert_to_seconds} from './helper_functions';
+import { convertToSeconds } from './helper_functions';
+
+
 
 export default class OsqueryStart {
 
-    constructor(osquery_log_file) {
-        this.osquery_version_det = [];
-        this.os_version_output = null;
-        this.platform_output = null;
-        this.osquery_start_pattern = /.* osquery worker initialized .*/;
-        this.os_version_pattern = /^os_version/;
-        this.platform_version_pattern = /^platform_info/;
-        this.osquery_version_pattern = /^osquery_info/;
-        this.osquery_received_events = /.* Osquery instance .* Received .*/;
-        this.osquery_log_file = osquery_log_file;
+    constructor(workerLogs) {
+        this.osqueryStartPattern = /.* osquery worker initialized .*/;
+        this.osVersionPattern = /^os_version/;
+        this.platformVersionPattern = /^platform_info/;
+        this.osqueryVersionPattern = /^osquery_info/;
+        this.osqueryReceivedEvents = /.* Osquery instance .* Received .*/;
 
-        this.version_details = { 'os_version': {}, 'osquery_version': {}, 'platform_version': {} };
-        this.osqstart_list = [];
-        this.start_details = {};
-        this.eventdetails = {};
-        this.parse_osquery_log_for_start();
+        this.versionDetails = { osVersion: [], osqueryVersion: [], platformVersion: [] };
+        this.osqueryStartList = [];
+        this.eventDetails = {};
+        this.osqueryStartFullDetails = {};
+        this.workerLogs = workerLogs;
+        this.errors = []
+
+        // Initiate the Parsing
+        this.startLogParsing();
     }
-    parse_start_log_line(line_number, osqstart_line) {
-        let log_line_details = {};
-        let log_temp = osqstart_line.split(/\s+/, 5);
-        log_line_details['line_number'] = line_number;
-        log_line_details['level'] = log_temp[0].charAt(0);
-        log_line_details['day'] = log_temp[0].slice(1);
-        log_line_details['timestamp'] = log_temp[1];
-        log_line_details['time_in_seconds'] = convert_to_seconds(log_temp[0].slice(1), log_temp[1])
-        log_line_details['worker_pid'] = log_temp[2]
-        let temp = log_temp[4].replace('osquery worker initialized [', '').split(' ');
+
+    startLogParsing() {
+        this.workerLogs.map((log, index) => {
+            this.parseWorkerLogLine(log, index + 1);
+            return ''
+        })
+    }
+    startOsqueryStartAnalysis() {
+        this.osqueryStartList.forEach(([lineNumber, osqueryStartLine]) => {
+            this.osqueryStartFullDetails[lineNumber] = this.parseOsqueryStartLogLine(lineNumber, osqueryStartLine)
+        });
+        //    Calculate Time Difference
+    }
+
+    parseVersion(lineNumber, line, versionName, replacedText) {
+        let tempObj = {}
+        let PLATFORM_ALERTS_PATTERN = /\s*platform_alerts:\s*\[.*?\]/g;
+        let match = line.match(PLATFORM_ALERTS_PATTERN);
+        let platform_alerts = match && match[0]?.replace('platform_alerts: ', '')?.trim();
         try {
-            if (temp[0].includes('version')) {
-                log_line_details['version'] = temp[0].split('=')[1].replace(',', '');
+            line.replace(replacedText, '').split(', ').forEach(temp => {
+                try {
+                    let [key, value] = temp.split(': ');
+                    tempObj[key.trim()] = value.trim();
+                } catch (error) {
+                    this.errors.push(`Error while parsing log for ${versionName} at line ${lineNumber}; ${error?.message || error}`);
+                }
+            });
+            if (platform_alerts) tempObj.platform_alerts = platform_alerts;
+            tempObj.lineNumber = lineNumber;
+            this.versionDetails[versionName].push(tempObj);
+        } catch (error) {
+            this.errors.push(`Error while parsing log for ${versionName} at line ${lineNumber}; ${error?.message || error}`);
+        }
+    }
+
+    tokenizeLogLine(lineNumber, logLine) {
+        let logLineDetails = {};
+        let logTokens = [
+            ...logLine.split(' ', 4),
+            logLine.split(' ').slice(4).join(' ')
+        ]
+        try {
+            logLineDetails.lineNumber = lineNumber;
+            logLineDetails.level = logTokens[0].charAt(0);
+            logLineDetails.day = logTokens[0].slice(1);
+            logLineDetails.timeStamp = logTokens[1];
+            logLineDetails.timeInSeconds = convertToSeconds(logLineDetails.day, logLineDetails.timeStamp);
+            logLineDetails.workerPid = logTokens[2]
+        } catch (error) {
+            this.errors.push(`Error while tokenizing log number ${lineNumber}; ${error?.message || error}`);
+        }
+        return {
+            logLineDetails,
+            logTokens,
+        }
+    }
+
+    parseOsqueryStartLogLine(lineNumber, osqueryStartLine) {
+        let { logLineDetails, logTokens } = this.tokenizeLogLine(lineNumber, osqueryStartLine);
+        let logMessageWords = logTokens[4].replace('osquery worker initialized [', '').split(' ');
+        try {
+            if (logMessageWords[0].includes('version')) {
+                logLineDetails['version'] = logMessageWords[0].split('=')[1].replace(',', '');
             } else {
-                log_line_details['version'] = 'Unknown';
+                logLineDetails['version'] = 'Unknown';
             }
         } catch (error) {
-            log_line_details['version'] = 'Unknown_Exception';
+            logLineDetails['watcherPid'] = 'UNKNOWN_DUE_TO_ERRORS';
+            this.errors.push(`Error while looking for the osquery version in OsqueryRestartedLogLine at line number ${lineNumber}; ${error?.message || error}`);
         }
 
         try {
-            if (temp[1].includes('watcher')) {
-                log_line_details['watcher_pid'] = temp[1].split('=')[1].replace(']', '');
+            if (logMessageWords[1].includes('watcher')) {
+                logLineDetails['watcherPid'] = logMessageWords[1].split('=')[1].replace(']', '');
             } else {
-                log_line_details['watcher_pid'] = 'Unknown';
+                logLineDetails['watcherPid'] = 'Unknown';
             }
         } catch (error) {
-            log_line_details['watcher_pid'] = 'Unknown_Exception';
+            logLineDetails['watcherPid'] = 'UNKNOWN_DUE_TO_ERRORS';
+            this.errors.push(`Error while looking for the Watcher PID in OsqueryRestartedLogLine at line number ${lineNumber}; ${error?.message || error}`);
         }
 
-        log_line_details['line'] = osqstart_line
+        logLineDetails['line'] = osqueryStartLine
 
-        return log_line_details
+        return logLineDetails
     }
 
-    parse_osversion(ln, line) {
-        if (!(ln in this.version_details['os_version'])) {
-            this.version_details['os_version'][ln] = {};
-        }
-        line.replace('os_version. ', '').split(',').forEach(temp => {
-            let [key, value] = temp.split(':');
-            this.version_details['os_version'][ln][key.trim()] = value.trim();
-        });
-    }
+    parseOsqueryEvents(lineNumber, eventLogLine) {
+        // replace double space with single space becuase double space will cause problems while splitting the log line based on space as seperator
+        eventLogLine = eventLogLine.replace('  ', ' ').replace('  ', ' ');
+        let { logLineDetails, logTokens } = this.tokenizeLogLine(lineNumber, eventLogLine);
+        let logMessageWords = logTokens[4].replace('Osquery instance ', '').split(' ');
+        let numberEvents = parseInt(logMessageWords[2].trim());
+        let eventType = logMessageWords[3].trim();
 
-    parse_osqueryversion(ln, line) {
-        if (!(ln in this.version_details['osquery_version'])) {
-            this.version_details['osquery_version'][ln] = {};
-        }
-        line.replace('osquery_version. ', '').split(',').forEach(temp => {
-            let [key, value] = temp.split(':');
-            this.version_details['osquery_version'][ln][key.trim()] = value.trim();
-        });
-    }
+        logLineDetails = {
+            ...logLineDetails,
+            eventType,
+            numberEvents,
+        };
 
-    parse_platform(ln, line) {
-        if (!(ln in this.version_details['platform_version'])) {
-            this.version_details['platform_version'][ln] = {};
-        }
-        line.replace('platform_version. ', '').split(',').forEach(temp => {
-            try {
-                let [key, value] = temp.split(':');
-                this.version_details['platform_version'][ln][key.trim()] = value.trim();
-            } catch (error) {
-                // Do Nothing
-            }
-        });
-    }
+        // 45613 I20240826 10:39:02.458232 81984 events.cpp:705] Osquery instance 0337e1df-d255-43c0-9d68-5ce338dc6ada: Received 1024 dns_lookup_events events
+        // 139510 I20240826 14:33:15.639955  9000 events.cpp:705] Osquery instance 0337e1df-d255-43c0-9d68-5ce338dc6ada: Received 1024 windows_events events
 
-    parse_osquery_events(ln, event_log_line) {
-        let log_line_details = {};
+        this.eventDetails[eventType] ??= {};
 
-        // Parsing osquery events
-        let log_temp = event_log_line.split(/\s+/, 5);
-        log_line_details['line_number'] = ln;
-        log_line_details['level'] = log_temp[0].charAt(0);
-        log_line_details['day'] = log_temp[0].slice(1);
-        log_line_details['timestamp'] = log_temp[1];
-        log_line_details['time_in_seconds'] = convert_to_seconds(log_temp[0].slice(1), log_temp[1]);
-        log_line_details['worker_pid'] = log_temp[2];
-
-        let temp = log_temp[4].replace('Osquery instance ', '').split(' ');
-        let number_events = parseInt(temp[2].trim());
-        let event_type = temp[3].trim();
-
-        log_line_details['event_type'] = event_type;
-        log_line_details['number_events'] = number_events;
-
-
-        if (!(event_type in this.eventdetails)) {
-            this.eventdetails[event_type] = {};
-        }
-
-        // Ensure timestamp key exists for event_type
-        if (!(log_line_details['timestamp'] in this.eventdetails[event_type])) {
-            this.eventdetails[event_type][log_line_details['timestamp']] = {
-                count: number_events,
-                details: []
+        try {
+            this.eventDetails[eventType][logLineDetails?.timeStamp] ??= {
+                count: 0,
+                details: [],
             };
-            this.eventdetails[event_type][log_line_details['timestamp']].details.push(log_line_details);
-        } else {
-            this.eventdetails[event_type][log_line_details['timestamp']].count += number_events;
-            this.eventdetails[event_type][log_line_details['timestamp']].details.push(log_line_details);
+            this.eventDetails[eventType][logLineDetails?.timeStamp].count += numberEvents;
+            this.eventDetails[eventType][logLineDetails?.timeStamp]?.details.push(logLineDetails);
+        } catch (error) {
+            this.errors.push(`Error while counting ${eventType} events at line number ${lineNumber}; ${error?.message || error}`);
         }
 
-        return log_line_details;
+        return logLineDetails;
     }
 
-
-    parse_osquery_log_for_start() {
-        let ln = 0;
-        const fileStream = fs.createReadStream(this.osquery_log_file, { encoding: 'utf8' });
-        const rl = readline.createInterface({
-            input: fileStream,
-            crlfDelay: Infinity
-        });
-
-        rl.on('line', (line) => {
-            let result = line.match(this.osquery_start_pattern);
-            if (result) {
+    parseWorkerLogLine(line, lineNumber) {
+        let result = line.match(this.osqueryStartPattern);
+        if (result) {
+            try {
                 if (result[0].length <= 200) {
-                    this.osqstart_list.push([ln, line]);
+                    this.osqueryStartList.push([lineNumber, line]);
                 } else {
-                    // Handling special case where there may be junk in osquery worker logs
                     let charnum = line.indexOf('osquery worker initialized');
                     if (charnum > 0) {
                         let findstart = line.slice(charnum - 55).indexOf('I');
                         let stpoint = charnum - 55 + findstart;
-                        let osqstartline = line.slice(stpoint);
-                        this.osqstart_list.push([ln, osqstartline]);
+                        let osqueryStartLine = line.slice(stpoint);
+                        this.osqueryStartList.push([lineNumber, osqueryStartLine]);
                     }
                 }
-            }
-
-            // Match and process os version log
-            let osversion_results = line.match(this.os_version_pattern);
-            if (osversion_results) {
-                this.parse_osversion(ln, line);
-            }
-
-            // Match and process osquery version log
-            let osquery_results = line.match(this.osquery_version_pattern);
-            if (osquery_results) {
-                this.parse_osqueryversion(ln, line);
-            }
-
-            // Match and process platform version log
-            let platform_results = line.match(this.platform_version_pattern);
-            if (platform_results) {
-                this.parse_platform(ln, line);
-            }
-
-            // Match and process osquery events
-            let osquery_events = line.match(this.osquery_received_events);
-            if (osquery_events) {
-                this.parse_osquery_events(ln, line, this);
-            }
-            ln++;
-        });
-    }
-
-
-    analyse_osqlog_start() {
-        let ln = 0;
-
-        this.osqstart_list.forEach((osqstart_line_temp) => {
-            let [line_number, log_line] = osqstart_line_temp;
-            this.start_details[ln] = this.parse_start_log_line(line_number, log_line);
-
-            if (ln > 0) {
-                // Measure the time between the last restart time
-                try {
-                    if (parseInt(this.start_details[ln]['day']) === parseInt(this.start_details[ln - 1]['day'])) {
-                        this.start_details[ln]['restart_time_diff'] = parseFloat(
-                            (this.start_details[ln]['time_in_seconds'] -
-                                this.start_details[ln - 1]['time_in_seconds']).toFixed(3)
-                        );
-                    } else {
-                        // ln-1 nearing the end of the day
-                        let seconds_diff_to_endofday = 86399 - this.start_details[ln - 1]['time_in_seconds'];
-                        let seconds_in_days_diff =
-                            (parseInt(this.start_details[ln]['day']) - parseInt(this.start_details[ln - 1]['day']) - 1) * 86400 +
-                            seconds_diff_to_endofday;
-
-                        this.start_details[ln]['restart_time_diff'] = parseFloat(
-                            (seconds_in_days_diff - this.start_details[ln]['time_in_seconds']).toFixed(3)
-                        );
-                    }
-                } catch (error) {
-                    console.error(`Error in conversion of osquery restart... ${log_line}`);
-                }
-            }
-
-            ln++;
-        });
-
-        this.analyse_version_stats();
-    }
-
-
-    analyse_version_stats() {
-        // os_version details
-        let os_version_det = [];
-
-        for (let ln in this.version_details['os_version']) {
-            let output = `${this.version_details['os_version'][ln]['name']} \
-    ${this.version_details['os_version'][ln]['version']} \
-    ${this.version_details['os_version'][ln]['arch']}`;
-
-            os_version_det.push(output);
-        }
-
-        try {
-            this.os_version_output = Array.from(new Set(os_version_det))[0];
-        } catch (error) {
-            this.os_version_output = "UNKNOWN";
-        }
-
-        // osquery_version details
-        this.osquery_version_det = [];
-        let ln_tmp = 0, prev_ln;
-
-        for (let ln in this.version_details['osquery_version']) {
-            try {
-                let time_diff = 0;
-                if (ln_tmp > 0) {
-                    time_diff = parseInt(this.version_details['osquery_version'][ln]['start_time']) -
-                        parseInt(this.version_details['osquery_version'][prev_ln]['start_time']);
-                }
-
-                let output = `${time_diff} \
-    ${this.version_details['osquery_version'][ln]['start_time']} \
-    ${this.version_details['osquery_version'][ln]['pid']} \
-    ${this.version_details['osquery_version'][ln]['uuid']} \
-    ${this.version_details['osquery_version'][ln]['version']} \
-    ${this.version_details['osquery_version'][ln]['watcher']}`;
-
-                prev_ln = ln;
-                ln_tmp += 1;
-                this.osquery_version_det.push(output);
             } catch (error) {
-                console.error("Exception in the osquery version stats ...", error);
+                this.errors.push(`Error while looking for the Osquery start pattern at line ${lineNumber}; ${error?.message || error}`)
             }
         }
 
-        // platform_version details
-        let platform_det = [];
+        let osVersionResults = line.match(this.osVersionPattern);
+        if (osVersionResults) {
+            this.parseVersion(lineNumber, line, 'osVersion', 'os_version. ');
+        }
 
-        try {
-            for (let ln in this.version_details['platform_version']) {
-                let output = `${this.version_details['platform_version'][ln]['vendor']} \
-    ${this.version_details['platform_version'][ln]['version']}`;
+        let osqueryResults = line.match(this.osqueryVersionPattern);
+        if (osqueryResults) {
+            this.parseVersion(lineNumber, line, 'osqueryVersion', 'osquery_info. ');
+        }
 
-                platform_det.push(output);
-            }
-            this.platform_output = Array.from(new Set(platform_det))[0];
-        } catch (error) {
-            console.log("Exception in the platform version stats ...", error);
+        let platformResults = line.match(this.platformVersionPattern);
+        if (platformResults) {
+            this.parseVersion(lineNumber, line, 'platformVersion', 'platform_info. ');
+        }
+
+        let osqueryEvents = line.match(this.osqueryReceivedEvents);
+        if (osqueryEvents) {
+            this.parseOsqueryEvents(lineNumber, line);
         }
     }
-
 }
-
 
