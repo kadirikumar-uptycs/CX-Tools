@@ -5,7 +5,7 @@ import Typography from '@mui/joy/Typography';
 import Tooltip from '@mui/joy/Tooltip';
 import ListItemContent from '@mui/joy/ListItemContent';
 import Stack from '@mui/joy/Stack';
-import CheckBox from '../utils/CheckBox';
+import CheckBox from './CheckBox';
 import ShowResource from './ShowResource';
 import Loading from '../common/Loading';
 import Error2 from '../common/Error2';
