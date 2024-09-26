@@ -7,9 +7,9 @@ import Tenant from './Tenant';
 import ShowErrors from './ShowErrors';
 import ResourceList from './ResourceList';
 import Stack from '@mui/joy/Stack';
-import Button from '@mui/joy/Button';
 import SendIcon from '@mui/icons-material/Send';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ButtonOutlined from '../utils/ButtonOutlined';
 import Typography from '@mui/joy/Typography';
 
 const ResourceMigration = () => {
@@ -92,31 +92,13 @@ const ResourceMigration = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Button
-                        disabled={false}
+                    <ButtonOutlined
+                        text={"Migrate"}
                         loading={migrating}
                         onClick={handleMigrationRequest}
-                        startDecorator={<SendIcon />}
-                        size="lg"
-                        variant="outlined"
-                        sx={{
-                            position: 'fixed',
-                            color: 'var(--primary-color)',
-                            borderColor: 'var(--primary-color)',
-                            transition: '0.3s background ease-out, 0.3s color ease-out',
-                            '&:hover': {
-                                background: 'var(--primary-color)',
-                                color: 'var(--bg-color)',
-                                boxShadow: '0 0 5px var(--primary-color)'
-                            },
-                            '&:active': {
-                                boxShadow: '0 0 15px var(--text-color)',
-                                background: 'var(--primary-color)',
-                                color: 'var(--bg-color)',
-                                transform: 'scale(0.95)',
-                            }
-                        }}
-                    >Migrate</Button>
+                        icon={<SendIcon />}
+                        styles={{ position: 'fixed' }}
+                    />
                     {
                         migrating
                         &&

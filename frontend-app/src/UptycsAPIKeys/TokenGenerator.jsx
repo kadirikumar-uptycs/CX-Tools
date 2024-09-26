@@ -6,9 +6,10 @@ import FileUpload1 from '../utils/FileUpload1';
 import Box from '@mui/joy/Box';
 import * as constants from '../utils/constants';
 import CodeTyping from '../utils/CodeTyping';
-import Button from '@mui/joy/Button';
 import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
 import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded';
+import ButtonOutlined from '../utils/ButtonOutlined';
+import ButtonSolid from '../utils/ButtonSolid';
 import axios from 'axios';
 import config from '../config';
 import '../common/loader1.css';
@@ -49,7 +50,7 @@ const TokenGenerator = () => {
         try {
             let response = await axios.post(`${config.SERVER_BASE_ADDRESS}/authToken`, credentials, { withCredentials: true });
             // User Reset Form
-            if(!fileName) return
+            if (!fileName) return
             setApiInfo({
                 loading: false,
                 token: response?.data,
@@ -103,55 +104,18 @@ const TokenGenerator = () => {
                 padding: '40px',
                 gap: '70px'
             }}>
-                <Button
-                    endDecorator={<KeyboardDoubleArrowRightRoundedIcon />}
+                <ButtonSolid
+                    text={"Proceed"}
+                    icon={<KeyboardDoubleArrowRightRoundedIcon />}
                     disabled={!fileName}
-                    sx={{
-                        borderColor: 'var(--primary-color)',
-                        background: 'var(--primary-color)',
-                        color: 'var(--bg-color)',
-                        transition: '0.3s background ease-out, 0.3s color ease-out',
-                        '&:hover': {
-                            background: 'var(--primary-color)',
-                            color: 'var(--bg-color)',
-                            boxShadow: '0 0 5px var(--primary-color)'
-                        },
-                        '&:active': {
-                            boxShadow: '0 0 15px var(--text-color)',
-                            background: 'var(--primary-color)',
-                            color: 'var(--bg-color)',
-                            transform: 'scale(0.95)',
-                        }
-                    }}
                     onClick={handleSubmission}
-                >
-                    Proceed
-                </Button>
-                <Button
-                    variant='outlined'
-                    endDecorator={<RestartAltRoundedIcon />}
+                />
+                <ButtonOutlined
+                    text={"Reset"}
+                    icon={<RestartAltRoundedIcon />}
                     disabled={!fileName}
-                    sx={{
-                        width: '117px',
-                        color: 'var(--primary-color)',
-                        borderColor: 'var(--primary-color)',
-                        transition: '0.3s background ease-out, 0.3s color ease-out',
-                        '&:hover': {
-                            background: 'var(--primary-color)',
-                            color: 'var(--bg-color)',
-                            boxShadow: '0 0 5px var(--primary-color)'
-                        },
-                        '&:active': {
-                            boxShadow: '0 0 15px var(--text-color)',
-                            background: 'var(--primary-color)',
-                            color: 'var(--bg-color)',
-                            transform: 'scale(0.95)',
-                        }
-                    }}
                     onClick={handleReset}
-                >
-                    Reset
-                </Button>
+                />
             </Box>
             <Box sx={{
                 display: 'flex',
@@ -178,36 +142,16 @@ const TokenGenerator = () => {
                 }}>
                 {needMoreInfo
                     &&
-                    <Button
+                    <ButtonSolid
+                        text={"Need More Info ?"}
                         disabled={!fileName}
-                        sx={{
-                            borderColor: 'var(--primary-color)',
-                            background: 'var(--primary-color)',
-                            color: 'var(--bg-color)',
-                            transition: '0.3s background ease-out, 0.3s color ease-out',
-                            '&:hover': {
-                                background: 'var(--primary-color)',
-                                color: 'var(--bg-color)',
-                                boxShadow: '0 0 5px var(--primary-color)'
-                            },
-                            '&:active': {
-                                boxShadow: '0 0 15px var(--text-color)',
-                                background: 'var(--primary-color)',
-                                color: 'var(--bg-color)',
-                                transform: 'scale(0.95)',
-                            }
-                        }}
                         onClick={handleMoreInfoBtnClick}
-                    >
-                        Need More Info ?
-                    </Button>
+                    />
                 }
                 {showCmd
                     &&
                     <CodeTyping heading="CURL Command" language="bash" code={getCURLCommand()} speed={10} />
                 }
-
-
 
             </Box>
         </Box>
