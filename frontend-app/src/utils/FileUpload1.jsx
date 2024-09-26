@@ -10,9 +10,12 @@ const FileUpload1 = ({ label, uploadHandler }) => {
 
     const handleInput = async (event) => {
         try {
-            let response = await parseInputFileData(event);
+            const fileInput = event?.currentTarget;
+            const file = fileInput?.files[0];
+            let response = await parseInputFileData(file);
             let { data, fileName } = response;
-            uploadHandler(data, fileName);
+            let jsonData = JSON.parse(data);
+            uploadHandler(jsonData, fileName);
         } catch (err) {
             console.log(err);
             openSnackbar(err?.message || `${err}`, 'danger');
