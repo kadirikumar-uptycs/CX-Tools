@@ -87,6 +87,11 @@ code[class*=language-]{
 pre[class*=language-]{
   border: none;
 }
+/* Remove Default background for colon after highlighted by Prism */
+.token.operator{
+  background: none;
+  margin: 0 3px;
+}
 
 body {
   min-height: 100vh;
