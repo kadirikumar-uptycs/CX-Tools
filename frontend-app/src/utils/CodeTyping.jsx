@@ -71,9 +71,20 @@ const CodeTyping = ({ heading, language, code, speed }) => {
 					paddingLeft: '10px',
 					width: '100%',
 					maxWidth: '800px',
+					color: 'var(--primary-color)',
+					textDecoration: '1px double underline var(--shadow-color)',
+					display: 'inline-block',
 				}}
 			>
-				{heading} :
+				{heading}
+				<span
+					style={{
+						textDecoration: 'none',
+						marginLeft: '5px',
+					}}
+				>
+					:
+				</span>
 			</Typography>
 			<Box
 				sx={{
