@@ -1,18 +1,15 @@
-const parseInputFileData = async (event) => {
-    const fileInput = event.currentTarget;
-    const file = fileInput.files[0];
-
+const parseInputFileData = async (file) => {
     return new Promise((resolve, reject) => {
         if (file) {
             const reader = new FileReader();
 
             reader.onload = function (e) {
                 try {
-                    const data = JSON.parse(e.target.result);
+                    const data = e.target.result;
                     const fileName = file.name;
                     resolve({ data, fileName });
                 } catch (error) {
-                    reject('Error while parsing, provide JSON file');
+                    reject('Error while parsing the provided file');
                 }
             };
 
