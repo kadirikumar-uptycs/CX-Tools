@@ -17,8 +17,7 @@ const Loading2 = () => {
                 loop={true}
                 autoplay={true}
                 style={{
-                    width: '30%',
-                    height: '30%'
+                    width: '20%',
                 }}
             />
             <Typography color='primary' component="h1" fontSize="29px" marginLeft="30px">Loading...</Typography>
