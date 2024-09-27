@@ -84,7 +84,8 @@ const migrationSlice = createSlice({
         },
         clearMigrationIds: (state) => {
             state.migrationResourceIds = [];
-        }
+        },
+        RESET: () => initialState
     },
     extraReducers: builder => {
         builder.addCase(fetchResources.pending, (state, action) => {
@@ -138,6 +139,7 @@ export const {
     setResourceType,
     pushMigrationResourceId,
     popMigrationResourceId,
-    clearMigrationIds
+    clearMigrationIds,
+    RESET,
 } = migrationSlice.actions;
 export { fetchResources, migrateResources };

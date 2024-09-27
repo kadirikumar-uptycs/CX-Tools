@@ -1,7 +1,8 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { setCurrentPage } from '../store/authSlice';
-import { fetchResources, migrateResources, setResourceType } from '../store/migrationSlice';
+import { fetchResources, migrateResources, setResourceType, RESET } from '../store/migrationSlice';
 import { useSnackbar } from '../hooks/SnackBarProvider';
 import Tenant from './Tenant';
 import ShowErrors from './ShowErrors';
@@ -15,6 +16,7 @@ import Typography from '@mui/joy/Typography';
 const ResourceMigration = () => {
 
     const dispatch = useDispatch();
+    const location = useLocation();
     const openSnackbar = useSnackbar();
     const migrationInfo = useSelector(state => state.migration);
     const source = migrationInfo?.source;
@@ -41,6 +43,14 @@ const ResourceMigration = () => {
         if (Object.keys(source?.credentials)?.length && !source?.error) dispatch(fetchResources('source'));
         if (Object.keys(target?.credentials)?.length && !target?.error) dispatch(fetchResources('target'));
     }
+
+
+    // Dispatch RESET when leaving this route
+    useEffect(() => {
+        return () => {
+            dispatch(RESET());
+        };
+    }, [dispatch, location]);
 
     useLayoutEffect(() => {
         dispatch(setCurrentPage('Resource Migration'))
