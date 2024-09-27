@@ -1,6 +1,7 @@
-import fs from 'fs';
+import fs from 'fs'
 import readline from 'readline';
-import { convert_to_seconds } from './helper_functions';
+import { convertToSeconds, splitStringIntoParts } from './helper_functions';
+
 
 export default class ScheduleQueries {
     constructor(osquery_log_file, gt_time) {
@@ -67,17 +68,17 @@ export default class ScheduleQueries {
 
     parse_schedule_log_line(schedule_query_line, line_num) {
         const log_line_details = {};
-        const log_temp = schedule_query_line.split(/\s+/, 5);
+        const log_temp = splitStringIntoParts(schedule_query_line, ' ', 5);
 
         log_line_details['line_number'] = line_num;
         log_line_details['level'] = log_temp[0][0];
         log_line_details['day'] = log_temp[0].slice(1);
         log_line_details['timestamp'] = log_temp[1];
-        log_line_details['time_in_seconds'] = convert_to_seconds(log_temp[0].slice(1), log_temp[1]);
+        log_line_details['time_in_seconds'] = convertToSeconds(log_temp[0].slice(1), log_temp[1]);
         log_line_details['worker_pid'] = log_temp[2];
 
         if (log_temp[4].includes('Executing scheduled query')) {
-            log_line_details['query_name'] = log_temp[4].split(' ', 4)[3].split(':')[0];
+            log_line_details['query_name'] = splitStringIntoParts(log_temp[4], ' ', 4)[3].split(':')[0];
             log_line_details['status'] = 'execution';
         } else if (log_temp[4].includes('Found results for query')) {
             log_line_details['query_name'] = log_temp[4].replace('Found results for query', '').split(':')[1].trim();
@@ -134,7 +135,7 @@ export default class ScheduleQueries {
     }
 
     get_top_schedule_by_time(dtime, retime, bycount = 5) {
-        const rtimeinsec = convert_to_seconds(dtime, retime);
+        const rtimeinsec = convertToSeconds(dtime, retime);
         const tmplines = Object.keys(this.sqd).sort((a, b) => a - b);
 
         let line_number;
@@ -196,3 +197,5 @@ export default class ScheduleQueries {
         }
     }
 }
+
+module.exports = ScheduleQueries;
