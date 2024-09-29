@@ -6,9 +6,7 @@ import parseInputFileData from '../utils/parseJsonFileInput';
 import ButtonOutlined from "./ButtonOutlined";
 import { useSnackbar } from "../hooks/SnackBarProvider";
 
-const MAX_SIZE = 55 * 1024 * 1024;
-
-const DropZoneFileUpload = ({ handleFileUploadSuccess, acceptedFileFormats }) => {
+const DropZoneFileUpload = ({ handleFileUploadSuccess, acceptedFileFormats, MAX_SIZE }) => {
     const [file, setFile] = useState(null);
     const [error, setError] = useState("");
     const openSnackbar = useSnackbar();
@@ -33,7 +31,7 @@ const DropZoneFileUpload = ({ handleFileUploadSuccess, acceptedFileFormats }) =>
         if (fileRejections?.length > 0) {
             let errorCode = Array.isArray(fileRejections[0]?.errors) && fileRejections[0]?.errors[0]?.code;
             let errorMessage = errorCode === 'file-too-large' ?
-                'File is too large. Please upload a file less than 50MB.' :
+                `File is too large. Please upload a file less than ${sizeInUnits(MAX_SIZE)}.` :
                 (errorCode === 'file-invalid-type') ? 'Invalid File Type. Please upload .log, .txt or .text only' : errorCode;
             setFile({
                 size: fileRejections[0]?.file?.size,
