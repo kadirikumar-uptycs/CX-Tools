@@ -5,6 +5,7 @@ import DropZoneFileUpload from '../utils/DropZoneFileUpload';
 import OsqueryStart from './OsqueryStart';
 import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
+import ActionButtons from './ActionButtons';
 import FullAnalysis from './FullAnalysis';
 import '../common/loader2.css';
 
@@ -13,6 +14,8 @@ const OsqueryAnalysis = () => {
     const dispatch = useDispatch();
     let [obj, setObj] = useState(null);
     let [loading, setLoading] = useState(false);
+    const MAX_SIZE = 55 * 1024 * 1024;
+
 
     const handleFileUploadSuccess = async (data) => {
         setLoading(true);
@@ -23,6 +26,11 @@ const OsqueryAnalysis = () => {
         await new Promise(resolve => setTimeout(resolve, 500));
         setLoading(false);
         setObj(OsqueryStartObj);
+    }
+
+    const resetState = () => {
+        setLoading(false);
+        setObj(null);
     }
 
     useLayoutEffect(() => {
@@ -44,6 +52,7 @@ const OsqueryAnalysis = () => {
                         (
                             <DropZoneFileUpload
                                 handleFileUploadSuccess={handleFileUploadSuccess}
+                                MAX_SIZE={MAX_SIZE}
                                 acceptedFileFormats={{
                                     "text/plain": [".log"],
                                 }}
@@ -93,7 +102,9 @@ const OsqueryAnalysis = () => {
                     }
                 </Box>
             }
+            {obj && <ActionButtons handleClear={resetState} />}
             {obj && <FullAnalysis obj={obj} />}
+
         </>
     );
 }
