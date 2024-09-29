@@ -12,3 +12,14 @@ export function splitStringIntoParts(string, sep, length) {
         string.split(sep).slice(length - 1).join(sep)
     ]
 }
+
+export function parseDateTimetoMinute(day, timeStamp) {
+    try {
+        const datetimeString = `${day.substring(0, 4)}-${day.substring(4, 6)}-${day.substring(6, 8)} ${timeStamp}`;
+        const datetime = new Date(datetimeString);
+        datetime.setSeconds(0, 0);
+        return datetime.getTime();
+    } catch (error) {
+        return null;
+    }
+}
