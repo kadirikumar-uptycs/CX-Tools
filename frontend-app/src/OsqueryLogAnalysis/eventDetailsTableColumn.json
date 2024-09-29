@@ -1,0 +1,45 @@
+[
+    {
+        "id": "lineNumber",
+        "numeric": true,
+        "showNumberCommas": true,
+        "label": "Line Number",
+        "disableToolTip": true
+    },
+    {
+        "id": "level",
+        "numeric": false,
+        "label": "Level",
+        "disableToolTip": true
+    },
+    {
+        "id": "workerPid",
+        "numeric": false,
+        "label": "Worker PID",
+        "disableToolTip": true
+    },
+    {
+        "id": "day",
+        "numeric": false,
+        "label": "Date",
+        "disableToolTip": true
+    },
+    {
+        "id": "timeStamp",
+        "numeric": false,
+        "label": "Time",
+        "disableToolTip": true
+    },
+    {
+        "id": "eventType",
+        "numeric": false,
+        "label": "Event Type",
+        "disableToolTip": true
+    },
+    {
+        "id": "count",
+        "numeric": true,
+        "label": "Count",
+        "disableToolTip": true
+    }
+]
