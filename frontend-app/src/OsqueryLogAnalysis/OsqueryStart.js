@@ -1,4 +1,4 @@
-import { convertToSeconds } from './helper_functions';
+import { convertToSeconds, parseDateTimetoMinute } from './helper_functions';
 
 
 
@@ -69,7 +69,10 @@ export default class OsqueryStart {
             logLineDetails.day = logTokens[0].slice(1);
             logLineDetails.timeStamp = logTokens[1];
             logLineDetails.timeInSeconds = convertToSeconds(logLineDetails.day, logLineDetails.timeStamp);
-            logLineDetails.workerPid = logTokens[2]
+            logLineDetails.workerPid = logTokens[2];
+
+            // If Year is not present set current year
+            logLineDetails.day = (logLineDetails?.day?.length === 4 ? new Date().getFullYear() : '') + logLineDetails.day;
         } catch (error) {
             this.errors.push(`Error while tokenizing log number ${lineNumber}; ${error?.message || error}`);
         }
@@ -121,20 +124,21 @@ export default class OsqueryStart {
             ...logLineDetails,
             eventType,
             numberEvents,
+            count: numberEvents,
         };
 
-        // 45613 I20240826 10:39:02.458232 81984 events.cpp:705] Osquery instance 0337e1df-d255-43c0-9d68-5ce338dc6ada: Received 1024 dns_lookup_events events
-        // 139510 I20240826 14:33:15.639955  9000 events.cpp:705] Osquery instance 0337e1df-d255-43c0-9d68-5ce338dc6ada: Received 1024 windows_events events
 
         this.eventDetails[eventType] ??= {};
 
+        let dateTime = parseDateTimetoMinute(logLineDetails?.day, logLineDetails?.timeStamp);
+
         try {
-            this.eventDetails[eventType][logLineDetails?.timeStamp] ??= {
+            this.eventDetails[eventType][dateTime] ??= {
                 count: 0,
                 details: [],
             };
-            this.eventDetails[eventType][logLineDetails?.timeStamp].count += numberEvents;
-            this.eventDetails[eventType][logLineDetails?.timeStamp]?.details.push(logLineDetails);
+            this.eventDetails[eventType][dateTime].count += numberEvents;
+            this.eventDetails[eventType][dateTime]?.details.push(logLineDetails);
         } catch (error) {
             this.errors.push(`Error while counting ${eventType} events at line number ${lineNumber}; ${error?.message || error}`);
         }
