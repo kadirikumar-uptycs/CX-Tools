@@ -9,6 +9,7 @@ import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import IntegrationInstructionsRoundedIcon from '@mui/icons-material/IntegrationInstructionsRounded';
 import UptycsTooltip from '../common/UptycsTooltip';
 import logo from '../assets/images/image.png';
 import { logout } from '../store/authSlice';
@@ -108,6 +109,15 @@ const SideBar = ({ onToggle }) => {
                                 <Link to="tokenGenerator">
                                     <KeyOutlinedIcon className='mui--icon' />
                                     <span className="text nav-text">Uptycs API Token</span>
+                                </Link>
+                            </li>
+                        </UptycsTooltip>
+                        <UptycsTooltip title={!sideBarOpen && "Jira Zoho Integration"}
+                        >
+                            <li className="nav-link">
+                                <Link to="/jirazoho">
+                                    <IntegrationInstructionsRoundedIcon className='mui--icon' />
+                                    <span className="text nav-text">Jira Zoho Integration</span>
                                 </Link>
                             </li>
                         </UptycsTooltip>
