@@ -10,6 +10,7 @@ import DialogContent from '@mui/joy/DialogContent';
 import IconButton from '@mui/joy/IconButton';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import Grow from '@mui/material/Grow';
 import { Stack, Tooltip, Typography } from '@mui/joy';
 
 export default function ShowResource({ resource }) {
@@ -53,55 +54,59 @@ export default function ShowResource({ resource }) {
                                 : { visibility: 'visible' },
                         ]}
                     >
-                        <ModalDialog
-                            sx={{
-                                opacity: 0,
-                                transition: `opacity 300ms`,
-                                ...{
-                                    entering: { opacity: 1 },
-                                    entered: { opacity: 1 },
-                                }[state],
-                            }}
-                        >
-                            <DialogTitle>
-                                <Stack
-                                    direction='row'
-                                    justifyContent='space-between'
-                                    sx={{
-                                        width: '100%',
-                                        marginBottom: '4px',
-                                        paddingRight: '10px'
-                                    }}
-                                >
-                                    <Typography>{resource?.name || 'Resource Name'}</Typography>
-                                    <Tooltip
-                                        title='close'
-                                        arrow
-                                        placement='bottom'
-                                        color='danger'
-                                        variant='outlined'
+                        <Grow in={open} timeout={500}>
+                            <ModalDialog
+                                sx={{
+                                    opacity: 0,
+                                    transition: `opacity 300ms`,
+                                    ...{
+                                        entering: { opacity: 1 },
+                                        entered: { opacity: 1 },
+                                    }[state],
+                                    translate: '-50% -50%',
+                                }}
+                            >
+                                <DialogTitle>
+                                    <Stack
+                                        direction='row'
+                                        justifyContent='space-between'
+                                        sx={{
+                                            width: '100%',
+                                            marginBottom: '4px',
+                                            paddingRight: '10px'
+                                        }}
                                     >
-                                        <IconButton color='danger' sx={{ scale: 1.3 }} onClick={() => setOpen(false)}>
-                                            <HighlightOffIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                </Stack>
-                            </DialogTitle>
-                            <DialogContent>
-                                <pre
-                                    style={{
-                                        maxHeight: '80vh',
-                                        overflowY: 'auto',
-                                        whiteSpace: 'pre-line',
-                                        fontSize: '13px',
-                                        margin: 0,
-                                        scrollbarWidth: 'thin'
-                                    }}
-                                >
-                                    <code className='language-json'>{JSON.stringify(resource, null, 4)}</code>
-                                </pre>
-                            </DialogContent>
-                        </ModalDialog>
+                                        <Typography>{resource?.name || 'Resource Name'}</Typography>
+                                        <Tooltip
+                                            title='close'
+                                            arrow
+                                            placement='bottom'
+                                            color='danger'
+                                            variant='outlined'
+                                        >
+                                            <IconButton color='danger' sx={{ scale: 1.3 }} onClick={() => setOpen(false)}>
+                                                <HighlightOffIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Stack>
+                                </DialogTitle>
+                                <DialogContent>
+                                    <pre
+                                        style={{
+                                            maxHeight: '80vh',
+                                            overflowY: 'auto',
+                                            whiteSpace: 'pre-line',
+                                            fontSize: '13px',
+                                            margin: 0,
+                                            scrollbarWidth: 'thin'
+                                        }}
+                                    >
+                                        <code className='language-json'>{JSON.stringify(resource, null, 4)}</code>
+                                    </pre>
+                                </DialogContent>
+
+                            </ModalDialog>
+                        </Grow>
                     </Modal>
                 )}
             </Transition>
