@@ -1,0 +1,45 @@
+[
+    {
+        "id": "lineNumber",
+        "numeric": true,
+        "showNumberCommas": true,
+        "label": "Line Number",
+        "disableToolTip": true
+    },
+    {
+        "id": "level",
+        "numeric": false,
+        "label": "Level",
+        "disableToolTip": true
+    },
+    {
+        "id": "workerPid",
+        "numeric": false,
+        "label": "Worker PID",
+        "disableToolTip": true
+    },
+    {
+        "id": "watcherPid",
+        "numeric": false,
+        "label": "Watcher PID",
+        "disableToolTip": true
+    },
+    {
+        "id": "day",
+        "numeric": false,
+        "label": "Date",
+        "disableToolTip": true
+    },
+    {
+        "id": "timeStamp",
+        "numeric": false,
+        "label": "Time",
+        "disableToolTip": true
+    },
+    {
+        "id": "version",
+        "numeric": false,
+        "label": "Sensor Version",
+        "disableToolTip": true
+    }
+]
