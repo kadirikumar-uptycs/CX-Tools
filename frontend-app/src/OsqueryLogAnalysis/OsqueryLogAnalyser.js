@@ -2,7 +2,7 @@ import { convertToSeconds, parseDateTimetoMinute } from './helper_functions';
 
 
 
-export default class OsqueryStart {
+export default class OsqueryLogAnalyser {
 
     constructor(workerLogs) {
         this.osqueryStartPattern = /.* osquery worker initialized .*/;
@@ -10,6 +10,8 @@ export default class OsqueryStart {
         this.platformVersionPattern = /^platform_info/;
         this.osqueryVersionPattern = /^osquery_info/;
         this.osqueryReceivedEvents = /.* Osquery instance .* Received .*/;
+        this.schedule_query_pattern = /.* Executing scheduled query.*/;
+        this.found_schedule_query_pattern = /.* Found results for query: .*/;
 
         this.versionDetails = { osVersion: [], osqueryVersion: [], platformVersion: [] };
         this.eventDetails = {};

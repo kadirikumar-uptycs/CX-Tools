@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentPage } from '../store/authSlice';
 import DropZoneFileUpload from '../utils/DropZoneFileUpload';
-import OsqueryStart from './OsqueryStart';
+import OsqueryLogAnalyser from './OsqueryLogAnalyser';
 import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
 import ActionButtons from './ActionButtons';
@@ -21,7 +21,7 @@ const OsqueryAnalysis = () => {
         setLoading(true);
         await new Promise(resolve => setTimeout(resolve, 2000));
         let workerLogs = data?.split('\n');
-        let OsqueryStartObj = new OsqueryStart(workerLogs);
+        let OsqueryStartObj = new OsqueryLogAnalyser(workerLogs);
         console.log(OsqueryStartObj);
         await new Promise(resolve => setTimeout(resolve, 500));
         setLoading(false);
