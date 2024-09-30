@@ -11,6 +11,7 @@ import Link from '@mui/joy/Link';
 import Tooltip from '@mui/joy/Tooltip';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
+import Input from '@mui/joy/Input';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -63,7 +64,7 @@ function stableSort(array, comparator) {
 
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort, headCells } =
+    const { order, orderBy, onRequestSort, headCells, handleInputFilter } =
         props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -84,7 +85,7 @@ function EnhancedTableHead(props) {
                             }
                             style={{
                                 width: `${100 / totalColumns}%`,
-                                paddingLeft: (!index) ? '20px' : '10px'
+                                paddingLeft: (!index) ? '20px' : '10px',
                             }}
                         >
                             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -113,6 +114,25 @@ function EnhancedTableHead(props) {
                                     </Box>
                                 ) : null}
                             </Link>
+                            <Input
+                                placeholder="..."
+                                onChange={(event) => {
+                                    if(typeof handleInputFilter === 'function'){
+                                        handleInputFilter(headCell.id, event?.currentTarget?.value);
+                                    }
+                                }}
+                                sx={{
+                                    '--Input-focusedInset': 'var(--any, )',
+                                    '--Input-focusedThickness': '0.15rem',
+                                    '--Input-focusedHighlight': '#695cfe !important',
+                                    '&::before': {
+                                        transition: 'box-shadow .15s ease-in-out',
+                                    },
+                                    '&:focus-within': {
+                                        borderColor: '#86b7fe',
+                                    },
+                                }}
+                            />
                         </th>
                     );
                 })}
@@ -123,10 +143,11 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
     onRequestSort: PropTypes.func.isRequired,
-    order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+    order: PropTypes.oneOf(['asc', 'desc']),
     orderBy: PropTypes.string,
     rowCount: PropTypes.number.isRequired,
     headCells: PropTypes.arrayOf(PropTypes.object),
+    handleInputFilter: PropTypes.func,
 };
 
 function EnhancedTableToolbar({ toolBarParams }) {
@@ -172,6 +193,7 @@ export default function TableSortAndSelection({ headCells, rows, toolBarParams }
     const [orderBy, setOrderBy] = React.useState(null);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(7);
+    const [filteredRows, setFilteredRows] = React.useState(rows);
 
 
 
@@ -190,6 +212,10 @@ export default function TableSortAndSelection({ headCells, rows, toolBarParams }
         }
     };
 
+    const handleInputFilter = (property, targetValue) => {
+        setFilteredRows(rows?.filter(row => typeof row[property] === 'string' && row[property].includes(targetValue)));
+    }
+
     const handleChangePage = (newPage) => {
         setPage(newPage);
     };
@@ -200,17 +226,17 @@ export default function TableSortAndSelection({ headCells, rows, toolBarParams }
     };
 
     const getLabelDisplayedRowsTo = () => {
-        if (rows.length === -1) {
+        if (filteredRows.length === -1) {
             return (page + 1) * rowsPerPage;
         }
         return rowsPerPage === -1
-            ? rows.length
-            : Math.min(rows.length, (page + 1) * rowsPerPage);
+            ? filteredRows.length
+            : Math.min(filteredRows.length, (page + 1) * rowsPerPage);
     };
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0;
 
     return (
         <Sheet
@@ -239,11 +265,12 @@ export default function TableSortAndSelection({ headCells, rows, toolBarParams }
                     order={order}
                     orderBy={orderBy}
                     onRequestSort={handleRequestSort}
-                    rowCount={rows.length}
+                    rowCount={filteredRows.length}
                     headCells={headCells}
+                    handleInputFilter={handleInputFilter}
                 />
                 <tbody>
-                    {stableSort(rows, getComparator(order, orderBy))
+                    {stableSort(filteredRows, getComparator(order, orderBy))
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row, row_index) => {
                             return (
@@ -316,9 +343,9 @@ export default function TableSortAndSelection({ headCells, rows, toolBarParams }
                                 </FormControl>
                                 <Typography textAlign="center" sx={{ minWidth: 80 }}>
                                     {labelDisplayedRows({
-                                        from: rows.length === 0 ? 0 : page * rowsPerPage + 1,
+                                        from: filteredRows.length === 0 ? 0 : page * rowsPerPage + 1,
                                         to: getLabelDisplayedRowsTo(),
-                                        count: rows.length === -1 ? -1 : rows.length,
+                                        count: filteredRows.length === -1 ? -1 : filteredRows.length,
                                     })}
                                 </Typography>
                                 <Box sx={{ display: 'flex', gap: 1 }}>
@@ -337,8 +364,8 @@ export default function TableSortAndSelection({ headCells, rows, toolBarParams }
                                         color="neutral"
                                         variant="outlined"
                                         disabled={
-                                            rows.length !== -1
-                                                ? page >= Math.ceil(rows.length / rowsPerPage) - 1
+                                            filteredRows.length !== -1
+                                                ? page >= Math.ceil(filteredRows.length / rowsPerPage) - 1
                                                 : false
                                         }
                                         onClick={() => handleChangePage(page + 1)}
