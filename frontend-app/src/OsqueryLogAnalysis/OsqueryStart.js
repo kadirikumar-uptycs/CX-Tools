@@ -12,7 +12,6 @@ export default class OsqueryStart {
         this.osqueryReceivedEvents = /.* Osquery instance .* Received .*/;
 
         this.versionDetails = { osVersion: [], osqueryVersion: [], platformVersion: [] };
-        this.osqueryStartList = [];
         this.eventDetails = {};
         this.osqueryStartFullDetails = {};
         this.workerLogs = workerLogs;
@@ -26,14 +25,9 @@ export default class OsqueryStart {
         this.workerLogs.map((log, index) => {
             this.parseWorkerLogLine(log, index + 1);
             return ''
-        })
-    }
-    startOsqueryStartAnalysis() {
-        this.osqueryStartList.forEach(([lineNumber, osqueryStartLine]) => {
-            this.osqueryStartFullDetails[lineNumber] = this.parseOsqueryStartLogLine(lineNumber, osqueryStartLine)
         });
-        //    Calculate Time Difference
     }
+
 
     parseVersion(lineNumber, line, versionName, replacedText) {
         let tempObj = {}
@@ -106,9 +100,16 @@ export default class OsqueryStart {
             logLineDetails['watcherPid'] = 'UNKNOWN_DUE_TO_ERRORS';
             this.errors.push(`Error while looking for the Watcher PID in OsqueryRestartedLogLine at line number ${lineNumber}; ${error?.message || error}`);
         }
-
-        logLineDetails['line'] = osqueryStartLine
-
+        if (logLineDetails?.watcherPid) {
+            logLineDetails.watcherPid = logLineDetails.watcherPid.replace('\r', '');
+        }
+        let dateTime = parseDateTimetoMinute(logLineDetails?.day, logLineDetails?.timeStamp);
+        this.osqueryStartFullDetails[dateTime] ??= {
+            count: 0,
+            details: [],
+        };
+        this.osqueryStartFullDetails[dateTime].count += 1;
+        this.osqueryStartFullDetails[dateTime]?.details?.push(logLineDetails);
         return logLineDetails
     }
 
@@ -151,14 +152,14 @@ export default class OsqueryStart {
         if (result) {
             try {
                 if (result[0].length <= 200) {
-                    this.osqueryStartList.push([lineNumber, line]);
+                    this.parseOsqueryStartLogLine(lineNumber, line);
                 } else {
                     let charnum = line.indexOf('osquery worker initialized');
                     if (charnum > 0) {
                         let findstart = line.slice(charnum - 55).indexOf('I');
                         let stpoint = charnum - 55 + findstart;
                         let osqueryStartLine = line.slice(stpoint);
-                        this.osqueryStartList.push([lineNumber, osqueryStartLine]);
+                        this.parseOsqueryStartLogLine(lineNumber, osqueryStartLine);
                     }
                 }
             } catch (error) {
