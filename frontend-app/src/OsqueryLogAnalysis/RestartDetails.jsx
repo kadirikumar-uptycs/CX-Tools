@@ -151,7 +151,7 @@ const RestartDetails = ({ restartDetails }) => {
                 headCells={tableHeadCells}
                 rows={getTableRows()}
                 toolBarParams={{
-                    title: 'Complete Event Log History',
+                    title: 'Sensor Restart Log History',
                     styles: {
                         textAlign: 'center',
                         margin: '21px 0',
