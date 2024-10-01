@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import ChevronRightOutlined from '@mui/icons-material/ChevronRightOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
-import SyncAltOutlinedIcon from '@mui/icons-material/SyncAltOutlined';
+import CompareArrowsOutlinedIcon from '@mui/icons-material/CompareArrowsOutlined';
+import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
 import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
@@ -82,7 +82,7 @@ const SideBar = ({ onToggle }) => {
                         <UptycsTooltip title={!sideBarOpen && "Resource Migration"}>
                             <li className="nav-link">
                                 <Link to="resourceMigrations">
-                                    <SendOutlinedIcon className='mui--icon' />
+                                    <CompareArrowsOutlinedIcon className='mui--icon' />
                                     <span className="text nav-text">Resource Migration</span>
                                 </Link>
                             </li>
@@ -90,7 +90,7 @@ const SideBar = ({ onToggle }) => {
                         <UptycsTooltip title={!sideBarOpen && "Resource Updation"}>
                             <li className="nav-link">
                                 <Link to="resourceUpdations">
-                                    <SyncAltOutlinedIcon className='mui--icon' />
+                                    <SyncOutlinedIcon className='mui--icon' />
                                     <span className="text nav-text">Resource Updation</span>
                                 </Link>
                             </li>
