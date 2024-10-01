@@ -18,6 +18,7 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import HiveRoundedIcon from '@mui/icons-material/HiveRounded';
 import CachedIcon from '@mui/icons-material/Cached';
 import ScheduleRoundedIcon from '@mui/icons-material/ScheduleRounded';
+import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import NoDataFound from '../common/NoDataFound';
 
 export default function FullAnalysis({ obj }) {
@@ -75,6 +76,12 @@ export default function FullAnalysis({ obj }) {
                     title={"Scheduled Queries Details"}
                     description={"Details of executed scheduled queries"}
                     details={getFinalComponent(obj?.scheduledQueryDetils, <ScheduledQueriesDetails scheduledQueriesDetails={obj?.scheduledQueryDetils} />)}
+                />
+                <CustomAccordion
+                    icon={<ReportGmailerrorredIcon />}
+                    title={"Issues Detected"}
+                    description={"Details of errors or known issues found"}
+                    details={getFinalComponent(false, <></>)}
                 />
             </AccordionGroup>
         </Box>
