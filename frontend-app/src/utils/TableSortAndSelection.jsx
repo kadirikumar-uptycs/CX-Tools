@@ -117,7 +117,7 @@ function EnhancedTableHead(props) {
                             <Input
                                 placeholder="..."
                                 onChange={(event) => {
-                                    if(typeof handleInputFilter === 'function'){
+                                    if (typeof handleInputFilter === 'function') {
                                         handleInputFilter(headCell.id, event?.currentTarget?.value);
                                     }
                                 }}
@@ -188,14 +188,15 @@ EnhancedTableToolbar.propTypes = {
     toolBarParams: PropTypes.object
 };
 
-export default function TableSortAndSelection({ headCells, rows, toolBarParams }) {
+export default function TableSortAndSelection({ headCells, rows = [], toolBarParams }) {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState(null);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(7);
-    const [filteredRows, setFilteredRows] = React.useState(rows);
+    const [inputFilter, setInputFilter] = React.useState({});
 
-
+    
+    let filteredRows = rows.filter(row => Object.entries(inputFilter).every(([key, value]) => String(row[key])?.includes(String(value))));
 
     const handleRequestSort = (_, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -213,7 +214,10 @@ export default function TableSortAndSelection({ headCells, rows, toolBarParams }
     };
 
     const handleInputFilter = (property, targetValue) => {
-        setFilteredRows(rows?.filter(row => typeof row[property] === 'string' && row[property].includes(targetValue)));
+        setInputFilter(prev => ({
+            ...prev,
+            [property]: targetValue,
+        }))
     }
 
     const handleChangePage = (newPage) => {
