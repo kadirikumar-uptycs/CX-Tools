@@ -6,16 +6,18 @@ import {
 import {
     accordionSummaryClasses,
 } from '@mui/joy/AccordionSummary';
-import InfoIcon from '@mui/icons-material/Info';
-import EventNoteIcon from '@mui/icons-material/EventNote';
-import HiveRoundedIcon from '@mui/icons-material/HiveRounded';
-import CachedIcon from '@mui/icons-material/Cached';
 import CustomAccordion from './CustomAccordion';
 import VersionDetails from './VersionDetails';
 import Box from '@mui/joy/Box';
 import IndividualEventsCharts from './IndividualEventsCharts';
 import CombinedEventsCharts from './CombinedEventsCharts';
 import RestartDetails from './RestartDetails';
+import ScheduledQueriesDetails from './ScheduledQueriesDetails';
+import InfoIcon from '@mui/icons-material/Info';
+import EventNoteIcon from '@mui/icons-material/EventNote';
+import HiveRoundedIcon from '@mui/icons-material/HiveRounded';
+import CachedIcon from '@mui/icons-material/Cached';
+import ScheduleRoundedIcon from '@mui/icons-material/ScheduleRounded';
 import NoDataFound from '../common/NoDataFound';
 
 export default function FullAnalysis({ obj }) {
@@ -67,6 +69,12 @@ export default function FullAnalysis({ obj }) {
                     title={"Sensor Restart Details"}
                     description={"Sensor restart trends and log history overview"}
                     details={getFinalComponent(obj?.osqueryStartFullDetails, <RestartDetails restartDetails={obj?.osqueryStartFullDetails} />)}
+                />
+                <CustomAccordion
+                    icon={<ScheduleRoundedIcon />}
+                    title={"Scheduled Queries Details"}
+                    description={"Details of executed scheduled queries"}
+                    details={getFinalComponent(obj?.scheduledQueryDetils, <ScheduledQueriesDetails scheduledQueriesDetails={obj?.scheduledQueryDetils} />)}
                 />
             </AccordionGroup>
         </Box>

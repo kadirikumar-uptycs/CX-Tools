@@ -10,12 +10,13 @@ export default class OsqueryLogAnalyser {
         this.platformVersionPattern = /^platform_info/;
         this.osqueryVersionPattern = /^osquery_info/;
         this.osqueryReceivedEvents = /.* Osquery instance .* Received .*/;
-        this.schedule_query_pattern = /.* Executing scheduled query.*/;
-        this.found_schedule_query_pattern = /.* Found results for query: .*/;
+        this.scheduleQueryExecutingPattern = /.*Executing scheduled query.*/;
+        this.scheduleQueryFoundPattern = /.*Found results for query: .*/;
 
         this.versionDetails = { osVersion: [], osqueryVersion: [], platformVersion: [] };
         this.eventDetails = {};
         this.osqueryStartFullDetails = {};
+        this.scheduledQueryDetils = {};
         this.workerLogs = workerLogs;
         this.errors = []
 
@@ -83,23 +84,23 @@ export default class OsqueryLogAnalyser {
         let logMessageWords = logTokens[4].replace('osquery worker initialized [', '').split(' ');
         try {
             if (logMessageWords[0].includes('version')) {
-                logLineDetails['version'] = logMessageWords[0].split('=')[1].replace(',', '');
+                logLineDetails.version = logMessageWords[0].split('=')[1].replace(',', '');
             } else {
-                logLineDetails['version'] = 'Unknown';
+                logLineDetails.version = 'Unknown';
             }
         } catch (error) {
-            logLineDetails['watcherPid'] = 'UNKNOWN_DUE_TO_ERRORS';
+            logLineDetails.watcherPid = 'UNKNOWN_DUE_TO_ERRORS';
             this.errors.push(`Error while looking for the osquery version in OsqueryRestartedLogLine at line number ${lineNumber}; ${error?.message || error}`);
         }
 
         try {
             if (logMessageWords[1].includes('watcher')) {
-                logLineDetails['watcherPid'] = logMessageWords[1].split('=')[1].replace(']', '');
+                logLineDetails.watcherPid = logMessageWords[1].split('=')[1].replace(']', '');
             } else {
-                logLineDetails['watcherPid'] = 'Unknown';
+                logLineDetails.watcherPid = 'Unknown';
             }
         } catch (error) {
-            logLineDetails['watcherPid'] = 'UNKNOWN_DUE_TO_ERRORS';
+            logLineDetails.watcherPid = 'UNKNOWN_DUE_TO_ERRORS';
             this.errors.push(`Error while looking for the Watcher PID in OsqueryRestartedLogLine at line number ${lineNumber}; ${error?.message || error}`);
         }
         if (logLineDetails?.watcherPid) {
@@ -149,6 +150,37 @@ export default class OsqueryLogAnalyser {
         return logLineDetails;
     }
 
+
+    parseScheduledQueryLogLine(lineNumber, sqLine) {
+        sqLine = sqLine.replace('  ', ' ').replace('  ', ' ');
+        let { logLineDetails, logTokens } = this.tokenizeLogLine(lineNumber, sqLine);
+        let logMessageWords = logTokens[4].split(' ');
+        try {
+            if (this.scheduleQueryExecutingPattern.test(logTokens[4])) {
+                logLineDetails.queryName = logMessageWords[3]?.split(':')[0];
+                logLineDetails.status = 'Executing';
+            } else if (this.scheduleQueryFoundPattern.test(logTokens[4])) {
+                logLineDetails.queryName = logTokens[4]?.replace('Found results for query', '')?.split(':')[1]?.trim();
+                logLineDetails.status = 'Completed';
+            }
+        } catch (error) {
+            this.errors.push(`Error while parsing for the scheduled query at line number ${lineNumber}; ${error?.message || error}`);
+        }
+
+        try {
+            let dateTime = parseDateTimetoMinute(logLineDetails?.day, logLineDetails?.timeStamp);
+            this.scheduledQueryDetils[dateTime] ??= {
+                count: 0,
+                details: [],
+            };
+            this.scheduledQueryDetils[dateTime].count += 1;
+            this.scheduledQueryDetils[dateTime]?.details?.push(logLineDetails);
+            return logLineDetails;
+        } catch (error) {
+            return null;
+        }
+    }
+
     parseWorkerLogLine(line, lineNumber) {
         let result = line.match(this.osqueryStartPattern);
         if (result) {
@@ -167,6 +199,10 @@ export default class OsqueryLogAnalyser {
             } catch (error) {
                 this.errors.push(`Error while looking for the Osquery start pattern at line ${lineNumber}; ${error?.message || error}`)
             }
+        }
+
+        if (this.scheduleQueryExecutingPattern.test(line) || this.scheduleQueryFoundPattern.test(line)) {
+            this.parseScheduledQueryLogLine(lineNumber, line);
         }
 
         let osVersionResults = line.match(this.osVersionPattern);

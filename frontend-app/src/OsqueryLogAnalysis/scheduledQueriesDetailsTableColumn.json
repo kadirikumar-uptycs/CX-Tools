@@ -1,0 +1,45 @@
+[
+    {
+        "id": "lineNumber",
+        "numeric": true,
+        "showNumberCommas": true,
+        "label": "Line Number",
+        "disableToolTip": true
+    },
+    {
+        "id": "level",
+        "numeric": false,
+        "label": "Level",
+        "disableToolTip": true
+    },
+    {
+        "id": "workerPid",
+        "numeric": false,
+        "label": "Worker PID",
+        "disableToolTip": true
+    },
+    {
+        "id": "queryName",
+        "numeric": false,
+        "label": "Query Name",
+        "disableToolTip": false
+    },
+    {
+        "id": "status",
+        "numeric": false,
+        "label": "Query Status",
+        "disableToolTip": true
+    },
+    {
+        "id": "day",
+        "numeric": false,
+        "label": "Date",
+        "disableToolTip": true
+    },
+    {
+        "id": "timeStamp",
+        "numeric": false,
+        "label": "Time",
+        "disableToolTip": true
+    }
+]
