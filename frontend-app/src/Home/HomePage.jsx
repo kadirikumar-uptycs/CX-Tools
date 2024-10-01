@@ -41,7 +41,7 @@ const HomePage = () => {
             link: 'tokenGenerator'
         },
         {
-            title: 'Jira & Zoho Synergy',
+            title: 'Jira & Zoho Integration',
             description: 'Filter for the tickets based on Jira and Zoho fields combinely.',
             icon: IntegrationInstructions,
             link: 'jirazoho'
