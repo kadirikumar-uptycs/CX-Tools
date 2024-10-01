@@ -34,6 +34,9 @@ const fetchResources = createAsyncThunk('migration/fetchSourceResources', async 
         const response = await axios.post(`${config.SERVER_BASE_ADDRESS}/getResources/${resource}`, { credentials: state?.credentials }, { withCredentials: true });
         return response.data;
     } catch (error) {
+        if (error.response?.status === 401) {
+            window.location.replace('/login');
+        }
         return rejectWithValue(error);
     }
 });
@@ -53,6 +56,9 @@ const migrateResources = createAsyncThunk('migration/migrateResources', async (_
         dispatch(fetchResources('target'));
         return response.data;
     } catch (error) {
+        if (error.response?.status === 401) {
+            window.location.replace('/login');
+        }
         let errorDetails = error?.response?.data?.details;
         let { failed, total } = errorDetails || {};
         if (total && failed < total) {
