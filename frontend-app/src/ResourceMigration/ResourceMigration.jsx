@@ -4,9 +4,9 @@ import { useLocation } from 'react-router-dom';
 import { setCurrentPage } from '../store/authSlice';
 import { fetchResources, migrateResources, setResourceType, RESET } from '../store/migrationSlice';
 import { useSnackbar } from '../hooks/SnackBarProvider';
-import Tenant from './Tenant';
-import ShowErrors from './ShowErrors';
-import ResourceList from './ResourceList';
+import Tenant from '../utils/Tenant';
+import ShowErrors from '../utils/ShowErrors';
+import ResourceList from '../utils/ResourceList';
 import Stack from '@mui/joy/Stack';
 import SendIcon from '@mui/icons-material/Send';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -91,7 +91,7 @@ const ResourceMigration = () => {
                         justifyContent: 'center',
                     }}
                 >
-                    <Tenant type="source" />
+                    <Tenant type="source" storeName={"migration"} />
                 </div>
                 <div
                     style={{
@@ -151,7 +151,7 @@ const ResourceMigration = () => {
                         justifyContent: 'center',
                     }}
                 >
-                    <Tenant type="target" />
+                    <Tenant type="target" storeName={"migration"} />
                 </div>
             </div>
         </Stack>

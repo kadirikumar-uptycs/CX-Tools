@@ -5,14 +5,14 @@ import Typography from '@mui/joy/Typography';
 import Tooltip from '@mui/joy/Tooltip';
 import ListItemContent from '@mui/joy/ListItemContent';
 import Stack from '@mui/joy/Stack';
-import CheckBox from './CheckBox';
+import CheckBox from '../ResourceMigration/CheckBox';
 import ShowResource from './ShowResource';
 import Loading from '../common/Loading';
 import Error2 from '../common/Error2';
 import NoDataClassical from '../common/NoDataClassical';
 
-const TenantResources = ({ type }) => {
-    const state = useSelector(state => state?.migration?.[type]);
+const TenantResources = ({ type, storeName }) => {
+    const state = useSelector(state => state[storeName][type]);
     const { loading, error, data, noData } = state
 
     return (

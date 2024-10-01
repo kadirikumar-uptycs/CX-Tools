@@ -4,15 +4,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useSnackbar } from '../hooks/SnackBarProvider';
 import { fetchResources } from '../store/migrationSlice';
 import TenantResources from './TenantResources';
-import * as constants from '../utils/constants';
-import InputFileUpload from '../utils/FileUpload';
+import * as constants from './constants';
+import InputFileUpload from './FileUpload';
 
 
-const Tenant = ({ type }) => {
+const Tenant = ({ type, storeName }) => {
+    console.log(storeName, type);
     const dispatch = useDispatch();
     const openSnackbar = useSnackbar();
-    const state = useSelector(state => state?.migration?.[type]);
-    const { fileName } = state
+    const state = useSelector(state => state[storeName][type]);
+    const { fileName } = state;
 
     const uploadHandler = (credentials, fileName) => {
         let requiredKeys = constants.REQUIRED_KEYS;
@@ -39,7 +40,7 @@ const Tenant = ({ type }) => {
             >
                 <InputFileUpload label={fileName} uploadHandler={uploadHandler} />
             </div>
-            <TenantResources type={type} />
+            <TenantResources type={type} storeName={storeName} />
         </div>
     );
 }
