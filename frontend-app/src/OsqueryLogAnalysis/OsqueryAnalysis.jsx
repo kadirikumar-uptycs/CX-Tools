@@ -22,7 +22,6 @@ const OsqueryAnalysis = () => {
         await new Promise(resolve => setTimeout(resolve, 2000));
         let workerLogs = data?.split('\n');
         let OsqueryStartObj = new OsqueryLogAnalyser(workerLogs);
-        console.log(OsqueryStartObj);
         await new Promise(resolve => setTimeout(resolve, 500));
         setLoading(false);
         setObj(OsqueryStartObj);
