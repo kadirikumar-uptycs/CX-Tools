@@ -10,8 +10,8 @@ router.post('/user', isAuthenticated, isAdmin, controllers.createUser)
 router.get('/users', isAuthenticated, controllers.getUsers)
 router.put('/user/:id', isAuthenticated, isAdmin, controllers.updateUser)
 router.delete('/user/:id', isAuthenticated, isAdmin, controllers.deleteUser)
-router.post('/getResources/:endpoint', isAuthenticated, isDomainAllowed, controllers.getTenantResources);
-router.post('/migrateResources/:endpoint', isAuthenticated, isDomainAllowed, controllers.migrateTenantResources);
+router.post('/getResources/:endpoint', isAuthenticated, controllers.getTenantResources);
+router.post('/migrateResources/:endpoint', isAuthenticated, controllers.migrateTenantResources);
 router.post('/authToken', isAuthenticated, controllers.getAuthToken);
 
 module.exports = router;
