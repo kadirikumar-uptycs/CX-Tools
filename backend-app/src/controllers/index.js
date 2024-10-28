@@ -6,6 +6,7 @@ const deleteUser = require('./deleteUser');
 const getTenantResources = require('./getTenantResources');
 const migrateTenantResources = require('./migrateTenantResources');
 const getAuthToken = require('./getAuthToken');
+const github = require('./github');
 
 module.exports = {
     getUsers,
@@ -15,5 +16,6 @@ module.exports = {
     deleteUser,
     getTenantResources,
     migrateTenantResources,
-    getAuthToken
+    getAuthToken,
+    github,
 }
