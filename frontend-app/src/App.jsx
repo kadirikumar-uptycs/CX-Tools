@@ -16,6 +16,7 @@ import ResourceUpdation from './ResourceUpdation/ResourceUpdation';
 import OsqueryAnalysis from './OsqueryLogAnalysis/OsqueryAnalysis';
 import TokenGenerator from './UptycsAPIKeys/TokenGenerator';
 import JiraZoho from './JiraZoho/JiraZoho';
+import TenantBackup from './TenantBackup/pages/TenantBackup';
 import Users from './Users/Users';
 import Layout from './Layout';
 import store from './store';
@@ -52,6 +53,11 @@ const router = createBrowserRouter(
 				<Route path="jirazoho" element={
 					<ErrorBoundary>
 						<JiraZoho />
+					</ErrorBoundary>
+				} />
+				<Route path="tenantBackup" element={
+					<ErrorBoundary>
+						<TenantBackup />
 					</ErrorBoundary>
 				} />
 				<Route path="users" element={

@@ -10,6 +10,7 @@ import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import IntegrationInstructionsRoundedIcon from '@mui/icons-material/IntegrationInstructionsRounded';
+import BackupOutlinedIcon from '@mui/icons-material/BackupOutlined';
 import UptycsTooltip from '../common/UptycsTooltip';
 import logo from '../assets/images/image.png';
 import { logout } from '../store/authSlice';
@@ -26,6 +27,58 @@ const SideBar = ({ onToggle }) => {
     const [open, setOpen] = useState(false);
     const openSnackBar = useSnackbar();
     const dispatch = useDispatch();
+
+    const pages = [
+        {
+            name: 'Home',
+            link: '/',
+            icon: HomeOutlinedIcon,
+            tooltip: 'Home Page'
+        },
+        {
+            name: 'Resource Migration',
+            link: 'resourceMigrations',
+            icon: CompareArrowsOutlinedIcon,
+            tooltip: 'Resource Migration'
+        },
+        {
+            name: 'Resource Updation',
+            link: 'resourceUpdations',
+            icon: SyncOutlinedIcon,
+            tooltip: 'Resource Updation'
+        },
+        {
+            name: 'Osquery Analysis',
+            link: 'osqueryAnalysis',
+            icon: InsertChartOutlinedIcon,
+            tooltip: 'Osquery Analysis'
+        },
+        {
+            name: 'Uptycs API Token',
+            link: 'tokenGenerator',
+            icon: KeyOutlinedIcon,
+            tooltip: 'Uptycs API Token'
+        },
+        {
+            name: 'Jira Zoho Integration',
+            link: '/jirazoho',
+            icon: IntegrationInstructionsRoundedIcon,
+            tooltip: 'Jira Zoho Integration'
+        },
+        {
+            name: 'Tenant Backup',
+            link: '/tenantBackup',
+            icon: BackupOutlinedIcon,
+            tooltip: 'Tenant Backup',
+        },
+        {
+            name: 'Users',
+            link: 'users',
+            icon: PeopleOutlinedIcon,
+            tooltip: 'Users'
+        }
+    ];
+
 
     const handleToggle = () => {
         setSideBarOpen(value => !value);
@@ -51,7 +104,6 @@ const SideBar = ({ onToggle }) => {
     return (
         <nav className={`sidebar ${sideBarOpen ? '' : 'close'}`}>
             <header>
-
                 <div className="image-text">
                     <Link to='/' style={{
                         textDecoration: 'none'
@@ -70,77 +122,29 @@ const SideBar = ({ onToggle }) => {
             <div className="menu-bar">
                 <div className="menu">
                     <ul className="menu-links">
-                        <UptycsTooltip title={!sideBarOpen && "Home Page"}
-                        >
-                            <li className="nav-link">
-                                <Link to="/">
-                                    <HomeOutlinedIcon className='mui--icon' />
-                                    <span className="text nav-text">Home</span>
-                                </Link>
-                            </li>
-                        </UptycsTooltip>
-                        <UptycsTooltip title={!sideBarOpen && "Resource Migration"}>
-                            <li className="nav-link">
-                                <Link to="resourceMigrations">
-                                    <CompareArrowsOutlinedIcon className='mui--icon' />
-                                    <span className="text nav-text">Resource Migration</span>
-                                </Link>
-                            </li>
-                        </UptycsTooltip>
-                        <UptycsTooltip title={!sideBarOpen && "Resource Updation"}>
-                            <li className="nav-link">
-                                <Link to="resourceUpdations">
-                                    <SyncOutlinedIcon className='mui--icon' />
-                                    <span className="text nav-text">Resource Updation</span>
-                                </Link>
-                            </li>
-                        </UptycsTooltip>
-                        <UptycsTooltip title={!sideBarOpen && "Osquery Analysis"}>
-                            <li className="nav-link">
-                                <Link to="osqueryAnalysis">
-                                    <InsertChartOutlinedIcon className='mui--icon' />
-                                    <span className="text nav-text">Osquery Analysis</span>
-                                </Link>
-                            </li>
-                        </UptycsTooltip>
-
-                        <UptycsTooltip title={!sideBarOpen && "Uptycs API Token"}>
-                            <li className="nav-link">
-                                <Link to="tokenGenerator">
-                                    <KeyOutlinedIcon className='mui--icon' />
-                                    <span className="text nav-text">Uptycs API Token</span>
-                                </Link>
-                            </li>
-                        </UptycsTooltip>
-                        <UptycsTooltip title={!sideBarOpen && "Jira Zoho Integration"}
-                        >
-                            <li className="nav-link">
-                                <Link to="/jirazoho">
-                                    <IntegrationInstructionsRoundedIcon className='mui--icon' />
-                                    <span className="text nav-text">Jira Zoho Integration</span>
-                                </Link>
-                            </li>
-                        </UptycsTooltip>
-                        <UptycsTooltip title={!sideBarOpen && "Users"}>
-                            <li className="nav-link">
-                                <Link to="users">
-                                    <PeopleOutlinedIcon className='mui--icon' />
-                                    <span className="text nav-text">Users</span>
-                                </Link>
-                            </li>
-                        </UptycsTooltip>
+                        {pages.map((page, index) => (
+                            <UptycsTooltip key={index} title={!sideBarOpen && page.tooltip}>
+                                <li className="nav-link">
+                                    <Link to={page.link}>
+                                        <page.icon className='mui--icon' />
+                                        <span className="text nav-text">{page.name}</span>
+                                    </Link>
+                                </li>
+                            </UptycsTooltip>
+                        ))}
                     </ul>
                 </div>
 
                 <div className="bottom-content">
                     <UptycsTooltip title={!sideBarOpen && "Logout"}>
-                        <li className='logout-btn' onClick={() => setOpen(true)} style={{ cursor: 'pointer'}}>
+                        <li className='logout-btn' onClick={() => setOpen(true)} style={{ cursor: 'pointer' }}>
                             <LogoutOutlinedIcon className='mui--icon' />
                             <span className="text nav-text">Logout</span>
                         </li>
                     </UptycsTooltip>
                 </div>
             </div>
+
             <ConfirmationSnackBar
                 open={open}
                 onClose={() => setOpen(false)}

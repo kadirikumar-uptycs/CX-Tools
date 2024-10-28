@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setCurrentPage } from '../store/authSlice';
 import { Typography, Box, Grid, Container, Fade, Button } from '@mui/material';
 import Typewriter from 'typewriter-effect';
-import { CompareArrows, Sync, Analytics, VpnKey, IntegrationInstructions } from '@mui/icons-material';
+import { CompareArrows, Sync, Analytics, VpnKey, IntegrationInstructions, Backup } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 const HomePage = () => {
@@ -45,6 +45,12 @@ const HomePage = () => {
             description: 'Filter for the tickets based on Jira and Zoho fields combinely.',
             icon: IntegrationInstructions,
             link: 'jirazoho'
+        },
+        {
+            title: 'Tenant Backup',
+            description: 'Back up all the custom configurations in a tenant to github.',
+            icon: Backup,
+            link: 'tenantBackup'
         },
     ];
 
