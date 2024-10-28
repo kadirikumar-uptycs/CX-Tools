@@ -49,7 +49,7 @@ passport.use('github', new GitHubStrategy({
             await connectDB();
 
             if (!req.user) {
-                return done(null, false, { message: 'Session Expired!! Please Login First' });
+                return done(null, false, { message: 'Session Expired!! Please Login First.' });
             }
 
             const user = await User.findById(req.user._id);
