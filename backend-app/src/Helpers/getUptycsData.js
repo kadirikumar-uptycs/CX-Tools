@@ -3,7 +3,7 @@ let getHeaders = require('./APIheaders');
 
 let getResources = async (credentials, endpoint, isSingle = false) => {
 
-	let domain = credentials["domain"] + credentials["domainSuffix"];
+	let domain = credentials?.domain + credentials?.domainSuffix;
 	let { customerId } = credentials;
 	let creds = getHeaders(credentials);
 
