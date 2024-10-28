@@ -13,5 +13,12 @@ router.delete('/user/:id', isAuthenticated, isAdmin, controllers.deleteUser)
 router.post('/getResources/:endpoint', isAuthenticated, controllers.getTenantResources);
 router.post('/migrateResources/:endpoint', isAuthenticated, controllers.migrateTenantResources);
 router.post('/authToken', isAuthenticated, controllers.getAuthToken);
+router.get('/github/status', isAuthenticated, controllers.github.checkStatus);
+router.get('/github/repos', isAuthenticated, controllers.github.fetchRepos);
+router.post('/github/repos', isAuthenticated, controllers.github.createRepo);
+router.get('/github/repos/:owner/:repoName/branches', isAuthenticated, controllers.github.fetchBranches);
+router.post('/github/repos/:owner/:repoName/branches', isAuthenticated, controllers.github.createBranch);
+router.post('/github/pushCode/:owner/:repoName/:branch', isAuthenticated, controllers.github.pushCode);
+
 
 module.exports = router;
