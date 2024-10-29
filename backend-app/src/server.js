@@ -12,7 +12,7 @@ const { info, highlight } = require('./Helpers/textColors');
 require('./passport-setup');
 
 const app = express();
-let jsonLimit = 5 * 1024 * 1024;
+let jsonLimit = 100 * 1024 * 1024;
 app.use(bodyParser.json({ limit: jsonLimit }));
 app.use(cookieParser());
 
