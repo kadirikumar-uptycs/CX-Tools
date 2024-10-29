@@ -7,7 +7,7 @@ let getResources = async (credentials, endpoint, isSingle = false) => {
 	let { customerId } = credentials;
 	let creds = getHeaders(credentials);
 
-	const url = `https://${domain}/public/api/customers/${customerId}/${endpoint}`;
+	const url = `https://${domain}/public/api/customers/${customerId}/${endpoint}?filters={"custom": {"equals": true}}`;
 	let fullData = [];
 
 	try {
