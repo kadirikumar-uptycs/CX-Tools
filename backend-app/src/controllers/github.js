@@ -142,7 +142,7 @@ const pushCode = async (req, res) => {
         });
         const blobSha = blobResponse.data.sha;
 
-        // Create a new tree with the new/updated file
+        // Create a new tree with the updated file
         const newTreeResponse = await axios.post(`https://api.github.com/repos/${owner}/${repoName}/git/trees`, {
             base_tree: treeSha,
             tree: [{
