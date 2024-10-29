@@ -157,8 +157,7 @@ const pushCode = async (req, res) => {
         const newTreeSha = newTreeResponse.data.sha;
 
         // Create a new commit
-        const timestamp = new Date().toISOString();
-        const commitMessage = `Update ${configName} configuration - ${timestamp}`;
+        const commitMessage = `Updated ${configName} by CX-Tools`;
         const newCommitResponse = await axios.post(`https://api.github.com/repos/${owner}/${repoName}/git/commits`, {
             message: commitMessage,
             tree: newTreeSha,
